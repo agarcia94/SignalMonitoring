@@ -39,6 +39,15 @@ public class MainActivityFragment extends Fragment {
         adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, data);
         lv.setAdapter(adapter);
 
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), Anomaly.class);
+                intent.putExtra("anomaly", adapter.getItem(i));
+                startActivity(intent);
+            }
+        });
+
 
 
         return rootView;
