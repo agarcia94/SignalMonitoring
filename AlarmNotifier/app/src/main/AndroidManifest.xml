@@ -26,14 +26,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Anomaly"
-            android:label="@string/title_activity_anomaly"
+            android:label="Anomalies"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".Details"
+            android:label="@string/title_activity_details"
+            android:parentActivityName=".Anomaly"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="Anomaly" />
+        </activity>
     </application>
 
 </manifest>
