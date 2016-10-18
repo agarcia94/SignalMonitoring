@@ -6,11 +6,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 import org.json.JSONStringer;
@@ -32,12 +34,12 @@ public class DetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FetchSurveyTask task = new FetchSurveyTask();
-        task.execute();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        FetchSurveyTask task = new FetchSurveyTask();
+//        task.execute();
+//    }
 
 
 
@@ -54,7 +56,15 @@ public class DetailsFragment extends Fragment {
         TextView tv = (TextView)rootView.findViewById(R.id.detailsText);
         tv.setText(detailString);
 
-        Button report = (Button)findViewById(R.id.report);
+        Button report = (Button)rootView.findViewById(R.id.report);
+        report.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                FetchSurveyTask task = new FetchSurveyTask();
+                task.execute();
+                Toast.makeText(getContext(),results.get(0),Toast.LENGTH_LONG);
+            }
+        });
 
         return rootView;
     }
@@ -104,6 +114,7 @@ public class DetailsFragment extends Fragment {
 
                 surveyJSONStr = buffer.toString();
                 results = getSurveyDataFromJson(surveyJSONStr);
+                //Log.d("survey", results.get(0));
             }catch(IOException o){
                 o.printStackTrace();
             }
