@@ -34,12 +34,12 @@ public class DetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        FetchSurveyTask task = new FetchSurveyTask();
-//        task.execute();
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        FetchSurveyTask task = new FetchSurveyTask();
+        task.execute();
+    }
 
 
 
@@ -57,14 +57,13 @@ public class DetailsFragment extends Fragment {
         tv.setText(detailString);
 
         Button report = (Button)rootView.findViewById(R.id.report);
-        report.setOnClickListener(new View.OnClickListener(){
+        report.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                FetchSurveyTask task = new FetchSurveyTask();
-                task.execute();
-                Toast.makeText(getContext(),results.get(0),Toast.LENGTH_LONG);
+            public void onClick(View v) {
+                Toast.makeText(getContext(), results.get(0), Toast.LENGTH_LONG).show();
             }
         });
+
 
         return rootView;
     }
@@ -81,10 +80,10 @@ public class DetailsFragment extends Fragment {
             BufferedReader reader = null;
 
             String surveyJSONStr = null;
-            String[] results = null;
+            String[] resultArray = null;
 
             try{
-                URL url = new URL("http://192.168.43.253:8080/UserManagement/rest/MongoService/surveys");
+                URL url = new URL("http://192.168.1.67:8080/UserManagement/rest/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -113,15 +112,25 @@ public class DetailsFragment extends Fragment {
                 }
 
                 surveyJSONStr = buffer.toString();
-                results = getSurveyDataFromJson(surveyJSONStr);
-                //Log.d("survey", results.get(0));
+                resultArray = getSurveyDataFromJson(surveyJSONStr);
+
+                if(results.isEmpty()){
+                    results.addAll(Arrays.asList(resultArray));
+                }
+                else{
+                    results.clear();
+                    results.addAll(Arrays.asList(resultArray));
+                }
+
+
+                Log.d("lengthResults", String.valueOf(results.size()));
             }catch(IOException o){
                 o.printStackTrace();
             }
 
 
 
-            return results;
+            return resultArray;
 
         }
 
@@ -130,10 +139,10 @@ public class DetailsFragment extends Fragment {
 
             try{
                 JSONObject jsonObject = new JSONObject(surveyJsonStr);
-                String time = jsonObject.getString("time");
+                String resolution = jsonObject.getString("resolution");
 
                 for(int i=0; i < resultStr.length; i++){
-                    resultStr[i] = time;
+                    resultStr[i] = resolution;
                 }
             }catch(Exception o){
                 o.printStackTrace();
@@ -142,11 +151,7 @@ public class DetailsFragment extends Fragment {
             return resultStr;
         }
 
-        @Override
-        protected void onPostExecute(String[] strings) {
-            super.onPostExecute(strings);
-            results.addAll(new ArrayList<String>(Arrays.asList(strings)));
-        }
+
     }
 
 
