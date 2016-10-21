@@ -1,8 +1,7 @@
 package com.example.alexperez.alarmnotifier;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -64,6 +62,16 @@ public class DetailsFragment extends Fragment {
             }
         });
 
+        Button accept = (Button)rootView.findViewById(R.id.accept);
+        accept.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), Survey.class);
+                //intent.putExtra("details", adapter.getItem(i));
+                startActivity(intent);
+            }
+        });
+
 
         return rootView;
     }
@@ -83,7 +91,7 @@ public class DetailsFragment extends Fragment {
             String[] resultArray = null;
 
             try{
-                URL url = new URL("http://localhost:8080/UserManagement/rest/MongoService/alarms");
+                URL url = new URL("http://192.168.43.253:8080/UserManagement/rest/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
