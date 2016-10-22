@@ -32,9 +32,8 @@ public class MainActivityFragment extends Fragment {
         lv = (ListView)rootView.findViewById(R.id.listview);
 
         ArrayList<String> data = new ArrayList<>();
-        data.add("Los Angeles");
-        data.add("Miami");
-        data.add("Sacramento");
+        data.add("Ground Machine 1");
+        data.add("Ground Machine 2");
 
         adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, data);
         lv.setAdapter(adapter);
