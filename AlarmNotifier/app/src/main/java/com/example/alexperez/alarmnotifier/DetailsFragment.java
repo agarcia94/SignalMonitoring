@@ -72,6 +72,15 @@ public class DetailsFragment extends Fragment {
             }
         });
 
+        Button home = (Button)rootView.findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         return rootView;
     }
