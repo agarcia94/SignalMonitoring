@@ -9,6 +9,33 @@
         <item>In Progress</item>
     </string-array>
 
+    <string-array name="timeToResolution_arrays">
+        <item>Power Cycle Unit</item>
+        <item>Reset Alarm</item>
+        <item>Swap in Spare</item>
+        <item>Transfer To Diverse Site</item>
+        <item>Transfer To Backup Antenna</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="moratorium_arrays">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="outage_arrays">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="outageTime_arrays">
+        <item>Select</item>
+        <item>0 - 5 Minutes</item>
+        <item>5 - 10 Minutes</item>
+        <item>10 - 20 Minutes</item>
+        <item>20+ Minutes</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_anomaly">AnomalyActivity</string>
