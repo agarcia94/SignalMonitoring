@@ -202,7 +202,7 @@
             android:layout_height="wrap_content"
             android:text="Submit"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="140dp"
+            android:layout_marginLeft="130dp"
             android:layout_gravity="center_vertical" />
 
     </LinearLayout>
