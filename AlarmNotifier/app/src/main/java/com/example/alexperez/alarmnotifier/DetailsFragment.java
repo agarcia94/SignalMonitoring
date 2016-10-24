@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,16 +64,16 @@ public class DetailsFragment extends Fragment {
         });
 
         Button accept = (Button)rootView.findViewById(R.id.accept);
-        accept.setOnClickListener(new View.OnClickListener(){
+        accept.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), Survey.class);
                 //intent.putExtra("details", adapter.getItem(i));
                 startActivity(intent);
             }
         });
 
-        Button home = (Button)rootView.findViewById(R.id.home);
+        ImageButton home = (ImageButton)rootView.findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

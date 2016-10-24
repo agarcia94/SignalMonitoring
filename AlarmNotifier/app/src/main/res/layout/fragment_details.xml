@@ -26,11 +26,12 @@
         android:id="@+id/detailsText"
         android:layout_gravity="center" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"
+    <ImageButton
+        android:background="@null"
+        android:layout_width="70dp"
+        android:layout_height="74dp"
         android:id="@+id/home"
-        android:layout_gravity="left|top" />
+        android:layout_gravity="left|top"
+        android:src="@drawable/home" />
 
 </FrameLayout>
