@@ -1,6 +1,7 @@
 package com.example.alexperez.alarmnotifier;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -52,7 +53,14 @@ public class Anomaly extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(Anomaly.this, "Head To That Page", Toast.LENGTH_SHORT).show();
+                if (mAdapter.getItem(position).equals("Home")){
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                }
+                else{
+                    Toast.makeText(Anomaly.this, "Head To That Function", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
