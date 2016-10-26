@@ -106,7 +106,7 @@ public class LoginFragment extends Fragment {
                 userProfile.put("username",username);
                 userProfile.put("password", password);
 
-                URL url = new URL("http://localhost:8080/UserManagement/MongoService/login");
+                URL url = new URL("http://192.168.1.8:8080/UserManagement/MongoService/login");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");

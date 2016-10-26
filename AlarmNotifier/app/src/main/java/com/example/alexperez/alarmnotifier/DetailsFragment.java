@@ -55,14 +55,6 @@ public class DetailsFragment extends Fragment {
         TextView tv = (TextView)rootView.findViewById(R.id.detailsText);
         tv.setText(detailString);
 
-        Button report = (Button)rootView.findViewById(R.id.report);
-        report.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), results.get(0), Toast.LENGTH_LONG).show();
-            }
-        });
-
         Button accept = (Button)rootView.findViewById(R.id.accept);
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +71,23 @@ public class DetailsFragment extends Fragment {
             public void onClick(View v){
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        ImageButton back = (ImageButton)rootView.findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Anomaly.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton report = (ImageButton)rootView.findViewById(R.id.report);
+        report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), results.get(0), Toast.LENGTH_LONG).show();
             }
         });
 
