@@ -32,17 +32,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/master
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
         mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
@@ -70,16 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> origin/master
-=======
->>>>>>> origin/master
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
+
     }
 
     @Override

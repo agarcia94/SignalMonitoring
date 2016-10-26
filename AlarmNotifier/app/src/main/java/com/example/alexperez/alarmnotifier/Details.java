@@ -42,7 +42,7 @@ public class Details extends AppCompatActivity {
     }
 
     private void addDrawerItems() {
-        String[] array = { "Home","List Of Anomolies","Reports","Logout" };
+        String[] array = { "Home","List Of Anomalies","Reports","Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
 
@@ -54,7 +54,7 @@ public class Details extends AppCompatActivity {
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }
-                if (mAdapter.getItem(position).equals("List Of Anomolies")) {
+                if (mAdapter.getItem(position).equals("List Of Anomalies")) {
                     Intent i = new Intent(getApplicationContext(), Anomaly.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
