@@ -46,6 +46,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/passwordInfo" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Don't have an account? Click on the register button to begin"
+            android:id="@+id/registerPrompt"
+            android:layout_gravity="center_horizontal" />
+
         <LinearLayout
             android:id="@+id/horizontalLayout"
             android:layout_width="match_parent"

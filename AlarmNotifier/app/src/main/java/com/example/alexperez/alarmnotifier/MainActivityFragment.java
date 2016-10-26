@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -34,6 +39,24 @@ public class MainActivityFragment extends Fragment {
         ArrayList<String> data = new ArrayList<>();
         data.add("Ground Machine 1");
         data.add("Ground Machine 2");
+
+        TextView welcome = (TextView)rootView.findViewById(R.id.welcome);
+        TextView location = (TextView)rootView.findViewById(R.id.location);
+        Intent intent = getActivity().getIntent();
+
+        if(intent.getStringExtra("profile") != null){
+            String profileString = intent.getStringExtra("profile");
+
+            try {
+                JSONObject profile = new JSONObject(profileString);
+                String username = profile.getString("username");
+                welcome.setText("Welcome " + username + "!");
+                location.setText(profile.getString("location"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, data);
         lv.setAdapter(adapter);

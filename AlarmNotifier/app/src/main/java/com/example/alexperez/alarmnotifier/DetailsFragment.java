@@ -101,7 +101,7 @@ public class DetailsFragment extends Fragment {
             String[] resultArray = null;
 
             try{
-                URL url = new URL("http://192.168.1.67:8080/UserManagement/rest/MongoService/alarms");
+                URL url = new URL("http://192.168.1.67:8080/UserManagement/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
