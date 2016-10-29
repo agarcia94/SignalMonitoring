@@ -19,6 +19,8 @@ public class AnomalyFragment extends Fragment {
     private ListView lv;
     private ArrayAdapter<String> adapter;
 
+    private String userProfile = "";
+
     public AnomalyFragment() {
         // Required empty public constructor
     }
@@ -38,6 +40,8 @@ public class AnomalyFragment extends Fragment {
         data.add("Electrical Circuit");
         data.add("No Activity");
 
+
+
         adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, data);
         lv.setAdapter(adapter);
 
@@ -45,7 +49,9 @@ public class AnomalyFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), Details.class);
+                userProfile = getActivity().getIntent().getStringExtra("profile");
                 intent.putExtra("details", adapter.getItem(i));
+                intent.putExtra("profile",userProfile);
                 startActivity(intent);
             }
         });
@@ -55,6 +61,8 @@ public class AnomalyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
+                userProfile = getActivity().getIntent().getStringExtra("profile");
+                intent.putExtra("profile",userProfile);
                 startActivity(intent);
             }
         });

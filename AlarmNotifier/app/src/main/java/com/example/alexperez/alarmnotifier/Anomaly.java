@@ -25,6 +25,7 @@ public class Anomaly extends AppCompatActivity {
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
+    private String userProfile = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,13 @@ public class Anomaly extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (mAdapter.getItem(position).equals("Home")){
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    userProfile = getIntent().getStringExtra("profile");
+                    i.putExtra("profile",userProfile);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                }
+                else if(mAdapter.getItem(position).equals("Logout")){
+                    Intent i = new Intent(getApplicationContext(), Login.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }

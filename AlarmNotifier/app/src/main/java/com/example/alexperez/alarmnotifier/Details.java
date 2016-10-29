@@ -54,8 +54,16 @@ public class Details extends AppCompatActivity {
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }
-                if (mAdapter.getItem(position).equals("List Of Anomalies")) {
+                else if (mAdapter.getItem(position).equals("List Of Anomalies")) {
                     Intent i = new Intent(getApplicationContext(), Anomaly.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                }
+                else if (mAdapter.getItem(position).equals("Reports")) {
+                    Toast.makeText(Details.this, "Head To That Function", Toast.LENGTH_SHORT).show();
+                }
+                else if (mAdapter.getItem(position).equals("Logout")) {
+                    Intent i = new Intent(getApplicationContext(), Login.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }

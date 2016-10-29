@@ -52,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (mAdapter.getItem(position).equals("Logout")) {
-//                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-//                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(i);
-                    Toast.makeText(MainActivity.this, "Head To That Function", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(getApplicationContext(), Login.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                    //Toast.makeText(MainActivity.this, "Head To That Function", Toast.LENGTH_SHORT).show();
                 }
             }
         });
