@@ -62,6 +62,7 @@ public class Anomaly extends AppCompatActivity {
                     startActivity(i);
                 }
                 else if(mAdapter.getItem(position).equals("Logout")){
+                    Toast.makeText(Anomaly.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getApplicationContext(), Login.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
