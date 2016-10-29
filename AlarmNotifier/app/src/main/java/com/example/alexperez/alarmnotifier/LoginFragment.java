@@ -59,7 +59,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void run(){
                         if(match){
-                            match = false;
+                            match = false; //Set match to false to reset the match for the next user
                             Toast.makeText(rootView.getContext(), "Login successful", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), MainActivity.class);
                             intent.putExtra("profile", userProfile.toString());
@@ -81,7 +81,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://192.168.1.67:8080/UserManagement/MongoService/register"));
+                        Uri.parse("http://192.168.1.8:8080/UserManagement/MongoService/register"));
                 startActivity(browserIntent);
             }
         });
@@ -106,7 +106,7 @@ public class LoginFragment extends Fragment {
                 userProfile.put("username",username);
                 userProfile.put("password", password);
 
-                URL url = new URL("http://192.168.1.67:8080/UserManagement/MongoService/login");
+                URL url = new URL("http://192.168.1.8:8080/UserManagement/MongoService/login");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");

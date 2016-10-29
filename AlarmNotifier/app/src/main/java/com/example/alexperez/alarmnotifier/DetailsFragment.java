@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.Arrays;
 
 public class DetailsFragment extends Fragment {
     private ArrayList<String> results = new ArrayList<String>();
+    private JSONObject alarmACK = new JSONObject();
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -49,18 +51,28 @@ public class DetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
 
-        Intent intent = getActivity().getIntent();
+        final Intent intent = getActivity().getIntent();
         String detailString = intent.getStringExtra("details");
 
         TextView tv = (TextView)rootView.findViewById(R.id.detailsText);
         tv.setText(detailString);
 
-        Button accept = (Button)rootView.findViewById(R.id.accept);
+        final Button accept = (Button)rootView.findViewById(R.id.accept);
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), Survey.class);
-                //intent.putExtra("details", adapter.getItem(i));
+
+                //Send DB that it has been ACK
+                Boolean accepted = accept.isPressed();
+                System.out.println("accepted Boolean: " + accepted);
+
+                Boolean[] ack = {accepted};
+
+                SendACK data = new SendACK();
+                data.execute(ack);
+
+                //Start The Survey Page
                 startActivity(intent);
             }
         });
@@ -110,7 +122,7 @@ public class DetailsFragment extends Fragment {
             String[] resultArray = null;
 
             try{
-                URL url = new URL("http://192.168.1.67:8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://192.168.1.8:8080/UserManagement/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -155,8 +167,6 @@ public class DetailsFragment extends Fragment {
                 o.printStackTrace();
             }
 
-
-
             return resultArray;
 
         }
@@ -177,8 +187,70 @@ public class DetailsFragment extends Fragment {
 
             return resultStr;
         }
+    }
+
+    class SendACK extends AsyncTask<Boolean, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Boolean... args){
+            Log.d("enter", "entered function");
+            HttpURLConnection client = null;
+
+            Boolean alarm = args[0];
+
+            try{
+                alarmACK.put("alarm",alarm);
+
+                URL url = new URL("http://192.168.1.8:8080/UserManagement/MongoService/alarms");
+                client = (HttpURLConnection) url.openConnection();
+                client.setRequestMethod("POST");
+                client.setRequestProperty("Content-Type", "application/json");
+                client.setRequestProperty("Accept", "application/json");
+                client.setDoOutput(true);
+
+                OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
+                Log.d("alarm", alarmACK.toString());
+                wr.write(alarmACK.toString());
+                wr.flush();
+                wr.close();
+
+                Log.d("output", "output stream");
+
+                StringBuilder sb = new StringBuilder();
+                int HttpResult = client.getResponseCode();
+                if (HttpResult == HttpURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(
+                            new InputStreamReader(client.getInputStream()));
+                    String line = null;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+                    Log.d("goodbye", sb.toString());
+                    alarmACK = new JSONObject(sb.toString());
+                    System.out.println("" + sb.toString());
+
+//                    if(//sb.toString().contains("true"))
+//                        match = true;
+                } else {
+                    Log.d("hello", client.getResponseMessage());
+                    System.out.println("Server response: " + client.getResponseMessage());
+                }
 
 
+            }catch(Exception o) {
+                o.printStackTrace();
+            }finally {
+                if(client != null) // Make sure the connection is not null.
+                    client.disconnect();
+            }
+
+            return null;
+        }
     }
 
 
