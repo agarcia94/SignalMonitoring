@@ -22,6 +22,8 @@ public class Details extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
 
+    String userProfile = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +53,15 @@ public class Details extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (mAdapter.getItem(position).equals("Home")) {
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    userProfile = getIntent().getStringExtra("profile");
+                    i.putExtra("profile", userProfile);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }
                 else if (mAdapter.getItem(position).equals("List Of Anomalies")) {
                     Intent i = new Intent(getApplicationContext(), Anomaly.class);
+                    userProfile = getIntent().getStringExtra("profile");
+                    i.putExtra("profile",userProfile);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }

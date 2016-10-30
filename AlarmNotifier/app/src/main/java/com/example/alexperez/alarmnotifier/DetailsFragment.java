@@ -30,6 +30,7 @@ import java.util.Arrays;
 public class DetailsFragment extends Fragment {
     private ArrayList<String> results = new ArrayList<String>();
     private JSONObject alarmACK = new JSONObject();
+    private String userProfile = "";
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -57,6 +58,8 @@ public class DetailsFragment extends Fragment {
         TextView tv = (TextView)rootView.findViewById(R.id.detailsText);
         tv.setText(detailString);
 
+        Log.d("detailsProfile",getActivity().getIntent().getStringExtra("profile"));
+
         final Button accept = (Button)rootView.findViewById(R.id.accept);
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +85,8 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(getActivity(), MainActivity.class);
+                userProfile = getActivity().getIntent().getStringExtra("profile");
+                intent.putExtra("profile",userProfile);
                 startActivity(intent);
             }
         });
@@ -91,6 +96,8 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), Anomaly.class);
+                userProfile = getActivity().getIntent().getStringExtra("profile");
+                intent.putExtra("profile",userProfile);
                 startActivity(intent);
             }
         });

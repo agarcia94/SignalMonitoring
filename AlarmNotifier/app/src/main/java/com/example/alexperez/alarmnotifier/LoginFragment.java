@@ -1,6 +1,7 @@
 package com.example.alexperez.alarmnotifier;
 
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -21,7 +22,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
+import android.content.pm.PackageManager;
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -81,7 +84,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://192.168.1.8:8080/UserManagement/MongoService/register"));
+                        Uri.parse("http://192.168.1.67:8080/UserManagement/MongoService/register"));
                 startActivity(browserIntent);
             }
         });
@@ -106,7 +109,7 @@ public class LoginFragment extends Fragment {
                 userProfile.put("username",username);
                 userProfile.put("password", password);
 
-                URL url = new URL("http://192.168.1.8:8080/UserManagement/MongoService/login");
+                URL url = new URL("http://192.168.1.67:8080/UserManagement/MongoService/login");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");

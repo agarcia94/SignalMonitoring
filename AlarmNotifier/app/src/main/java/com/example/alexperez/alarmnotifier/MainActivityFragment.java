@@ -51,6 +51,7 @@ public class MainActivityFragment extends Fragment {
 
         if(intent.getStringExtra("profile") != null){
             String profileString = intent.getStringExtra("profile");
+            Log.d("mainprofile",profileString);
 
             try {
                 JSONObject profile = new JSONObject(profileString);

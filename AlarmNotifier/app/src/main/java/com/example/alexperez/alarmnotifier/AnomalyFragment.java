@@ -3,6 +3,7 @@ package com.example.alexperez.alarmnotifier;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class AnomalyFragment extends Fragment {
         data.add("Electrical Circuit");
         data.add("No Activity");
 
-
+        Log.d("anomalyProfile",getActivity().getIntent().getStringExtra("profile"));
 
         adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, data);
         lv.setAdapter(adapter);
