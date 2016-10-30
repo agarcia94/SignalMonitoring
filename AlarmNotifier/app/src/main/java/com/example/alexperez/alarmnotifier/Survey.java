@@ -36,6 +36,7 @@ public class Survey extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.putExtra("profile", getIntent().getStringExtra("profile"));
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }
@@ -48,6 +49,7 @@ public class Survey extends AppCompatActivity {
         builder.setNeutralButton("Save For Later?", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Intent i = new Intent(getApplicationContext(), Anomaly.class);
+                i.putExtra("profile", getIntent().getStringExtra("profile"));
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }

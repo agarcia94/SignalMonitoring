@@ -76,6 +76,7 @@ public class DetailsFragment extends Fragment {
                 data.execute(ack);
 
                 //Start The Survey Page
+                intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
                 startActivity(intent);
             }
         });
@@ -129,7 +130,7 @@ public class DetailsFragment extends Fragment {
             String[] resultArray = null;
 
             try{
-                URL url = new URL("http://192.168.1.8:8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://192.168.1.67:8080/UserManagement/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -212,7 +213,7 @@ public class DetailsFragment extends Fragment {
             try{
                 alarmACK.put("alarm",alarm);
 
-                URL url = new URL("http://192.168.1.8:8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://192.168.1.67:8080/UserManagement/MongoService/alarms");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");

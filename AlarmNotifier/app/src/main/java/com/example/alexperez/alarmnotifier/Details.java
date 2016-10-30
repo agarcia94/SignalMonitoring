@@ -69,6 +69,7 @@ public class Details extends AppCompatActivity {
                     Toast.makeText(Details.this, "Head To That Function", Toast.LENGTH_SHORT).show();
                 }
                 else if (mAdapter.getItem(position).equals("Logout")) {
+                    Toast.makeText(Details.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getApplicationContext(), Login.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
