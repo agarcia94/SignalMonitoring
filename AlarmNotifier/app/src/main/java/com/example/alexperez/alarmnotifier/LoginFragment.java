@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,50 @@ public class LoginFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
         Button login = (Button)rootView.findViewById(R.id.login);
+
+        final EditText username = (EditText)rootView.findViewById(R.id.userInfo);
+        final EditText password = (EditText)rootView.findViewById(R.id.passwordInfo);
+        password.setFocusableInTouchMode(true);
+        password.requestFocus();
+
+        password.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+
+                    String userInfo = username.getText().toString();
+                    String passwordInfo = password.getText().toString();
+
+                    String[] userFacts = {userInfo, passwordInfo};
+
+                    SendUserData data = new SendUserData();
+                    data.execute(userFacts);
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable(){
+                        @Override
+                        public void run(){
+                            if(match){
+                                match = false; //Set match to false to reset the match for the next user
+                                Toast.makeText(rootView.getContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                intent.putExtra("profile", userProfile.toString());
+                                startActivity(intent);
+                            }
+                            else{
+                                Toast.makeText(rootView.getContext(), "No record found", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, 1000);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -84,7 +129,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://192.168.1.67:8080/UserManagement/MongoService/register"));
+                        Uri.parse("http://192.168.43.253:8080/UserManagement/MongoService/register"));
                 startActivity(browserIntent);
             }
         });
@@ -109,7 +154,7 @@ public class LoginFragment extends Fragment {
                 userProfile.put("username",username);
                 userProfile.put("password", password);
 
-                URL url = new URL("http://192.168.1.67:8080/UserManagement/MongoService/login");
+                URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/login");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
