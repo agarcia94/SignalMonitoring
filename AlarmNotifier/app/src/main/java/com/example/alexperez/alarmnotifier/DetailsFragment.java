@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -30,18 +33,19 @@ import java.util.Arrays;
 public class DetailsFragment extends Fragment {
     private ArrayList<String> results = new ArrayList<String>();
     private JSONObject alarmACK = new JSONObject();
+    private JSONArray reportMatches;
     private String userProfile = "";
 
     public DetailsFragment() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FetchSurveyTask task = new FetchSurveyTask();
-        task.execute();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        FetchSurveyTask task = new FetchSurveyTask();
+//        task.execute();
+//    }
 
 
 
@@ -50,7 +54,7 @@ public class DetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_details, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_details, container, false);
 
         final Intent intent = getActivity().getIntent();
         String detailString = intent.getStringExtra("details");
@@ -107,12 +111,97 @@ public class DetailsFragment extends Fragment {
         report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), results.get(0), Toast.LENGTH_LONG).show();
+                userProfile = getActivity().getIntent().getStringExtra("profile");
+                try {
+                    JSONObject profile = new JSONObject(userProfile);
+                    String location = profile.getString("location");
+
+                    String[] locationInfo = {location};
+
+                    SendLocationData data = new SendLocationData();
+                    data.execute(locationInfo);
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(rootView.getContext(), String.valueOf(reportMatches.length()), Toast.LENGTH_SHORT).show();
+                        }
+                    }, 1000);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //Toast.makeText(getContext(), results.get(0), Toast.LENGTH_LONG).show();
             }
         });
 
 
         return rootView;
+    }
+
+    class SendLocationData extends AsyncTask<String, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... args){
+            Log.d("enter", "entered function");
+            HttpURLConnection client = null;
+
+            String location = args[0];
+
+            try{
+                URL url = new URL("http://192.168.1.67:8080/UserManagement/MongoService/report");
+                client = (HttpURLConnection) url.openConnection();
+                client.setRequestMethod("POST");
+                client.setRequestProperty("Content-Type", "application/json");
+                client.setRequestProperty("Accept", "application/json");
+                client.setDoOutput(true);
+
+                JSONObject locationInfo = new JSONObject();
+                locationInfo.put("location",location);
+
+                OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
+                Log.d("locationProfile", locationInfo.toString());
+                wr.write(locationInfo.toString());
+                wr.flush();
+                wr.close();
+
+                Log.d("locationOutput", "output stream");
+
+                StringBuilder sb = new StringBuilder();
+                int HttpResult = client.getResponseCode();
+                if (HttpResult == HttpURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(
+                            new InputStreamReader(client.getInputStream()));
+                    String line = null;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+                    Log.d("reportResponse", sb.toString());
+
+                    JSONObject reportResponse = new JSONObject(sb.toString());
+                    reportMatches = reportResponse.getJSONArray("alarms");
+
+                } else {
+                    Log.d("hello", client.getResponseMessage());
+                    System.out.println("Server response: " + client.getResponseMessage());
+                }
+
+
+            }catch(Exception o) {
+                o.printStackTrace();
+            }finally {
+                if(client != null) // Make sure the connection is not null.
+                    client.disconnect();
+            }
+
+            return null;
+        }
     }
 
     class FetchSurveyTask extends AsyncTask<Void, Void, String[]> {
@@ -130,7 +219,7 @@ public class DetailsFragment extends Fragment {
             String[] resultArray = null;
 
             try{
-                URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://192.168.1.67:8080/UserManagement/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
