@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "81559587890",
+    "firebase_url": "https://seniordesign-c57cb.firebaseio.com",
+    "project_id": "seniordesign-c57cb",
+    "storage_bucket": "seniordesign-c57cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81559587890:android:69cdff6321e9b478",
+        "android_client_info": {
+          "package_name": "com.example.alexperez.alarmnotifier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81559587890-g1ld8khpuutna0pqag6peskoo6mqc9na.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc96HeC5Zzdfis9lZg7-lmRL6z9taL1NI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81559587890:android:51cbe295e0ed3c4f",
+        "android_client_info": {
+          "package_name": "cs454.notif"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81559587890-g1ld8khpuutna0pqag6peskoo6mqc9na.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc96HeC5Zzdfis9lZg7-lmRL6z9taL1NI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
