@@ -29,8 +29,11 @@
             android:id="@+id/username" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Username"
+            android:singleLine="true"
+            android:maxLines="1"
             android:id="@+id/userInfo" />
 
         <TextView
@@ -42,9 +45,12 @@
             android:id="@+id/password" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:hint="Password"
+            android:singleLine="true"
+            android:maxLines="1"
             android:id="@+id/passwordInfo" />
 
         <TextView
@@ -67,21 +73,28 @@
 
             <Button
                 android:id="@+id/login"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
+                android:textColor="#ffffffff"
+                android:background="#3498DB"
                 android:text="Login" />
-
-            <Button
-                android:id="@+id/register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Register" />
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="#ffffffff"
+            android:background="#3498DB"
+            android:text="Register" />
+
     </LinearLayout>
 
-    </ScrollView>
+</ScrollView>
 
 
 
