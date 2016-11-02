@@ -111,10 +111,17 @@
 
         <EditText
             android:id="@+id/answerOfIA"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="Press Here To Type Out Description"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:minLines="2"
+            android:gravity="top"
+            android:scrollHorizontally="false"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
+            android:background="@android:drawable/edit_text"
+            android:textColor="@android:color/primary_text_light"
             />
 
         <TextView
@@ -198,11 +205,13 @@
 
         <Button
             android:id="@+id/submitSurvey"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Submit"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="130dp"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textColor="#ffffffff"
+            android:background="#3498DB"
             android:layout_gravity="center_vertical" />
 
     </LinearLayout>

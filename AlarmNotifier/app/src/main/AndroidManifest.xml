@@ -40,7 +40,7 @@
         </activity>
         <activity
             android:name=".Details"
-            android:label="@string/title_activity_details"
+            android:label="Anomaly Details"
             android:parentActivityName=".Anomaly"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -49,7 +49,7 @@
         </activity>
         <activity
             android:name=".Survey"
-            android:label="@string/title_activity_survey"
+            android:label="Thank You For Accepting Alarm"
             android:parentActivityName=".Details"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

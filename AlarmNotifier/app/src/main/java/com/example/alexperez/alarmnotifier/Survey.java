@@ -31,11 +31,11 @@ public class Survey extends AppCompatActivity {
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Quitting On Survey");
+        builder.setTitle("Name Of Alarm");
         builder.setMessage("Would you Like To Decline Responsibility? ");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent i = new Intent(getApplicationContext(), Anomaly.class);
                 i.putExtra("profile", getIntent().getStringExtra("profile"));
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
@@ -43,12 +43,7 @@ public class Survey extends AppCompatActivity {
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        builder.setNeutralButton("Save For Later?", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Intent i = new Intent(getApplicationContext(), Anomaly.class);
+                Intent i = new Intent(getApplicationContext(), Details.class);
                 i.putExtra("profile", getIntent().getStringExtra("profile"));
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
