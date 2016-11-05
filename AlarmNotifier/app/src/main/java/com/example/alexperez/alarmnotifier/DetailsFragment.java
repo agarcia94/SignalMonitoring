@@ -45,7 +45,7 @@ public class DetailsFragment extends Fragment {
 //        super.onStart();
 //        FetchSurveyTask task = new FetchSurveyTask();
 //        task.execute();
-//    }
+// }
 
 
 
@@ -154,7 +154,7 @@ public class DetailsFragment extends Fragment {
             String location = args[0];
 
             try{
-                URL url = new URL("http://192.168.1.67:8080/UserManagement/MongoService/report");
+                URL url = new URL("http://10.85.40.45:8080/UserManagement/MongoService/report");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
@@ -219,7 +219,7 @@ public class DetailsFragment extends Fragment {
             String[] resultArray = null;
 
             try{
-                URL url = new URL("http://192.168.1.67:8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://10.85.40.45:8080/UserManagement/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -302,7 +302,7 @@ public class DetailsFragment extends Fragment {
             try{
                 alarmACK.put("alarm",alarm);
 
-                URL url = new URL("http://192.168.1.67:8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://10.85.40.45:8080/UserManagement/MongoService/alarms");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");

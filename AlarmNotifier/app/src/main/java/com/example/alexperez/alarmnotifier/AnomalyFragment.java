@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class AnomalyFragment extends Fragment {
 
-    private ListView lv;
+    private ListView ackAlarms,currentAlarms;
     private ArrayAdapter<String> adapter;
 
     private String userProfile = "";
@@ -34,7 +34,7 @@ public class AnomalyFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_anomaly, container, false);
 
-        lv = (ListView)rootView.findViewById(R.id.listview);
+        currentAlarms = (ListView)rootView.findViewById(R.id.ackAlarmsList);
 
         ArrayList<String> data = new ArrayList<>();
         data.add("Antenna");
@@ -44,9 +44,9 @@ public class AnomalyFragment extends Fragment {
         Log.d("anomalyProfile",getActivity().getIntent().getStringExtra("profile"));
 
         adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, data);
-        lv.setAdapter(adapter);
+        currentAlarms.setAdapter(adapter);
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        currentAlarms.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), Details.class);

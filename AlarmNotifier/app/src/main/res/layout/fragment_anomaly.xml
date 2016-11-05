@@ -15,22 +15,69 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="com.example.alexperez.alarmnotifier.AnomalyFragment">
 
-        <ListView
-            android:id="@+id/listview"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/back"
-            android:layout_alignParentStart="true"
-             />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Acknowledged Alarms:"
+            android:id="@+id/ackAlarmText"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
 
-        <ImageButton
-            android:layout_width="70dp"
-            android:layout_height="74dp"
-            android:id="@+id/back"
+        <ListView
+            android:id="@+id/ackAlarmsList"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_below="@+id/ackAlarmText"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Current Alarm:"
+            android:textColor="#FF0000"
+            android:id="@+id/cAlarmsText"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:background="@null"
-            android:src="@drawable/back" />
+            android:layout_marginTop="78dp" />
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="350dp"
+            android:textColor="#FF0000"
+            android:id="@+id/cAlarmList"
+            android:layout_alignTop="@+id/cAlarmsText"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="40dp"
+            android:layout_above="@+id/ackAlarmText" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:textColor="#ffffffff"
+            android:background="#3498DB"
+            android:gravity="center"
+            android:text="Welcome "
+            android:id="@+id/welcome"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:textColor="#ffffffff"
+            android:background="#3498DB"
+            android:gravity="center"
+            android:text="Location: "
+            android:id="@+id/location"
+            android:layout_below="@+id/welcome"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 
