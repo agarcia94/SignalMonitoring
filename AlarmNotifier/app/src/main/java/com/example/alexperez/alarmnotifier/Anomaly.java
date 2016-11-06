@@ -47,7 +47,7 @@ public class Anomaly extends AppCompatActivity {
     }
 
     private void addDrawerItems() {
-        String[] array = { "Home", "Logout" };
+        String[] array = { "Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
 

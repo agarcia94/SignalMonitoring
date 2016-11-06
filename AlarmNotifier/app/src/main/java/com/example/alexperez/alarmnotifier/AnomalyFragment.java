@@ -13,12 +13,13 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class AnomalyFragment extends Fragment {
 
     private ListView ackAlarms,currentAlarms;
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapter,currentAdapter;
 
     private String userProfile = "";
 
@@ -34,17 +35,19 @@ public class AnomalyFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_anomaly, container, false);
 
-        currentAlarms = (ListView)rootView.findViewById(R.id.ackAlarmsList);
+        currentAlarms = (ListView)rootView.findViewById(R.id.cAlarmList);
+        ackAlarms = (ListView)rootView.findViewById(R.id.ackAlarmsList);
 
         ArrayList<String> data = new ArrayList<>();
-        data.add("Antenna");
-        data.add("Electrical Circuit");
-        data.add("No Activity");
+        data.add("LKA35-ACU AZ Resolver Fault");
+        data.add("LD2-HPA1 Helix Arc Fault");
 
-        Log.d("anomalyProfile",getActivity().getIntent().getStringExtra("profile"));
-
+        Log.d("anomalyProfile", getActivity().getIntent().getStringExtra("profile"));
+        currentAdapter = new ArrayAdapter(getActivity(), R.layout.crow, R.id.textView, data);
         adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, data);
-        currentAlarms.setAdapter(adapter);
+
+        currentAlarms.setAdapter(currentAdapter);
+        ackAlarms.setAdapter(adapter);
 
         currentAlarms.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -52,18 +55,18 @@ public class AnomalyFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), Details.class);
                 userProfile = getActivity().getIntent().getStringExtra("profile");
                 intent.putExtra("details", adapter.getItem(i));
-                intent.putExtra("profile",userProfile);
+                intent.putExtra("profile", userProfile);
                 startActivity(intent);
             }
         });
 
-        ImageButton back = (ImageButton)rootView.findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
+        ackAlarms.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), Details.class);
                 userProfile = getActivity().getIntent().getStringExtra("profile");
-                intent.putExtra("profile",userProfile);
+                intent.putExtra("details", adapter.getItem(i));
+                intent.putExtra("profile", userProfile);
                 startActivity(intent);
             }
         });
