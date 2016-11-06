@@ -10,8 +10,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+
         tools:context="com.example.alexperez.alarmnotifier.AnomalyFragment">
 
         <TextView
@@ -21,7 +20,7 @@
             android:text="Acknowledged Alarms:"
             android:id="@+id/ackAlarmText"
             android:layout_centerVertical="true"
-            android:layout_alignParentStart="true" />
+            android:layout_centerHorizontal="true" />
 
         <ListView
             android:id="@+id/ackAlarmsList"
@@ -39,9 +38,9 @@
             android:text="Current Alarms:"
             android:textColor="#FF0000"
             android:id="@+id/cAlarmsText"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="78dp" />
+            android:layout_marginTop="35dp"
+            android:layout_below="@+id/location"
+            android:layout_centerHorizontal="true" />
 
         <ListView
             android:layout_width="wrap_content"
@@ -59,7 +58,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
             android:textColor="#ffffffff"
-            android:background="#3498DB"
+            android:background="@color/colorPrimary"
             android:gravity="center"
             android:text="Welcome "
             android:id="@+id/welcome"
@@ -72,7 +71,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
             android:textColor="#ffffffff"
-            android:background="#3498DB"
+            android:background="@color/colorPrimary"
             android:gravity="center"
             android:text="Location: "
             android:id="@+id/location"

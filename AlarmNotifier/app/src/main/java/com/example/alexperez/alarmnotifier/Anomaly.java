@@ -1,6 +1,8 @@
 package com.example.alexperez.alarmnotifier;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -54,14 +56,7 @@ public class Anomaly extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mAdapter.getItem(position).equals("Home")){
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    userProfile = getIntent().getStringExtra("profile");
-                    i.putExtra("profile",userProfile);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
-                }
-                else if(mAdapter.getItem(position).equals("Logout")){
+                if(mAdapter.getItem(position).equals("Logout")){
                     Toast.makeText(Anomaly.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getApplicationContext(), Login.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -72,6 +67,31 @@ public class Anomaly extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Logging Out");
+        builder.setMessage("Are You Sure You Want To Logout? ");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent i = new Intent(getApplicationContext(), Login.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent i = new Intent(getApplicationContext(), Anomaly.class);
+                i.putExtra("profile", getIntent().getStringExtra("profile"));
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
+        builder.show();
+
     }
 
     @Override
