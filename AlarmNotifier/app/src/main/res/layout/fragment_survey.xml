@@ -28,14 +28,14 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="Name: " />
 
         <TextView
             android:id="@+id/site"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="Site: " />
 
         <TextView
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="Antenna " />
 
         <TextView
@@ -51,39 +51,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="Satellite: " />
 
         <TextView
-            android:id="@+id/eventType"
+            android:id="@+id/alarmFault"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="15dp"
-            android:text="Event Type: " />
-
-        <TextView
-            android:id="@+id/eventParameter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginTop="15dp"
-            android:text="Event Parameter: " />
-
-        <TextView
-            android:id="@+id/alarmID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginTop="15dp"
-            android:text="Alarm ID: " />
+            android:layout_marginTop="10dp"
+            android:text="Alarm/Fault:" />
 
         <TextView
             android:id="@+id/equipAffec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="Equipment Affected " />
 
         <TextView
@@ -91,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="Equipment Vendor: " />
 
         <TextView
@@ -99,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="Severity: " />
 
         <TextView
