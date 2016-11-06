@@ -58,6 +58,8 @@ public class DetailsFragment extends Fragment {
 
         final Intent intent = getActivity().getIntent();
         String detailString = intent.getStringExtra("details");
+        String alarmJSON = intent.getStringExtra("alarm");
+        Log.d("alarm", alarmJSON);
 
         TextView tv = (TextView)rootView.findViewById(R.id.detailsText);
         tv.setText(detailString);

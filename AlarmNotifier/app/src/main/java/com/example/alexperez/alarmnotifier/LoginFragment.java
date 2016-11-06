@@ -1,7 +1,6 @@
 package com.example.alexperez.alarmnotifier;
 
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -23,9 +22,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
-import android.content.pm.PackageManager;
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -72,7 +69,7 @@ public class LoginFragment extends Fragment {
                             if(match){
                                 match = false; //Set match to false to reset the match for the next user
                                 Toast.makeText(rootView.getContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                Intent intent = new Intent(getActivity(), Anomaly.class);
                                 intent.putExtra("profile", userProfile.toString());
                                 startActivity(intent);
                             }
@@ -109,7 +106,7 @@ public class LoginFragment extends Fragment {
                         if(match){
                             match = false; //Set match to false to reset the match for the next user
                             Toast.makeText(rootView.getContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            Intent intent = new Intent(getActivity(), Anomaly.class);
                             intent.putExtra("profile", userProfile.toString());
                             startActivity(intent);
                         }
@@ -130,7 +127,10 @@ public class LoginFragment extends Fragment {
 
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW,
                         //192.168.1.8
-                        Uri.parse("http://10.85.47.23:8080/UserManagement/MongoService/register"));
+                        //192.168.1.67
+                        Uri.parse("http://192.168.43.253:8080/UserManagement/MongoService/register"));
+
+
                 startActivity(browserIntent);
             }
         });
@@ -156,7 +156,8 @@ public class LoginFragment extends Fragment {
                 userProfile.put("password", password);
 
                 //192.168.1.8
-                URL url = new URL("http://10.85.47.23:8080/UserManagement/MongoService/login");
+                //192.168.1.67
+                URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/login");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
