@@ -139,7 +139,7 @@ public class DetailsFragment extends Fragment {
         home.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(getActivity(), Anomaly.class);
                 userProfile = getActivity().getIntent().getStringExtra("profile");
                 intent.putExtra("profile",userProfile);
                 startActivity(intent);

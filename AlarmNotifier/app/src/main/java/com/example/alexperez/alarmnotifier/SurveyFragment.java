@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -35,15 +36,39 @@ public class SurveyFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                if(parent.getItemAtPosition(position).toString().equalsIgnoreCase("other")){
+                if (parent.getItemAtPosition(position).toString().equalsIgnoreCase("other")) {
                     other.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     other.setVisibility(View.GONE);
                 }
 //                Toast.makeText(parent.getContext(),
 //                        "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
 //                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        Spinner wasThereAnOutage = (Spinner)rootView.findViewById(R.id.spinner4);
+        final TextView outageIfYes = (TextView)rootView.findViewById(R.id.outageTime);
+        final Spinner outage = (Spinner)rootView.findViewById(R.id.spinner5);
+        outageIfYes.setVisibility(View.GONE);
+        outage.setVisibility(View.GONE);
+
+        wasThereAnOutage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if (parent.getItemAtPosition(position).toString().equalsIgnoreCase("yes")) {
+                    outageIfYes.setVisibility(View.VISIBLE);
+                    outage.setVisibility(View.VISIBLE);
+                } else {
+                    outageIfYes.setVisibility(View.GONE);
+                    outage.setVisibility(View.GONE);
+                }
             }
 
             @Override
