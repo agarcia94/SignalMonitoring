@@ -127,8 +127,8 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://192.168.43.253:8080/UserManagement/MongoService/register"));
-                        //Uri.parse("http://192.168.1.8:8080/UserManagement/MongoService/register"));
+                        //Uri.parse("http://192.168.43.253:8080/UserManagement/MongoService/register"));
+                        Uri.parse("http://10.85.46.184:8080/UserManagement/MongoService/register"));
 
 
                 startActivity(browserIntent);
@@ -155,8 +155,8 @@ public class LoginFragment extends Fragment {
                 userProfile.put("username",username);
                 userProfile.put("password", password);
 
-                URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/login");
-                //URL url = new URL("http://192.168.1.8:8080/UserManagement/MongoService/login");
+                //URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/login");
+                URL url = new URL("http://10.85.46.184:8080/UserManagement/MongoService/login");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");

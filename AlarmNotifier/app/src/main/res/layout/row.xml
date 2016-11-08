@@ -8,7 +8,6 @@
         android:layout_height="45dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:textColor="#FF0000"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal" />
 

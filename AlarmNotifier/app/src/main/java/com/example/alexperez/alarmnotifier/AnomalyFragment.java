@@ -77,13 +77,14 @@ public class AnomalyFragment extends Fragment {
         TextView locationText = (TextView)rootView.findViewById(R.id.location);
         locationText.setText(locationText.getText() + " " + location);
 
-        Log.d("anomalyProfile",getActivity().getIntent().getStringExtra("profile"));
+        Log.d("anomalyProfile", getActivity().getIntent().getStringExtra("profile"));
 
 
 
         adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, data);
+        currentAdapter = new ArrayAdapter(getActivity(), R.layout.crow, R.id.textView, data);
 
-        currentAlarms.setAdapter(adapter);
+        currentAlarms.setAdapter(currentAdapter);
         ackAlarms.setAdapter(adapter);
 
         currentAlarms.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,7 +92,7 @@ public class AnomalyFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), Details.class);
                 userProfile = getActivity().getIntent().getStringExtra("profile");
-                intent.putExtra("details", adapter.getItem(i));
+                intent.putExtra("details", currentAdapter.getItem(i));
                 intent.putExtra("profile", userProfile);
                 intent.putExtra("alarm", alarmJSON.toString());
 
@@ -132,8 +133,8 @@ public class AnomalyFragment extends Fragment {
 
             try{
 
-                URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/alarms");
-                //URL url = new URL("http://192.168.1.8:8080/UserManagement/MongoService/alarms");
+                //URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://10.85.46.184:8080/UserManagement/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
