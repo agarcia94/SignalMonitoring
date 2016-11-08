@@ -18,6 +18,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,6 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 
 public class DetailsFragment extends Fragment {
@@ -60,6 +62,52 @@ public class DetailsFragment extends Fragment {
         String detailString = intent.getStringExtra("details");
         String alarmJSON = intent.getStringExtra("alarm");
         Log.d("alarm", alarmJSON);
+
+        try {
+            JSONObject alarmObject = new JSONObject(alarmJSON);
+
+            int severity = alarmObject.getInt("severity");
+            String parameter = alarmObject.getString("parameter");
+
+            String[] parameterFields = parameter.split("-");
+
+            String site = parameterFields[1];
+            String antenna = parameterFields[2];
+
+            String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+            String fault = anomalyNameArray[1];
+            int nameIndex = fault.indexOf("(");
+
+            if(nameIndex != -1){
+                fault = fault.substring(0,nameIndex);
+            }
+
+            JSONObject deviceAttributes = alarmObject.getJSONObject("deviceAttributes");
+            String affectEquipment = deviceAttributes.getString("DeviceId");
+            String vendor = deviceAttributes.getString("DeviceType");
+            vendor = vendor.substring(0, vendor.indexOf(" "));
+
+            TextView siteView = (TextView)rootView.findViewById(R.id.site);
+            siteView.setText(siteView.getText() + " " + site);
+
+            TextView antennaView = (TextView)rootView.findViewById(R.id.antenna);
+            antennaView.setText(antennaView.getText() + " " + antenna);
+
+            TextView alarmView = (TextView)rootView.findViewById(R.id.alarmfault);
+            alarmView.setText(alarmView.getText() + " " + fault);
+
+            TextView equipmentAffected = (TextView)rootView.findViewById(R.id.equipmentAffected);
+            equipmentAffected.setText(equipmentAffected.getText() + " " + affectEquipment);
+
+            TextView vendorView = (TextView)rootView.findViewById(R.id.equipmentVendor);
+            vendorView.setText(vendorView.getText() + " " + vendor);
+
+            TextView severityView = (TextView)rootView.findViewById(R.id.severity);
+            severityView.setText(severityView.getText() + " " + severity);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         TextView tv = (TextView)rootView.findViewById(R.id.detailsText);
         tv.setText(detailString);
@@ -156,8 +204,8 @@ public class DetailsFragment extends Fragment {
             String location = args[0];
 
             try{
-                //URL url = new URL("http://Input Your IP:8080/UserManagement/MongoService/report");
-                URL url = new URL("http://10.85.47.23:8080/UserManagement/MongoService/report");
+                URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/report");
+                //URL url = new URL("http://10.85.47.23:8080/UserManagement/MongoService/report");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
@@ -222,8 +270,8 @@ public class DetailsFragment extends Fragment {
             String[] resultArray = null;
 
             try{
-                //URL url = new URL("http://Input Your IP:8080/UserManagement/MongoService/alarms");
-                URL url = new URL("http://10.85.47.23:8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/alarms");
+                //URL url = new URL("http://10.85.47.23:8080/UserManagement/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -306,8 +354,8 @@ public class DetailsFragment extends Fragment {
             try{
                 alarmACK.put("alarm",alarm);
 
-                //URL url = new URL("http://INPUT YOUR IP:8080/UserManagement/MongoService/alarms");
-                URL url = new URL("http://10.85.47.23:8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/alarms");
+                //URL url = new URL("http://10.85.47.23:8080/UserManagement/MongoService/alarms");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");

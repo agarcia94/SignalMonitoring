@@ -49,6 +49,7 @@ public class AnomalyFragment extends Fragment {
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -115,16 +116,12 @@ public class AnomalyFragment extends Fragment {
 //        data.add("Electrical Circuit");
 //        data.add("No Activity");
 
-
+        rootView.postInvalidateDelayed(500);
         return rootView;
 
     }
 
     class FetchAlarmTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         @Override
         protected Void doInBackground(Void...voids){
@@ -134,7 +131,9 @@ public class AnomalyFragment extends Fragment {
             String alarmJSONStr = null;
 
             try{
-                URL url = new URL("http://192.168.1.8:8080/UserManagement/MongoService/alarms");
+
+                URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/alarms");
+                //URL url = new URL("http://192.168.1.8:8080/UserManagement/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
