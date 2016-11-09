@@ -16,12 +16,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.regex.Pattern;
+
 /**
  * A placeholder fragment containing a simple view.
  */
 public class SurveyFragment extends Fragment {
     private String userProfile = "";
-    final String IP_ADDRESS = "192.168.1.8";
+    final String IP_ADDRESS = "192.168.43.253";
 
     public SurveyFragment() {
     }
@@ -29,6 +34,8 @@ public class SurveyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Log.d("surveyAlarm", getActivity().getIntent().getStringExtra("alarm"));
 
         View rootView = inflater.inflate(R.layout.fragment_survey, container, false);
 
@@ -53,6 +60,55 @@ public class SurveyFragment extends Fragment {
                 builder.show();
             }
         });
+
+        try {
+            JSONObject alarmObject = new JSONObject(getActivity().getIntent().getStringExtra("alarm"));
+
+            int severity = alarmObject.getInt("severity");
+            String parameter = alarmObject.getString("parameter");
+
+            String[] parameterFields = parameter.split("-");
+
+            String site = parameterFields[1];
+            String antenna = parameterFields[2];
+
+            String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+            String fault = anomalyNameArray[1];
+            int nameIndex = fault.indexOf("(");
+
+            if(nameIndex != -1){
+                fault = fault.substring(0,nameIndex);
+            }
+
+            JSONObject deviceAttributes = alarmObject.getJSONObject("deviceAttributes");
+            String affectEquipment = deviceAttributes.getString("DeviceId");
+            String vendor = deviceAttributes.getString("DeviceType");
+            vendor = vendor.substring(0, vendor.indexOf(" "));
+
+            TextView date = (TextView)rootView.findViewById(R.id.Date);
+            date.setText(date.getText() + " " + alarmObject.getString("timestamp"));
+
+            TextView siteView = (TextView)rootView.findViewById(R.id.site);
+            siteView.setText(siteView.getText() + " " + site);
+
+            TextView antennaView = (TextView)rootView.findViewById(R.id.antenna);
+            antennaView.setText(antennaView.getText() + " " + antenna);
+
+            TextView alarmView = (TextView)rootView.findViewById(R.id.alarmFault);
+            alarmView.setText(alarmView.getText() + " " + fault);
+
+            TextView equipmentAffected = (TextView)rootView.findViewById(R.id.equipAffec);
+            equipmentAffected.setText(equipmentAffected.getText() + " " + affectEquipment);
+
+            TextView vendorView = (TextView)rootView.findViewById(R.id.equipVendor);
+            vendorView.setText(vendorView.getText() + " " + vendor);
+
+            TextView severityView = (TextView)rootView.findViewById(R.id.severity);
+            severityView.setText(severityView.getText() + " " + severity);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         Spinner resolution = (Spinner)rootView.findViewById(R.id.spinner2);
         final EditText other = (EditText)rootView.findViewById(R.id.other);

@@ -36,7 +36,7 @@ public class AnomalyFragment extends Fragment {
     private JSONObject alarmJSON;
 
     private ArrayList<String> data = new ArrayList<>();
-    final String IP_ADDRESS = "192.168.1.8";
+    final String IP_ADDRESS = "192.168.43.253";
 
     public AnomalyFragment() {
         // Required empty public constructor

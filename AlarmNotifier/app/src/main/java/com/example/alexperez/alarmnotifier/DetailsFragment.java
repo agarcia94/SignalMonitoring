@@ -35,7 +35,7 @@ public class DetailsFragment extends Fragment {
     private JSONObject alarmACK = new JSONObject();
     private JSONArray reportMatches;
     private String userProfile = "";
-    final String IP_ADDRESS = "192.168.1.8";
+    final String IP_ADDRESS = "192.168.43.253";
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -119,6 +119,7 @@ public class DetailsFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), Survey.class);
 
+
                 //Send DB that it has been ACK
                 Boolean accepted = accept.isPressed();
                 System.out.println("accepted Boolean: " + accepted);
@@ -130,6 +131,7 @@ public class DetailsFragment extends Fragment {
 
                 //Start The Survey Page
                 intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
+                intent.putExtra("alarm",getActivity().getIntent().getStringExtra("alarm"));
                 startActivity(intent);
             }
         });
