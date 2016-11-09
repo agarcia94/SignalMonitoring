@@ -3,9 +3,9 @@ package com.example.alexperez.alarmnotifier;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -92,7 +92,6 @@ public class LoginFragment extends Fragment {
             public void onClick(View v){
                 EditText username = (EditText)rootView.findViewById(R.id.userInfo);
                 String userInfo = username.getText().toString();
-
                 EditText password = (EditText)rootView.findViewById(R.id.passwordInfo);
                 String passwordInfo = password.getText().toString();
 
