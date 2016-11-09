@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -63,7 +61,7 @@ public class Anomaly extends AppCompatActivity {
     }
 
     private void addDrawerItems() {
-        String[] array = { "Logout" };
+        String[] array = { "Logout" , "Subscription" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
 
@@ -78,6 +76,13 @@ public class Anomaly extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(Anomaly.this, "Head To That Function", Toast.LENGTH_SHORT).show();
+                }
+
+                if (mAdapter.getItem(position).equals("Subscription")) {
+                    //Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(getApplicationContext(), SubscribeActivity.class);
+                    //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
                 }
             }
         });
