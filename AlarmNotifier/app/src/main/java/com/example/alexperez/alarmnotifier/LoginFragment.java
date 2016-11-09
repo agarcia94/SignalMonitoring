@@ -29,6 +29,7 @@ import java.net.URL;
 public class LoginFragment extends Fragment {
     private boolean match = false;
     private JSONObject userProfile = new JSONObject();
+    String IP_ADDRESS = "192.168.1.8";
 
 
     public LoginFragment() {
@@ -128,7 +129,7 @@ public class LoginFragment extends Fragment {
 
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW,
                         //Uri.parse("http://192.168.43.253:8080/UserManagement/MongoService/register"));
-                        Uri.parse("http://10.85.46.184:8080/UserManagement/MongoService/register"));
+                        Uri.parse("http://" + IP_ADDRESS +":8080/UserManagement/MongoService/register"));
 
 
                 startActivity(browserIntent);
@@ -156,7 +157,8 @@ public class LoginFragment extends Fragment {
                 userProfile.put("password", password);
 
                 //URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/login");
-                URL url = new URL("http://10.85.46.184:8080/UserManagement/MongoService/login");
+                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/login");
+
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");

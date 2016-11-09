@@ -36,6 +36,7 @@ public class AnomalyFragment extends Fragment {
     private JSONObject alarmJSON;
 
     private ArrayList<String> data = new ArrayList<>();
+    final String IP_ADDRESS = "192.168.1.8";
 
     public AnomalyFragment() {
         // Required empty public constructor
@@ -133,8 +134,7 @@ public class AnomalyFragment extends Fragment {
 
             try{
 
-                //URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/alarms");
-                URL url = new URL("http://10.85.46.184:8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");

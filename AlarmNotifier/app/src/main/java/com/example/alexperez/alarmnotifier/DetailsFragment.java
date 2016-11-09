@@ -37,6 +37,7 @@ public class DetailsFragment extends Fragment {
     private JSONObject alarmACK = new JSONObject();
     private JSONArray reportMatches;
     private String userProfile = "";
+    final String IP_ADDRESS = "192.168.1.8";
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -204,8 +205,7 @@ public class DetailsFragment extends Fragment {
             String location = args[0];
 
             try{
-                //URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/report");
-                URL url = new URL("http://10.85.46.184:8080/UserManagement/MongoService/report");
+                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/report");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
@@ -270,8 +270,7 @@ public class DetailsFragment extends Fragment {
             String[] resultArray = null;
 
             try{
-                //URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/alarms");
-                URL url = new URL("http://10.85.46.184:8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -354,8 +353,7 @@ public class DetailsFragment extends Fragment {
             try{
                 alarmACK.put("alarm",alarm);
 
-                //URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/alarms");
-                URL url = new URL("http://10.85.46.184:8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/alarms");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
