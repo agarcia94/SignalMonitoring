@@ -75,7 +75,7 @@ public class Details extends AppCompatActivity {
                     startActivity(i);
                 }
                 else{
-                    Toast.makeText(Details.this, "Head To That Function", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Details.this, "Error On Calling", Toast.LENGTH_SHORT).show();
                 }
             }
         });
