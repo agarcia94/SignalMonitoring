@@ -20,12 +20,14 @@
 
         <TextView
             android:id="@+id/Date"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date/Time: " />
 
         <TextView
             android:id="@+id/name"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -33,6 +35,7 @@
 
         <TextView
             android:id="@+id/site"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -40,54 +43,55 @@
 
         <TextView
             android:id="@+id/antenna"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="10dp"
             android:text="Antenna " />
 
         <TextView
             android:id="@+id/satellite"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="10dp"
             android:text="Satellite: " />
 
         <TextView
             android:id="@+id/alarmFault"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="10dp"
             android:text="Alarm/Fault:" />
 
         <TextView
             android:id="@+id/equipAffec"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="10dp"
             android:text="Equipment Affected " />
 
         <TextView
             android:id="@+id/equipVendor"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="10dp"
             android:text="Equipment Vendor: " />
 
         <TextView
             android:id="@+id/severity"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="10dp"
             android:text="Severity: " />
 
         <TextView
             android:id="@+id/descriptionOfIA"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -95,6 +99,7 @@
 
         <EditText
             android:id="@+id/answerOfIA"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:inputType="textMultiLine"
@@ -110,6 +115,7 @@
 
         <TextView
             android:id="@+id/resolveIA"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -125,6 +131,7 @@
 
         <TextView
             android:id="@+id/resolution"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -155,6 +162,7 @@
 
         <TextView
             android:id="@+id/moratorium"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -171,6 +179,7 @@
 
         <TextView
             android:id="@+id/outage"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -187,6 +196,7 @@
 
         <TextView
             android:id="@+id/outageTime"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"

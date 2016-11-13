@@ -1,5 +1,7 @@
 package com.example.alexperez.alarmnotifier;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,14 +21,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 
@@ -35,20 +34,12 @@ public class DetailsFragment extends Fragment {
     private JSONObject alarmACK = new JSONObject();
     private JSONArray reportMatches;
     private String userProfile = "";
-    final String IP_ADDRESS = "192.168.43.253";
+    private String alarmID = "";
+    final String IP_ADDRESS = "10.85.45.132";
 
     public DetailsFragment() {
         // Required empty public constructor
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        FetchSurveyTask task = new FetchSurveyTask();
-//        task.execute();
-// }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,13 +49,14 @@ public class DetailsFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_details, container, false);
 
         final Intent intent = getActivity().getIntent();
-        String detailString = intent.getStringExtra("details");
+        final String detailString = intent.getStringExtra("details");
         String alarmJSON = intent.getStringExtra("alarm");
         Log.d("alarm", alarmJSON);
 
         try {
             JSONObject alarmObject = new JSONObject(alarmJSON);
 
+            alarmID = alarmObject.getJSONObject("_id").getString("$oid");
             int severity = alarmObject.getInt("severity");
             String parameter = alarmObject.getString("parameter");
 
@@ -119,15 +111,11 @@ public class DetailsFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), Survey.class);
 
-
-                //Send DB that it has been ACK
-                Boolean accepted = accept.isPressed();
-                System.out.println("accepted Boolean: " + accepted);
-
-                Boolean[] ack = {accepted};
+                System.out.println("AlarmID: " + alarmID);
+                String[] ackID = {alarmID};
 
                 SendACK data = new SendACK();
-                data.execute(ack);
+                data.execute(ackID);
 
                 //Start The Survey Page
                 intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
@@ -151,10 +139,29 @@ public class DetailsFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Anomaly.class);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                final Intent intent = new Intent(getActivity(), Anomaly.class);
+
                 userProfile = getActivity().getIntent().getStringExtra("profile");
-                intent.putExtra("profile",userProfile);
-                startActivity(intent);
+                intent.putExtra("profile", userProfile);
+
+                builder.setTitle(detailString);
+                builder.setIcon(R.drawable.exit).show();
+                builder.setMessage("Would you Like To Decline Responsibility? ");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        startActivity(intent);
+                    }
+                });
+                builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        //dialog.dismiss();
+                    }
+                });
+                builder.show();
             }
         });
 
@@ -183,7 +190,6 @@ public class DetailsFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                //Toast.makeText(getContext(), results.get(0), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -255,100 +261,18 @@ public class DetailsFragment extends Fragment {
         }
     }
 
-    class FetchSurveyTask extends AsyncTask<Void, Void, String[]> {
+    class SendACK extends AsyncTask<String, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected String[] doInBackground(Void...voids){
-            HttpURLConnection urlConnection = null;
-            BufferedReader reader = null;
-
-            String surveyJSONStr = null;
-            String[] resultArray = null;
-
-            try{
-                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/alarms");
-
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                // Read the input stream into a String
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                if (inputStream == null) {
-                    // Nothing to do.
-                    return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging a *lot* easier if you print out the completed
-                    // buffer for debugging.
-                    buffer.append(line + "\n");
-                }
-
-                if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
-                    return null;
-                }
-
-                surveyJSONStr = buffer.toString();
-                resultArray = getSurveyDataFromJson(surveyJSONStr);
-
-                if(results.isEmpty()){
-                    results.addAll(Arrays.asList(resultArray));
-                }
-                else{
-                    results.clear();
-                    results.addAll(Arrays.asList(resultArray));
-                }
-
-
-                Log.d("lengthResults", String.valueOf(results.size()));
-            }catch(IOException o){
-                o.printStackTrace();
-            }
-
-            return resultArray;
-
-        }
-
-        private String[] getSurveyDataFromJson(String surveyJsonStr){
-            String[] resultStr = new String[1];
-
-            try{
-                JSONObject jsonObject = new JSONObject(surveyJsonStr);
-                String resolution = jsonObject.getString("resolution");
-
-                for(int i=0; i < resultStr.length; i++){
-                    resultStr[i] = resolution;
-                }
-            }catch(Exception o){
-                o.printStackTrace();
-            }
-
-            return resultStr;
-        }
-    }
-
-    class SendACK extends AsyncTask<Boolean, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Boolean... args){
+        protected Void doInBackground(String... args){
             Log.d("enter", "entered function");
             HttpURLConnection client = null;
 
-            Boolean alarm = args[0];
+            String alarm = args[0];
 
             try{
                 alarmACK.put("alarm",alarm);
@@ -382,8 +306,6 @@ public class DetailsFragment extends Fragment {
                     alarmACK = new JSONObject(sb.toString());
                     System.out.println("" + sb.toString());
 
-//                    if(//sb.toString().contains("true"))
-//                        match = true;
                 } else {
                     Log.d("hello", client.getResponseMessage());
                     System.out.println("Server response: " + client.getResponseMessage());

@@ -36,7 +36,8 @@ public class AnomalyFragment extends Fragment {
     private JSONObject alarmJSON;
 
     private ArrayList<String> data = new ArrayList<>();
-    final String IP_ADDRESS = "192.168.43.253";
+    private ArrayList<String> ackData = new ArrayList<>();
+    final String IP_ADDRESS = "10.85.45.132";
 
     public AnomalyFragment() {
         // Required empty public constructor
@@ -82,7 +83,7 @@ public class AnomalyFragment extends Fragment {
 
 
 
-        adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, data);
+        adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, ackData);
         currentAdapter = new ArrayAdapter(getActivity(), R.layout.crow, R.id.textView, data);
 
         currentAlarms.setAdapter(currentAdapter);
@@ -187,6 +188,20 @@ public class AnomalyFragment extends Fragment {
 
             try{
                 String parameterItems = alarmJSON.getString("parameter");
+
+                String ackAlarms = alarmJSON.getString("requiresAcknowledgment");
+                if(ackAlarms.equalsIgnoreCase("false")){
+                    String[] parameterFields = parameterItems.split("-");
+
+                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                    for(int i = 0; i < anomalyNameArray.length; i++){
+                        System.out.println("anomaly name: " + anomalyNameArray[i]);
+                    }
+
+                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                    ackData.add(alarmInfo);
+                }
+
                 String[] parameterFields = parameterItems.split("-");
 
                 String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));

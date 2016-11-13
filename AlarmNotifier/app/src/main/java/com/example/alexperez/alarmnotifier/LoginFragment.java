@@ -29,7 +29,7 @@ import java.net.URL;
 public class LoginFragment extends Fragment {
     private boolean match = false;
     private JSONObject userProfile = new JSONObject();
-    String IP_ADDRESS = "192.168.43.253";
+    String IP_ADDRESS = "10.85.45.132";
 
 
     public LoginFragment() {
