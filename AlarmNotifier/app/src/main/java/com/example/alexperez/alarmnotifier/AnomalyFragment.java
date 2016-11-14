@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +39,8 @@ public class AnomalyFragment extends Fragment {
 
     private ArrayList<String> data = new ArrayList<>();
     private ArrayList<String> ackData = new ArrayList<>();
-    final String IP_ADDRESS = "10.85.45.132";
+    final String IP_ADDRESS = "10.85.46.225";
+    //final String IP_ADDRESS = "192.168.1.8";
 
     public AnomalyFragment() {
         // Required empty public constructor
@@ -68,6 +71,9 @@ public class AnomalyFragment extends Fragment {
             JSONObject userInfo = new JSONObject(profile);
             username = userInfo.getString("username");
             location = userInfo.getString("location");
+            if (location.length() > 0){
+                FirebaseMessaging.getInstance().subscribeToTopic(location);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -188,8 +194,20 @@ public class AnomalyFragment extends Fragment {
 
             try{
                 String parameterItems = alarmJSON.getString("parameter");
-
                 String ackAlarms = alarmJSON.getString("requiresAcknowledgment");
+
+                if(ackAlarms.equalsIgnoreCase("true")){
+                    String[] parameterFields = parameterItems.split("-");
+
+                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                    for(int i = 0; i < anomalyNameArray.length; i++){
+                        System.out.println("anomaly name: " + anomalyNameArray[i]);
+                    }
+
+                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                    data.add(alarmInfo);
+                }
+
                 if(ackAlarms.equalsIgnoreCase("false")){
                     String[] parameterFields = parameterItems.split("-");
 
@@ -201,16 +219,6 @@ public class AnomalyFragment extends Fragment {
                     String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
                     ackData.add(alarmInfo);
                 }
-
-                String[] parameterFields = parameterItems.split("-");
-
-                String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                for(int i = 0; i < anomalyNameArray.length; i++){
-                    System.out.println("anomaly name: " + anomalyNameArray[i]);
-                }
-
-                String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                data.add(alarmInfo);
             }catch(JSONException o){
                 o.printStackTrace();
             }

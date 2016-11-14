@@ -33,7 +33,8 @@ import java.util.regex.Pattern;
  */
 public class SurveyFragment extends Fragment {
     private String userProfile = "";
-    final String IP_ADDRESS = "10.85.45.132";
+    final String IP_ADDRESS = "10.85.46.225";
+    //final String IP_ADDRESS = "192.168.1.8";
 
     private String resolutionTime = "";
     private String resolutionType = "";
