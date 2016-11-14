@@ -3,6 +3,7 @@ package com.example.alexperez.alarmnotifier;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -15,10 +16,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.regex.Pattern;
 
 /**
@@ -27,6 +34,15 @@ import java.util.regex.Pattern;
 public class SurveyFragment extends Fragment {
     private String userProfile = "";
     final String IP_ADDRESS = "10.85.45.132";
+
+    private String resolutionTime = "";
+    private String resolutionType = "";
+
+    private String moratoriumCheck = "";
+    private String outageCheck = "";
+    private String outageDuration = "";
+
+    private JSONObject surveyProfile = new JSONObject();
 
     public SurveyFragment() {
     }
@@ -37,7 +53,7 @@ public class SurveyFragment extends Fragment {
 
         Log.d("surveyAlarm", getActivity().getIntent().getStringExtra("alarm"));
 
-        View rootView = inflater.inflate(R.layout.fragment_survey, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_survey, container, false);
 
         final Button submit = (Button)rootView.findViewById(R.id.submitSurvey);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +62,83 @@ public class SurveyFragment extends Fragment {
                 final Intent intent = new Intent(getActivity(), Anomaly.class);
                 userProfile = getActivity().getIntent().getStringExtra("profile");
                 intent.putExtra("profile", userProfile);
+
+                TextView date = (TextView)rootView.findViewById(R.id.Date);
+                String[] dateInfo = date.getText().toString().split(": ");
+                String timestamp = dateInfo[1].trim();
+//                String timestamp = dateInfo[1] + ":" + dateInfo[2] +
+//                                   ":" + dateInfo[3] + ":" + dateInfo[4];
+
+                Log.d("superTime",timestamp);
+
+                TextView name = (TextView)rootView.findViewById(R.id.name);
+                String[] usernameArray = name.getText().toString().split(": ");
+                String userName = usernameArray[1].trim();
+
+                TextView site = (TextView)rootView.findViewById(R.id.site);
+                String[] siteInfoArray = site.getText().toString().split(": ");
+                String siteInfo = siteInfoArray[1].trim();
+
+                TextView antenna = (TextView)rootView.findViewById(R.id.antenna);
+                String[] antennaInfoArray = antenna.getText().toString().split(": ");
+                String antennaInfo = antennaInfoArray[1].trim();
+
+                TextView alarm = (TextView)rootView.findViewById(R.id.alarmFault);
+                String[] alarmInfoArray = alarm.getText().toString().split(": ");
+                String alarmInfo = alarmInfoArray[1].trim();
+
+                TextView equipmentAffected = (TextView)rootView.findViewById(R.id.equipAffec);
+                String[] equipAffectArray = equipmentAffected.getText().toString().split(": ");
+                String affecEquip = equipAffectArray[1].trim();
+
+                TextView vendor = (TextView)rootView.findViewById(R.id.equipVendor);
+                String[] vendorInfoArray = vendor.getText().toString().split(": ");
+                String vendorInfo = vendorInfoArray[1].trim();
+
+                TextView severity = (TextView)rootView.findViewById(R.id.severity);
+                String[] severityInfoArray = severity.getText().toString().split(": ");
+                String severityInfo = severityInfoArray[1].trim();
+
+                String IAanswerInfo = "";
+
+                EditText answerOfIA = (EditText)rootView.findViewById(R.id.answerOfIA);
+                if(!answerOfIA.getText().toString().isEmpty())
+                    IAanswerInfo = answerOfIA.getText().toString();
+
+                //Log.d("arrayYeah",answerOfIA.getText().toString());
+
+                try{
+                    Log.d("newTime", timestamp);
+                    surveyProfile.put("dateOfAnomaly",timestamp);
+                    surveyProfile.put("username",userName);
+                    surveyProfile.put("site",siteInfo);
+                    surveyProfile.put("antenna",antennaInfo);
+                    surveyProfile.put("alarm",alarmInfo);
+                    surveyProfile.put("equipAffected",affecEquip);
+                    surveyProfile.put("vendor",vendorInfo);
+                    surveyProfile.put("severity",severityInfo);
+                    surveyProfile.put("issueDescription",IAanswerInfo);
+                    surveyProfile.put("resolveTime",resolutionTime);
+                    surveyProfile.put("resolution",resolutionType);
+                    surveyProfile.put("moratorium",moratoriumCheck);
+                    surveyProfile.put("outage",outageCheck);
+
+                    if(outageCheck.equals("No"))
+                        surveyProfile.put("outageDuration","");
+                    else
+                        surveyProfile.put("outageDuration",outageDuration);
+
+                    String[] surveyInfo = {surveyProfile.toString()};
+                    Log.d("surveyInfo", surveyProfile.toString());
+
+                    SendSurveyData sendSurvey = new SendSurveyData();
+                    sendSurvey.execute(surveyInfo);
+
+                }catch(JSONException o){
+                    o.printStackTrace();
+                }
+
+
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -58,6 +151,8 @@ public class SurveyFragment extends Fragment {
                     }
                 });
                 builder.show();
+
+
             }
         });
 
@@ -66,6 +161,15 @@ public class SurveyFragment extends Fragment {
 
             int severity = alarmObject.getInt("severity");
             String parameter = alarmObject.getString("parameter");
+
+            TextView name = (TextView)rootView.findViewById(R.id.name);
+            userProfile = getActivity().getIntent().getStringExtra("profile");
+
+            JSONObject userInfo = new JSONObject(userProfile);
+            String username = userInfo.getString("username");
+            name.setText(name.getText() + " " + username);
+
+            Log.d("surveyUserProfile", userProfile);
 
             String[] parameterFields = parameter.split("-");
 
@@ -110,7 +214,23 @@ public class SurveyFragment extends Fragment {
             e.printStackTrace();
         }
 
-        Spinner resolution = (Spinner)rootView.findViewById(R.id.spinner2);
+        Spinner resolveIA = (Spinner)rootView.findViewById(R.id.spinner1);
+        resolveIA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                resolutionTime = parent.getItemAtPosition(position).toString();
+//                Toast.makeText(parent.getContext(),
+//                        "OnItemSelectedListener : " + resolutionTime,
+//                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        final Spinner resolution = (Spinner)rootView.findViewById(R.id.spinner2);
         final EditText other = (EditText)rootView.findViewById(R.id.other);
         other.setVisibility(View.GONE);
 
@@ -122,9 +242,26 @@ public class SurveyFragment extends Fragment {
                     other.setVisibility(View.VISIBLE);
                 } else {
                     other.setVisibility(View.GONE);
+                    resolutionType = parent.getItemAtPosition(position).toString();
                 }
 //                Toast.makeText(parent.getContext(),
-//                        "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
+//                        "OnItemSelectedListener : " + resolutionType,
+//                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        Spinner moratorium = (Spinner)rootView.findViewById(R.id.spinner3);
+        moratorium.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                moratoriumCheck = parent.getItemAtPosition(position).toString();
+//                Toast.makeText(parent.getContext(),
+//                        "OnItemSelectedListener : " + moratoriumCheck,
 //                        Toast.LENGTH_SHORT).show();
             }
 
@@ -147,10 +284,31 @@ public class SurveyFragment extends Fragment {
                 if (parent.getItemAtPosition(position).toString().equalsIgnoreCase("yes")) {
                     outageIfYes.setVisibility(View.VISIBLE);
                     outage.setVisibility(View.VISIBLE);
+
                 } else {
                     outageIfYes.setVisibility(View.GONE);
                     outage.setVisibility(View.GONE);
                 }
+
+                outageCheck = parent.getItemAtPosition(position).toString();
+//                Toast.makeText(parent.getContext(),
+//                        "OnItemSelectedListener : " + outageCheck,
+//                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        outage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                outageDuration = parent.getItemAtPosition(position).toString();
+//                Toast.makeText(parent.getContext(),
+//                        "OnItemSelectedListener : " + outageDuration,
+//                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -163,4 +321,67 @@ public class SurveyFragment extends Fragment {
 
         return rootView;
     }
+
+    class SendSurveyData extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... args){
+            Log.d("enter", "entered function");
+            HttpURLConnection client = null;
+
+            String survey = args[0];
+
+            try{
+
+
+                //URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/login");
+                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/survey");
+
+                client = (HttpURLConnection) url.openConnection();
+                client.setRequestMethod("POST");
+                client.setRequestProperty("Content-Type", "application/json");
+                client.setRequestProperty("Accept", "application/json");
+                client.setDoOutput(true);
+
+                OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
+                Log.d("profile", survey);
+                wr.write(survey);
+                wr.flush();
+                wr.close();
+
+                Log.d("output", "output stream");
+
+                StringBuilder sb = new StringBuilder();
+                int HttpResult = client.getResponseCode();
+                if (HttpResult == HttpURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(
+                            new InputStreamReader(client.getInputStream()));
+                    String line = null;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+                    Log.d("goodbye", sb.toString());
+
+                    System.out.println("" + sb.toString());
+
+
+                } else {
+                    Log.d("hello", client.getResponseMessage());
+                    System.out.println("Server response: " + client.getResponseMessage());
+                }
+
+
+            }catch(Exception o) {
+                o.printStackTrace();
+            }finally {
+                if(client != null) // Make sure the connection is not null.
+                    client.disconnect();
+            }
+
+            return null;
+        }
+    }
+
+
 }
