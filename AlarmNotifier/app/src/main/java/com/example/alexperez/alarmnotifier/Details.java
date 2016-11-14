@@ -1,5 +1,7 @@
 package com.example.alexperez.alarmnotifier;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -57,28 +59,50 @@ public class Details extends AppCompatActivity {
                     i.putExtra("profile", userProfile);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
-                }
-                else if (mAdapter.getItem(position).equals("List Of Anomalies")) {
+                } else if (mAdapter.getItem(position).equals("List Of Anomalies")) {
                     Intent i = new Intent(getApplicationContext(), Anomaly.class);
                     userProfile = getIntent().getStringExtra("profile");
-                    i.putExtra("profile",userProfile);
+                    i.putExtra("profile", userProfile);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
-                }
-                else if (mAdapter.getItem(position).equals("Reports")) {
+                } else if (mAdapter.getItem(position).equals("Reports")) {
                     Toast.makeText(Details.this, "Head To That Function", Toast.LENGTH_SHORT).show();
-                }
-                else if (mAdapter.getItem(position).equals("Logout")) {
+                } else if (mAdapter.getItem(position).equals("Logout")) {
                     Toast.makeText(Details.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getApplicationContext(), Login.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
-                }
-                else{
+                } else {
                     Toast.makeText(Details.this, "Error On Calling", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        DetailsFragment DF = new DetailsFragment();
+
+        builder.setTitle("Name Of Alarm");
+        builder.setIcon(R.drawable.exit).show();
+        builder.setMessage("Would you Like To Decline Responsibility? ");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intent = new Intent(getApplicationContext(), Anomaly.class);
+                intent.putExtra("profile", getIntent().getStringExtra("profile"));
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+                //dialog.dismiss();
+            }
+        });
+        builder.show();
+
     }
 
 }

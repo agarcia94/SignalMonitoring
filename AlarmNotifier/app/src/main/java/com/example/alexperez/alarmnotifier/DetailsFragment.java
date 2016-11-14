@@ -35,7 +35,8 @@ public class DetailsFragment extends Fragment {
     private JSONArray reportMatches;
     private String userProfile = "";
     private String alarmID = "";
-    final String IP_ADDRESS = "10.85.45.132";
+    final String IP_ADDRESS = "10.85.46.225";
+    //final String IP_ADDRESS = "192.168.1.8";
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -47,6 +48,7 @@ public class DetailsFragment extends Fragment {
 
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_details, container, false);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         final Intent intent = getActivity().getIntent();
         final String detailString = intent.getStringExtra("details");
@@ -139,11 +141,6 @@ public class DetailsFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                final Intent intent = new Intent(getActivity(), Anomaly.class);
-
                 userProfile = getActivity().getIntent().getStringExtra("profile");
                 intent.putExtra("profile", userProfile);
 
@@ -152,12 +149,17 @@ public class DetailsFragment extends Fragment {
                 builder.setMessage("Would you Like To Decline Responsibility? ");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(getActivity(), Anomaly.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
                 });
                 builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
+                        Intent intent = new Intent(getActivity(), Anomaly.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        //dialog.cancel();
                         //dialog.dismiss();
                     }
                 });
@@ -277,7 +279,7 @@ public class DetailsFragment extends Fragment {
             try{
                 alarmACK.put("alarm",alarm);
 
-                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/ack");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
