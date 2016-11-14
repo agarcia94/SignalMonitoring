@@ -196,6 +196,21 @@ public class AnomalyFragment extends Fragment {
                 String parameterItems = alarmJSON.getString("parameter");
                 String ackAlarms = alarmJSON.getString("requiresAcknowledgment");
 
+
+
+                if(ackAlarms.equalsIgnoreCase("false")) {
+                    String[] parameterFields = parameterItems.split("-");
+
+                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                    for (int i = 0; i < anomalyNameArray.length; i++) {
+                        System.out.println("anomaly name: " + anomalyNameArray[i]);
+                    }
+
+                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                    ackData.add(alarmInfo);
+                }
+
+
                 if(ackAlarms.equalsIgnoreCase("true")){
                     String[] parameterFields = parameterItems.split("-");
 
@@ -206,18 +221,7 @@ public class AnomalyFragment extends Fragment {
 
                     String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
                     data.add(alarmInfo);
-                }
 
-                if(ackAlarms.equalsIgnoreCase("false")){
-                    String[] parameterFields = parameterItems.split("-");
-
-                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                    for(int i = 0; i < anomalyNameArray.length; i++){
-                        System.out.println("anomaly name: " + anomalyNameArray[i]);
-                    }
-
-                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                    ackData.add(alarmInfo);
                 }
             }catch(JSONException o){
                 o.printStackTrace();
