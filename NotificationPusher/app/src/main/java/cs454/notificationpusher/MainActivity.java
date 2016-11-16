@@ -80,11 +80,12 @@ public class MainActivity extends AppCompatActivity {
                 connection.setRequestProperty("Authorization", "key=AIzaSyAJ2_Gb3Vt_MfZDIaV-BBdwbxrlWOSAs_8");
                 OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
                 JSONObject jsonParent = new JSONObject();
-                jsonParent.put("to", "/topics/testTopic");
+                jsonParent.put("to", "/topics/location1");
                 JSONObject jsonNotification = new JSONObject();
                 jsonNotification.put("body", "<alarm details>");
                 jsonNotification.put("title", "<app name>");
                 jsonNotification.put("icon", "ic_logo");
+                jsonNotification.put("sound", "softbells");
                 jsonParent.put("notification", jsonNotification);
                 out.write(jsonParent.toString());
                 out.flush();

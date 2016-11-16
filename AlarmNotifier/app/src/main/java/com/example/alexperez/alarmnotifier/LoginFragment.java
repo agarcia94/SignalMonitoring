@@ -115,11 +115,11 @@ public class LoginFragment extends Fragment {
                         else{
                             Toast.makeText(rootView.getContext(), "No record found", Toast.LENGTH_SHORT).show();
                             //*****BYPASSING for debugging purposes*************/////
-                            /*match = false; //Set match to false to reset the match for the next user
+                            match = false; //Set match to false to reset the match for the next user
                             Toast.makeText(rootView.getContext(), "Login successful", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), Anomaly.class);
                             intent.putExtra("profile", userProfile.toString());
-                            startActivity(intent);*/
+                            startActivity(intent);
                         }
                     }
                 }, 1000);

@@ -20,10 +20,12 @@ public class SubscribeActivity extends AppCompatActivity {
     private Button btn_home = null;
     private String userProfile = "";
     private Context context = this.context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscribe);
+        userProfile = getIntent().getStringExtra("profile");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -38,7 +40,7 @@ public class SubscribeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent((Activity)context, Anomaly.class);
-                intent.putExtra("profile", userProfile.toString());
+                intent.putExtra("profile", userProfile);
                 startActivity(intent);
             }
         });

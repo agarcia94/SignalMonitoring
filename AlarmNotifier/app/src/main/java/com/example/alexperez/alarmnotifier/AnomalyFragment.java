@@ -71,6 +71,7 @@ public class AnomalyFragment extends Fragment {
             JSONObject userInfo = new JSONObject(profile);
             username = userInfo.getString("username");
             location = userInfo.getString("location");
+
             if (location.length() > 0){
                 FirebaseMessaging.getInstance().subscribeToTopic(location);
             }

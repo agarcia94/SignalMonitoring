@@ -79,9 +79,9 @@ public class Anomaly extends AppCompatActivity {
                 }
 
                 if (mAdapter.getItem(position).equals("Subscription")) {
-                    //Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getApplicationContext(), SubscribeActivity.class);
-                    //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    userProfile = getIntent().getStringExtra("profile");
+                    i.putExtra("profile", userProfile);
                     startActivity(i);
                 }
             }
