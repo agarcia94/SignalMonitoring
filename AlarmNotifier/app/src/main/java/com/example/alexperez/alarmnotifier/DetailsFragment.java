@@ -3,6 +3,7 @@ package com.example.alexperez.alarmnotifier;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,7 +36,7 @@ public class DetailsFragment extends Fragment {
     private JSONArray reportMatches;
     private String userProfile = "";
     private String alarmID = "";
-    final String IP_ADDRESS = "10.85.46.225";
+    final String IP_ADDRESS = "192.168.1.67";
     //final String IP_ADDRESS = "192.168.1.8";
 
     public DetailsFragment() {
@@ -105,7 +106,19 @@ public class DetailsFragment extends Fragment {
         TextView tv = (TextView)rootView.findViewById(R.id.detailsText);
         tv.setText(detailString);
 
-        Log.d("detailsProfile",getActivity().getIntent().getStringExtra("profile"));
+        Log.d("detailsProfile", getActivity().getIntent().getStringExtra("profile"));
+
+        try {
+            JSONObject alarmObject = new JSONObject(alarmJSON);
+            boolean requiresAcknowledgement = alarmObject.getBoolean("requiresAcknowledgment");
+            if(requiresAcknowledgement == false) {
+                Button accept = (Button)rootView.findViewById(R.id.accept);
+                accept.setEnabled(false);
+                accept.setBackgroundColor(Color.GRAY);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         final Button accept = (Button)rootView.findViewById(R.id.accept);
         accept.setOnClickListener(new View.OnClickListener() {
@@ -141,8 +154,7 @@ public class DetailsFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userProfile = getActivity().getIntent().getStringExtra("profile");
-                intent.putExtra("profile", userProfile);
+
 
                 builder.setTitle(detailString);
                 builder.setIcon(R.drawable.exit).show();
@@ -150,6 +162,8 @@ public class DetailsFragment extends Fragment {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(getActivity(), Anomaly.class);
+                        userProfile = getActivity().getIntent().getStringExtra("profile");
+                        intent.putExtra("profile", userProfile);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
@@ -274,10 +288,10 @@ public class DetailsFragment extends Fragment {
             Log.d("enter", "entered function");
             HttpURLConnection client = null;
 
-            String alarm = args[0];
+            String alarmID = args[0];
 
             try{
-                alarmACK.put("alarm",alarm);
+                alarmACK.put("alarm",alarmID);
 
                 URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/ack");
                 client = (HttpURLConnection) url.openConnection();

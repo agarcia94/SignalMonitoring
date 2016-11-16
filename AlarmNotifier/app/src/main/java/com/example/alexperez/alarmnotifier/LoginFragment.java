@@ -29,7 +29,7 @@ import java.net.URL;
 public class LoginFragment extends Fragment {
     private boolean match = false;
     private JSONObject userProfile = new JSONObject();
-    String IP_ADDRESS = "10.85.46.225";
+    String IP_ADDRESS = "192.168.1.67";
     //final String IP_ADDRESS = "192.168.1.8";
 
 
@@ -115,11 +115,11 @@ public class LoginFragment extends Fragment {
                         else{
                             Toast.makeText(rootView.getContext(), "No record found", Toast.LENGTH_SHORT).show();
                             //*****BYPASSING for debugging purposes*************/////
-                            match = false; //Set match to false to reset the match for the next user
-                            Toast.makeText(rootView.getContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getActivity(), Anomaly.class);
-                            intent.putExtra("profile", userProfile.toString());
-                            startActivity(intent);
+//                            match = false; //Set match to false to reset the match for the next user
+//                            Toast.makeText(rootView.getContext(), "Login successful", Toast.LENGTH_SHORT).show();
+//                            Intent intent = new Intent(getActivity(), Anomaly.class);
+//                            intent.putExtra("profile", userProfile.toString());
+//                            startActivity(intent);
                         }
                     }
                 }, 1000);

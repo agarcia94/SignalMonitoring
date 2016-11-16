@@ -33,11 +33,13 @@ import java.util.regex.Pattern;
  */
 public class SurveyFragment extends Fragment {
     private String userProfile = "";
-    final String IP_ADDRESS = "10.85.46.225";
+    final String IP_ADDRESS = "192.168.1.67";
     //final String IP_ADDRESS = "192.168.1.8";
 
     private String resolutionTime = "";
     private String resolutionType = "";
+
+    private boolean isOtherResolutionType = false;
 
     private String moratoriumCheck = "";
     private String outageCheck = "";
@@ -106,6 +108,16 @@ public class SurveyFragment extends Fragment {
                 if(!answerOfIA.getText().toString().isEmpty())
                     IAanswerInfo = answerOfIA.getText().toString();
 
+
+                if(isOtherResolutionType){
+                    EditText other = (EditText)rootView.findViewById(R.id.other);
+                    if(other.getText().toString().isEmpty())
+                        resolutionType = "";
+                    else
+                        resolutionType = other.getText().toString();
+                }
+
+
                 //Log.d("arrayYeah",answerOfIA.getText().toString());
 
                 try{
@@ -138,7 +150,6 @@ public class SurveyFragment extends Fragment {
                 }catch(JSONException o){
                     o.printStackTrace();
                 }
-
 
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -241,13 +252,17 @@ public class SurveyFragment extends Fragment {
 
                 if (parent.getItemAtPosition(position).toString().equalsIgnoreCase("other")) {
                     other.setVisibility(View.VISIBLE);
+                    isOtherResolutionType = true;
                 } else {
                     other.setVisibility(View.GONE);
                     resolutionType = parent.getItemAtPosition(position).toString();
+                    isOtherResolutionType = false;
                 }
-//                Toast.makeText(parent.getContext(),
-//                        "OnItemSelectedListener : " + resolutionType,
-//                        Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(parent.getContext(),
+                        "OnItemSelectedListener : " + resolutionType,
+                        Toast.LENGTH_SHORT).show();
+
             }
 
             @Override

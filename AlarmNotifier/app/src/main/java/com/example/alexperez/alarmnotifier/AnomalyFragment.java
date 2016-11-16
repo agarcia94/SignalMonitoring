@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,7 +40,7 @@ public class AnomalyFragment extends Fragment {
 
     private ArrayList<String> data = new ArrayList<>();
     private ArrayList<String> ackData = new ArrayList<>();
-    final String IP_ADDRESS = "10.85.46.225";
+    final String IP_ADDRESS = "192.168.1.67";
     //final String IP_ADDRESS = "192.168.1.8";
 
     public AnomalyFragment() {
@@ -64,11 +65,12 @@ public class AnomalyFragment extends Fragment {
         currentAlarms = (ListView)rootView.findViewById(R.id.cAlarmList);
         ackAlarms = (ListView)rootView.findViewById(R.id.ackAlarmsList);
 
-        String profile = getActivity().getIntent().getStringExtra("profile");
+        //String profile = getActivity().getIntent().getStringExtra("profile");
+        userProfile = getActivity().getIntent().getStringExtra("profile");
         String username = "";
         String location = "";
         try {
-            JSONObject userInfo = new JSONObject(profile);
+            JSONObject userInfo = new JSONObject(userProfile);
             username = userInfo.getString("username");
             location = userInfo.getString("location");
 
@@ -100,10 +102,37 @@ public class AnomalyFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), Details.class);
-                userProfile = getActivity().getIntent().getStringExtra("profile");
+                //userProfile = getActivity().getIntent().getStringExtra("profile");
                 intent.putExtra("details", currentAdapter.getItem(i));
                 intent.putExtra("profile", userProfile);
-                intent.putExtra("alarm", alarmJSON.toString());
+
+                try {
+                    String itemInAdapter = currentAdapter.getItem(i);
+                    JSONArray alarmArray = alarmJSON.getJSONArray("alarms");
+
+                    for(int j = 0; j < alarmArray.length(); j++){
+                        JSONObject currentAlarm = alarmArray.getJSONObject(j);
+                        String parameter = currentAlarm.getString("parameter");
+
+                        String[] itemFields = itemInAdapter.split(" ", 2);
+                        String anomalyName = itemFields[1];
+
+                        String[] antennaAbbreviationArray = itemFields[0].split("-");
+                        String antenna = antennaAbbreviationArray[0];
+                        String abbreviation = antennaAbbreviationArray[1];
+
+                        if(parameter.contains(anomalyName)
+                                && parameter.contains(antenna)
+                                && parameter.contains(abbreviation)){
+
+                            intent.putExtra("alarm", currentAlarm.toString());
+                            break;
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 startActivity(intent);
             }
@@ -114,9 +143,38 @@ public class AnomalyFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), Details.class);
-                userProfile = getActivity().getIntent().getStringExtra("profile");
+                //userProfile = getActivity().getIntent().getStringExtra("profile");
                 intent.putExtra("details", adapter.getItem(i));
                 intent.putExtra("profile", userProfile);
+
+                try {
+                    String itemInAdapter = adapter.getItem(i);
+                    JSONArray alarmArray = alarmJSON.getJSONArray("alarms");
+
+                    for(int j = 0; j < alarmArray.length(); j++){
+                        JSONObject currentAlarm = alarmArray.getJSONObject(j);
+                        String parameter = currentAlarm.getString("parameter");
+
+                        String[] itemFields = itemInAdapter.split(" ", 2);
+                        String anomalyName = itemFields[1];
+
+                        String[] antennaAbbreviationArray = itemFields[0].split("-");
+                        String antenna = antennaAbbreviationArray[0];
+                        String abbreviation = antennaAbbreviationArray[1];
+
+                        if(parameter.contains(anomalyName)
+                                && parameter.contains(antenna)
+                                && parameter.contains(abbreviation)){
+
+                            intent.putExtra("alarm", currentAlarm.toString());
+                            break;
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 startActivity(intent);
             }
         });
@@ -194,36 +252,73 @@ public class AnomalyFragment extends Fragment {
             super.onPostExecute(voidItem);
 
             try{
-                String parameterItems = alarmJSON.getString("parameter");
-                String ackAlarms = alarmJSON.getString("requiresAcknowledgment");
+//                String parameterItems = alarmJSON.getString("parameter");
+//                String ackAlarms = alarmJSON.getString("requiresAcknowledgment");
+                JSONArray alarmArray = alarmJSON.getJSONArray("alarms");
 
+                for(int i = 0; i < alarmArray.length(); i++){
+                    JSONObject alarm = alarmArray.getJSONObject(i);
+                    String parameterItems = alarm.getString("parameter");
+                    Boolean ackAlarms = alarm.getBoolean("requiresAcknowledgment");
 
+                    if(ackAlarms == false) {
+                        String[] parameterFields = parameterItems.split("-");
 
-                if(ackAlarms.equalsIgnoreCase("false")) {
-                    String[] parameterFields = parameterItems.split("-");
+                        String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                        for (int j = 0; j < anomalyNameArray.length; j++) {
+                            System.out.println("anomaly name: " + anomalyNameArray[j]);
+                        }
 
-                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                    for (int i = 0; i < anomalyNameArray.length; i++) {
-                        System.out.println("anomaly name: " + anomalyNameArray[i]);
+                        String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                        ackData.add(alarmInfo);
                     }
 
-                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                    ackData.add(alarmInfo);
-                }
 
+                    if(ackAlarms == true){
+                        JSONObject userInfo = new JSONObject(userProfile);
+                        String location = userInfo.getString("location");
 
-                if(ackAlarms.equalsIgnoreCase("true")){
-                    String[] parameterFields = parameterItems.split("-");
+                        if(parameterItems.contains(location)){
+                            String[] parameterFields = parameterItems.split("-");
 
-                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                    for(int i = 0; i < anomalyNameArray.length; i++){
-                        System.out.println("anomaly name: " + anomalyNameArray[i]);
+                            String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                            for(int j = 0; j < anomalyNameArray.length; j++){
+                                System.out.println("anomaly name: " + anomalyNameArray[j]);
+                            }
+
+                            String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                            data.add(alarmInfo);
+                        }
                     }
-
-                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                    data.add(alarmInfo);
-
                 }
+
+//                if(ackAlarms.equalsIgnoreCase("false")) {
+//                    String[] parameterFields = parameterItems.split("-");
+//
+//                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+//                    for (int j = 0; j < anomalyNameArray.length; j++) {
+//                        System.out.println("anomaly name: " + anomalyNameArray[j]);
+//                    }
+//
+//                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+//                    ackData.add(alarmInfo);
+//                }
+//
+//
+//                if(ackAlarms.equalsIgnoreCase("true")){
+//                    String[] parameterFields = parameterItems.split("-");
+//
+//                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+//                    for(int j = 0; j < anomalyNameArray.length; j++){
+//                        System.out.println("anomaly name: " + anomalyNameArray[j]);
+//                    }
+//
+//                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+//                    data.add(alarmInfo);
+//
+//                }
+
+
             }catch(JSONException o){
                 o.printStackTrace();
             }
