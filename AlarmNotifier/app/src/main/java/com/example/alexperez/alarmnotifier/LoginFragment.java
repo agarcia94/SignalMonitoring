@@ -29,7 +29,8 @@ import java.net.URL;
 public class LoginFragment extends Fragment {
     private boolean match = false;
     private JSONObject userProfile = new JSONObject();
-    String IP_ADDRESS = "192.168.1.67";
+    //final String IP_ADDRESS = "192.168.1.67";
+    final String IP_ADDRESS = "10.85.41.232";
     //final String IP_ADDRESS = "192.168.1.8";
 
 

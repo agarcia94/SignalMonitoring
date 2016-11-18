@@ -61,7 +61,7 @@ public class Anomaly extends AppCompatActivity {
     }
 
     private void addDrawerItems() {
-        String[] array = { "Logout" , "Subscription" };
+        String[] array = { "Reports","Logout" , "Subscription" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
 
@@ -74,15 +74,20 @@ public class Anomaly extends AppCompatActivity {
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }
-                else{
-                    Toast.makeText(Anomaly.this, "Head To That Function", Toast.LENGTH_SHORT).show();
-                }
-
-                if (mAdapter.getItem(position).equals("Subscription")) {
+                else if (mAdapter.getItem(position).equals("Subscription")) {
                     Intent i = new Intent(getApplicationContext(), SubscribeActivity.class);
                     userProfile = getIntent().getStringExtra("profile");
                     i.putExtra("profile", userProfile);
                     startActivity(i);
+                }
+                else if (mAdapter.getItem(position).equals("Reports")) {
+                    Intent i = new Intent(getApplicationContext(), Reports.class);
+                    userProfile = getIntent().getStringExtra("profile");
+                    i.putExtra("profile", userProfile);
+                    startActivity(i);
+                }
+                else{
+                    Toast.makeText(Anomaly.this, "Head To That Function", Toast.LENGTH_SHORT).show();
                 }
             }
         });

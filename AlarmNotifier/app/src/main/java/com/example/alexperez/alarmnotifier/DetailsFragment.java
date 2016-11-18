@@ -36,7 +36,8 @@ public class DetailsFragment extends Fragment {
     private JSONArray reportMatches;
     private String userProfile = "";
     private String alarmID = "";
-    final String IP_ADDRESS = "192.168.1.67";
+    final String IP_ADDRESS = "10.85.41.232";
+    //final String IP_ADDRESS = "192.168.1.67";
     //final String IP_ADDRESS = "192.168.1.8";
 
     public DetailsFragment() {
@@ -185,27 +186,31 @@ public class DetailsFragment extends Fragment {
         report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Reports.class);
                 userProfile = getActivity().getIntent().getStringExtra("profile");
-                try {
-                    JSONObject profile = new JSONObject(userProfile);
-                    String location = profile.getString("location");
-
-                    String[] locationInfo = {location};
-
-                    SendLocationData data = new SendLocationData();
-                    data.execute(locationInfo);
-
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(rootView.getContext(), String.valueOf(reportMatches.length()), Toast.LENGTH_SHORT).show();
-                        }
-                    }, 1000);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                intent.putExtra("profile", userProfile);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+//                try {
+//                    JSONObject profile = new JSONObject(userProfile);
+//                    String location = profile.getString("location");
+//
+//                    String[] locationInfo = {location};
+//
+//                    SendLocationData data = new SendLocationData();
+//                    data.execute(locationInfo);
+//
+//                    Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Toast.makeText(rootView.getContext(), String.valueOf(reportMatches.length()), Toast.LENGTH_SHORT).show();
+//                        }
+//                    }, 1000);
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
 

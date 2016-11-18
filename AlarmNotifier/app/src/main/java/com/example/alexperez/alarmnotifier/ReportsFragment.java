@@ -1,15 +1,19 @@
 package com.example.alexperez.alarmnotifier;
 
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class ReportsFragment extends Fragment {
+    private String userProfile = "";
+    final String IP_ADDRESS = "10.85.41.232";
 
     public ReportsFragment() {
     }
@@ -17,6 +21,30 @@ public class ReportsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_reports, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_reports, container, false);
+
+        ImageButton home = (ImageButton)rootView.findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Anomaly.class);
+                userProfile = getActivity().getIntent().getStringExtra("profile");
+                intent.putExtra("profile", userProfile);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton back = (ImageButton)rootView.findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Anomaly.class);
+                userProfile = getActivity().getIntent().getStringExtra("profile");
+                intent.putExtra("profile", userProfile);
+                startActivity(intent);
+            }
+        });
+
+        return rootView;
     }
 }

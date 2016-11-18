@@ -46,7 +46,7 @@ public class Details extends AppCompatActivity {
     }
 
     private void addDrawerItems() {
-        String[] array = { "Home","List Of Anomalies","Reports","Logout" };
+        String[] array = { "Home","Reports","Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
 
@@ -54,19 +54,17 @@ public class Details extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (mAdapter.getItem(position).equals("Home")) {
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    userProfile = getIntent().getStringExtra("profile");
-                    i.putExtra("profile", userProfile);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
-                } else if (mAdapter.getItem(position).equals("List Of Anomalies")) {
                     Intent i = new Intent(getApplicationContext(), Anomaly.class);
                     userProfile = getIntent().getStringExtra("profile");
                     i.putExtra("profile", userProfile);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 } else if (mAdapter.getItem(position).equals("Reports")) {
-                    Toast.makeText(Details.this, "Head To That Function", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(getApplicationContext(), Reports.class);
+                    userProfile = getIntent().getStringExtra("profile");
+                    i.putExtra("profile", userProfile);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
                 } else if (mAdapter.getItem(position).equals("Logout")) {
                     Toast.makeText(Details.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getApplicationContext(), Login.class);
