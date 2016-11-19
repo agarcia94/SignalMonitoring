@@ -21,8 +21,8 @@ public class Splash extends Activity {
         final MediaPlayer intro = MediaPlayer.create(this,R.raw.attis);
 
         final ImageView iv = (ImageView) findViewById(R.id.imageView);
-        final Animation an = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);
-        final Animation an2 = AnimationUtils.loadAnimation(getBaseContext(),R.anim.abc_fade_out);
+        final Animation an = AnimationUtils.loadAnimation(getBaseContext(), R.anim.hyperspace_jump);
+        final Animation an2 = AnimationUtils.loadAnimation(getBaseContext(),R.anim.disappear);
 
         iv.startAnimation(an);
         an.setAnimationListener(new Animation.AnimationListener() {
