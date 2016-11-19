@@ -39,7 +39,7 @@ public class SubscribeActivity extends AppCompatActivity {
         btn_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent((Activity)context, Anomaly.class);
+                Intent intent = new Intent(getApplicationContext(), Anomaly.class);
                 intent.putExtra("profile", userProfile);
                 startActivity(intent);
             }
@@ -48,9 +48,9 @@ public class SubscribeActivity extends AppCompatActivity {
         sw_testTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(sw_testTopic.isChecked()){
+                if (sw_testTopic.isChecked()) {
                     fcm.unsubscribeFromTopic("testTopic");
-                }else{
+                } else {
                     fcm.subscribeToTopic("testTopic");
                 }
             }
@@ -59,9 +59,9 @@ public class SubscribeActivity extends AppCompatActivity {
         sw_location1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(sw_location1.isChecked()){
+                if (sw_location1.isChecked()) {
                     fcm.unsubscribeFromTopic("location1");
-                }else{
+                } else {
                     fcm.subscribeToTopic("location1");
                 }
             }
@@ -70,9 +70,9 @@ public class SubscribeActivity extends AppCompatActivity {
         sw_location2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(sw_location2.isChecked()){
+                if (sw_location2.isChecked()) {
                     fcm.unsubscribeFromTopic("location2");
-                }else{
+                } else {
                     fcm.subscribeToTopic("location2");
                 }
             }
