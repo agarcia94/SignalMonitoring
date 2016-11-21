@@ -12,8 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,13 +36,17 @@ import java.util.regex.Pattern;
 
 public class DetailsFragment extends Fragment {
     private ArrayList<String> results = new ArrayList<String>();
+    private ListView pastAnomListView;
+    private ArrayAdapter<String> simPastAnomaliesAdap;
     private JSONObject alarmACK = new JSONObject();
     private JSONArray reportMatches;
     private String userProfile = "";
     private String alarmID = "";
-    final String IP_ADDRESS = "10.85.41.232";
+
+    //IP ADDRESS
+    //final String IP_ADDRESS = "10.85.41.232";
     //final String IP_ADDRESS = "192.168.1.67";
-    //final String IP_ADDRESS = "192.168.1.8";
+    final String IP_ADDRESS = "192.168.1.8";
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -51,6 +59,24 @@ public class DetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_details, container, false);
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        //TEST PURPOSE FOR LISTVIEW ON DETAILS
+        pastAnomListView = (ListView)rootView.findViewById(R.id.pastAnomListView);
+        results.add(0,"Hello");
+        results.add(1,"World");
+        simPastAnomaliesAdap = new ArrayAdapter(getActivity(), R.layout.past_anomalies_custom, R.id.textView, results);
+        pastAnomListView.setAdapter(simPastAnomaliesAdap);
+
+        pastAnomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), Reports.class);
+                userProfile = getActivity().getIntent().getStringExtra("profile");
+                intent.putExtra("profile", userProfile);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
 
         final Intent intent = getActivity().getIntent();
         final String detailString = intent.getStringExtra("details");
@@ -112,7 +138,7 @@ public class DetailsFragment extends Fragment {
         try {
             JSONObject alarmObject = new JSONObject(alarmJSON);
             boolean requiresAcknowledgement = alarmObject.getBoolean("requiresAcknowledgment");
-            if(requiresAcknowledgement == false) {
+            if(!requiresAcknowledgement) {
                 Button accept = (Button)rootView.findViewById(R.id.accept);
                 accept.setEnabled(false);
                 accept.setBackgroundColor(Color.GRAY);
@@ -191,26 +217,6 @@ public class DetailsFragment extends Fragment {
                 intent.putExtra("profile", userProfile);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-//                try {
-//                    JSONObject profile = new JSONObject(userProfile);
-//                    String location = profile.getString("location");
-//
-//                    String[] locationInfo = {location};
-//
-//                    SendLocationData data = new SendLocationData();
-//                    data.execute(locationInfo);
-//
-//                    Handler handler = new Handler();
-//                    handler.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(rootView.getContext(), String.valueOf(reportMatches.length()), Toast.LENGTH_SHORT).show();
-//                        }
-//                    }, 1000);
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
             }
         });
 

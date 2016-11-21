@@ -57,7 +57,7 @@ public class Reports extends AppCompatActivity {
                 "Select an item...",
                 "Year",
                 "Vendor",
-                "Device ID",
+                "Base Location",
         };
 
         final List<String> typeList = new ArrayList<>(Arrays.asList(type));
@@ -83,16 +83,18 @@ public class Reports extends AppCompatActivity {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView tv = (TextView) view;
                 if(position == 0){
-                    // Set the hint text color gray
+                    // Set the hint text color gray, The first item is the placeholder
                     tv.setTextColor(Color.GRAY);
                 }
                 else {
+                    //Differentiate the two
                     tv.setTextColor(Color.BLACK);
                 }
                 return view;
             }
         };
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+        assert spinner != null; //Base Case?? Provided by Android
         spinner.setAdapter(spinnerArrayAdapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -118,7 +120,7 @@ public class Reports extends AppCompatActivity {
     }
 
     private void addDrawerItems() {
-        String[] array = { "Home","Reports","Details","Logout" };
+        String[] array = { "Home","Reports","Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
 
@@ -137,13 +139,7 @@ public class Reports extends AppCompatActivity {
                     i.putExtra("profile", userProfile);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
-                } else if (mAdapter.getItem(position).equals("Details")) {
-                    Intent i = new Intent(getApplicationContext(), Details.class);
-                    userProfile = getIntent().getStringExtra("profile");
-                    i.putExtra("profile", userProfile);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
-                }  else if (mAdapter.getItem(position).equals("Logout")) {
+                } else if (mAdapter.getItem(position).equals("Logout")) {
                     Toast.makeText(Reports.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getApplicationContext(), Login.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
