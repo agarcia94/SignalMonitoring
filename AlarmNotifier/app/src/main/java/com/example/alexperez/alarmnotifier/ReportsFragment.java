@@ -13,7 +13,7 @@ import android.widget.ImageButton;
  */
 public class ReportsFragment extends Fragment {
     private String userProfile = "";
-    final String IP_ADDRESS = "10.85.41.232";
+    final String IP_ADDRESS = "192.168.1.67";
 
     public ReportsFragment() {
     }

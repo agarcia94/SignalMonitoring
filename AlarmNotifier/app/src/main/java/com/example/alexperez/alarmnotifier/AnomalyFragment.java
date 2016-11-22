@@ -40,9 +40,11 @@ public class AnomalyFragment extends Fragment {
 
     private ArrayList<String> data = new ArrayList<>();
     private ArrayList<String> ackData = new ArrayList<>();
+
     //final String IP_ADDRESS = "10.85.41.232";
-    //final String IP_ADDRESS = "192.168.1.67";
-    final String IP_ADDRESS = "192.168.1.8";
+    final String IP_ADDRESS = "192.168.1.67";
+    //final String IP_ADDRESS = "192.168.1.8";
+
 
     public AnomalyFragment() {
         // Required empty public constructor
@@ -262,16 +264,22 @@ public class AnomalyFragment extends Fragment {
                     String parameterItems = alarm.getString("parameter");
                     Boolean ackAlarms = alarm.getBoolean("requiresAcknowledgment");
 
-                    if(!ackAlarms) {
-                        String[] parameterFields = parameterItems.split("-");
 
-                        String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                        for (int j = 0; j < anomalyNameArray.length; j++) {
-                            System.out.println("anomaly name: " + anomalyNameArray[j]);
+                    if(ackAlarms == false) {
+                        JSONObject userInfo = new JSONObject(userProfile);
+                        String location = userInfo.getString("location");
+
+                        if(parameterItems.contains(location)){
+                            String[] parameterFields = parameterItems.split("-");
+
+                            String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                            for(int j = 0; j < anomalyNameArray.length; j++){
+                                System.out.println("anomaly name: " + anomalyNameArray[j]);
+                            }
+
+                            String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                            ackData.add(alarmInfo);
                         }
-
-                        String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                        data.add(alarmInfo);
                     }
 
 

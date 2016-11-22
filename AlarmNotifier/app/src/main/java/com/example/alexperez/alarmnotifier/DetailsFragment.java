@@ -43,10 +43,12 @@ public class DetailsFragment extends Fragment {
     private String userProfile = "";
     private String alarmID = "";
 
+
     //IP ADDRESS
     //final String IP_ADDRESS = "10.85.41.232";
-    //final String IP_ADDRESS = "192.168.1.67";
-    final String IP_ADDRESS = "192.168.1.8";
+    final String IP_ADDRESS = "192.168.1.67";
+    //final String IP_ADDRESS = "192.168.1.8";
+
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -61,22 +63,22 @@ public class DetailsFragment extends Fragment {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         //TEST PURPOSE FOR LISTVIEW ON DETAILS
-        pastAnomListView = (ListView)rootView.findViewById(R.id.pastAnomListView);
-        results.add(0,"Hello");
-        results.add(1,"World");
-        simPastAnomaliesAdap = new ArrayAdapter(getActivity(), R.layout.past_anomalies_custom, R.id.textView, results);
-        pastAnomListView.setAdapter(simPastAnomaliesAdap);
-
-        pastAnomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getActivity(), Reports.class);
-                userProfile = getActivity().getIntent().getStringExtra("profile");
-                intent.putExtra("profile", userProfile);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
+//        pastAnomListView = (ListView)rootView.findViewById(R.id.pastAnomListView);
+//        results.add(0,"Hello");
+//        results.add(1,"World");
+//        simPastAnomaliesAdap = new ArrayAdapter(getActivity(), R.layout.past_anomalies_custom, R.id.textView, results);
+//        pastAnomListView.setAdapter(simPastAnomaliesAdap);
+//
+//        pastAnomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Intent intent = new Intent(getActivity(), Reports.class);
+//                userProfile = getActivity().getIntent().getStringExtra("profile");
+//                intent.putExtra("profile", userProfile);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//            }
+//        });
 
         final Intent intent = getActivity().getIntent();
         final String detailString = intent.getStringExtra("details");
