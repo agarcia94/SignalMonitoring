@@ -199,8 +199,11 @@ public class DetailsFragment extends Fragment {
                 });
                 builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(getActivity(), Anomaly.class);
+                        Intent intent = new Intent(getActivity(), Details.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("alarm", getActivity().getIntent().getStringExtra("alarm"));
+                        intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
+                        intent.putExtra("details", getActivity().getIntent().getStringExtra("details"));
                         startActivity(intent);
                         //dialog.cancel();
                         //dialog.dismiss();

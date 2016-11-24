@@ -283,7 +283,7 @@ public class AnomalyFragment extends Fragment {
                     }
 
 
-                    if(ackAlarms){
+                    if(ackAlarms == true){
                         JSONObject userInfo = new JSONObject(userProfile);
                         String location = userInfo.getString("location");
 
@@ -296,7 +296,7 @@ public class AnomalyFragment extends Fragment {
                             }
 
                             String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                            ackData.add(alarmInfo);
+                            data.add(alarmInfo);
                         }
                     }
                 }

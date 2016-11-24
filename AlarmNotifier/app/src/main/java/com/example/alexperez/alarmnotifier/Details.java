@@ -93,8 +93,14 @@ public class Details extends AppCompatActivity {
         });
         builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-                //dialog.dismiss();
+                Intent intent = new Intent(getApplicationContext(), Details.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("alarm", getIntent().getStringExtra("alarm"));
+                intent.putExtra("profile",getIntent().getStringExtra("profile"));
+                intent.putExtra("details", getIntent().getStringExtra("details"));
+                startActivity(intent);
+//                dialog.cancel();
+//                dialog.dismiss();
             }
         });
         builder.show();
