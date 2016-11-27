@@ -93,7 +93,7 @@ public class Anomaly extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Logging Out");
-        builder.setIcon(R.drawable.exit).show();
+        builder.setIcon(R.drawable.logout).show();
         builder.setMessage("Are You Sure You Want To Logout? ");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
