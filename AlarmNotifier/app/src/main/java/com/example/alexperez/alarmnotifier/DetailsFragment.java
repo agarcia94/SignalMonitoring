@@ -46,8 +46,8 @@ public class DetailsFragment extends Fragment {
 
     //IP ADDRESS
     //final String IP_ADDRESS = "10.85.41.232";
-    final String IP_ADDRESS = "192.168.1.67";
-    //final String IP_ADDRESS = "192.168.1.8";
+    //final String IP_ADDRESS = "192.168.1.67";
+    final String IP_ADDRESS = "192.168.1.8";
 
 
     public DetailsFragment() {
@@ -68,17 +68,6 @@ public class DetailsFragment extends Fragment {
 //        results.add(1,"World");
 //        simPastAnomaliesAdap = new ArrayAdapter(getActivity(), R.layout.past_anomalies_custom, R.id.textView, results);
 //        pastAnomListView.setAdapter(simPastAnomaliesAdap);
-//
-//        pastAnomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Intent intent = new Intent(getActivity(), Reports.class);
-//                userProfile = getActivity().getIntent().getStringExtra("profile");
-//                intent.putExtra("profile", userProfile);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//            }
-//        });
 
         final Intent intent = getActivity().getIntent();
         final String detailString = intent.getStringExtra("details");
@@ -184,7 +173,6 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-
                 builder.setTitle(detailString);
                 builder.setIcon(R.drawable.exit).show();
                 builder.setMessage("Would you Like To Decline Responsibility? ");
@@ -200,13 +188,13 @@ public class DetailsFragment extends Fragment {
                 builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(getActivity(), Details.class);
+                        userProfile = getActivity().getIntent().getStringExtra("profile");
+                        intent.putExtra("profile", userProfile);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("alarm", getActivity().getIntent().getStringExtra("alarm"));
-                        intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
+                        //intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
                         intent.putExtra("details", getActivity().getIntent().getStringExtra("details"));
                         startActivity(intent);
-                        //dialog.cancel();
-                        //dialog.dismiss();
                     }
                 });
                 builder.show();
