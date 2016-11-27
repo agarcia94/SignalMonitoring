@@ -24,10 +24,9 @@ import android.widget.Toast;
 
 public class Anomaly extends AppCompatActivity {
     private ListView mDrawerList;
-    private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
-    private String mActivityTitle;
+
     private String userProfile = "";
 
     @Override
@@ -35,14 +34,11 @@ public class Anomaly extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anomaly);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        mDrawerList = (ListView)findViewById(R.id.navList);
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        mActivityTitle = getTitle().toString();
-
-        setSupportActionBar(toolbar);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        userProfile = getIntent().getStringExtra("profile");
+
+        mDrawerList = (ListView)findViewById(R.id.navList);
 
         addDrawerItems();
     }

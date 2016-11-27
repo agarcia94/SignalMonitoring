@@ -42,6 +42,7 @@ public class DetailsFragment extends Fragment {
     private JSONArray reportMatches;
     private String userProfile = "";
     private String alarmID = "";
+    private boolean ackAlarmList = false;
 
 
     //IP ADDRESS
@@ -133,6 +134,7 @@ public class DetailsFragment extends Fragment {
                 Button accept = (Button)rootView.findViewById(R.id.accept);
                 accept.setEnabled(false);
                 accept.setBackgroundColor(Color.GRAY);
+                ackAlarmList = true;
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -142,18 +144,40 @@ public class DetailsFragment extends Fragment {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Survey.class);
+                //If Alarm does not exist within Acknowledged List
+                //Then it has not yet been accepted, redirect user to Survey
+                if(!ackAlarmList){
+                    Intent intent = new Intent(getActivity(), Survey.class);
 
-                System.out.println("AlarmID: " + alarmID);
-                String[] ackID = {alarmID};
+                    System.out.println("AlarmID: " + alarmID);
+                    String[] ackID = {alarmID};
 
-                SendACK data = new SendACK();
-                data.execute(ackID);
+                    SendACK data = new SendACK();
+                    data.execute(ackID);
 
-                //Start The Survey Page
-                intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
-                intent.putExtra("alarm",getActivity().getIntent().getStringExtra("alarm"));
-                startActivity(intent);
+                    //Start The Survey Page
+                    intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
+                    intent.putExtra("alarm",getActivity().getIntent().getStringExtra("alarm"));
+                    startActivity(intent);
+                }
+                //If It exists in Acknowledged alram list, than tell user
+                //it has been accepted and redirect him to same page
+                else{
+                    builder.setTitle(detailString);
+                    builder.setIcon(R.drawable.exit).show();
+                    builder.setMessage("Alarm Has Been Acknowledged");
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(getActivity(), Details.class);
+                            userProfile = getActivity().getIntent().getStringExtra("profile");
+                            intent.putExtra("profile", userProfile);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.putExtra("alarm", getActivity().getIntent().getStringExtra("alarm"));
+                            intent.putExtra("details", getActivity().getIntent().getStringExtra("details"));
+                            startActivity(intent);
+                        }
+                    });
+                }
             }
         });
 
@@ -172,32 +196,44 @@ public class DetailsFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                builder.setTitle(detailString);
-                builder.setIcon(R.drawable.exit).show();
-                builder.setMessage("Would you Like To Decline Responsibility? ");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(getActivity(), Anomaly.class);
-                        userProfile = getActivity().getIntent().getStringExtra("profile");
-                        intent.putExtra("profile", userProfile);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }
-                });
-                builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(getActivity(), Details.class);
-                        userProfile = getActivity().getIntent().getStringExtra("profile");
-                        intent.putExtra("profile", userProfile);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra("alarm", getActivity().getIntent().getStringExtra("alarm"));
-                        //intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
-                        intent.putExtra("details", getActivity().getIntent().getStringExtra("details"));
-                        startActivity(intent);
-                    }
-                });
-                builder.show();
+                //if AckAlarmList is False, it means we are in Current Alarms Listview
+                //Meaning we need to use pops up to see if user wasnts to decline
+                if(!ackAlarmList){
+                    builder.setTitle(detailString);
+                    builder.setIcon(R.drawable.exit).show();
+                    builder.setMessage("Would you Like To Decline Responsibility? ");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(getActivity(), Anomaly.class);
+                            userProfile = getActivity().getIntent().getStringExtra("profile");
+                            intent.putExtra("profile", userProfile);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+                    });
+                    builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(getActivity(), Details.class);
+                            userProfile = getActivity().getIntent().getStringExtra("profile");
+                            intent.putExtra("profile", userProfile);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.putExtra("alarm", getActivity().getIntent().getStringExtra("alarm"));
+                            //intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
+                            intent.putExtra("details", getActivity().getIntent().getStringExtra("details"));
+                            startActivity(intent);
+                        }
+                    });
+                    builder.show();
+                }
+                //We are in AckAlarms, were the user is just viewing the alarms that has been Ack
+                //Popup is not needed in this case
+                else{
+                    Intent intent = new Intent(getActivity(), Anomaly.class);
+                    userProfile = getActivity().getIntent().getStringExtra("profile");
+                    intent.putExtra("profile", userProfile);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
             }
         });
 

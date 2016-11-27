@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 
 public class Survey extends AppCompatActivity {
+    private String userProfile = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +42,13 @@ public class Survey extends AppCompatActivity {
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Intent i = new Intent(getApplicationContext(), Details.class);
-                i.putExtra("profile", getIntent().getStringExtra("profile"));
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
+                Intent intent = new Intent(getApplicationContext(), Details.class);
+                userProfile = getIntent().getStringExtra("profile");
+                intent.putExtra("profile", userProfile);
+                intent.putExtra("alarm", getIntent().getStringExtra("alarm"));
+                intent.putExtra("details", getIntent().getStringExtra("details"));
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
         builder.show();
