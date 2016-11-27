@@ -79,6 +79,10 @@
         <activity
             android:name=".SubscribeActivity"
             android:label="@string/title_activity_subscribe"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ReportsPastData"
+            android:label="@string/title_activity_reports_past_data"
             android:theme="@style/AppTheme"></activity>
     </application>
 

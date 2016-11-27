@@ -42,8 +42,8 @@ public class AnomalyFragment extends Fragment {
     private ArrayList<String> ackData = new ArrayList<>();
 
     //final String IP_ADDRESS = "10.85.41.232";
-    final String IP_ADDRESS = "192.168.1.67";
-    //final String IP_ADDRESS = "192.168.1.8";
+    //final String IP_ADDRESS = "192.168.1.67";
+    final String IP_ADDRESS = "192.168.1.8";
 
 
     public AnomalyFragment() {

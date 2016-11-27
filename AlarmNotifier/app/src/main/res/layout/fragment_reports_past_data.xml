@@ -1,0 +1,284 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        tools:context="com.example.alexperez.alarmnotifier.ReportsPastDataFragment"
+        tools:showIn="@layout/activity_reports_past_data">
+
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="70dp"
+            android:layout_height="74dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_horizontal|top"
+            android:background="@null"
+            android:src="@drawable/home" />
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="70dp"
+            android:layout_height="74dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="left|top"
+            android:background="@null"
+            android:src="@drawable/back" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="350dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/back">
+
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:fillViewport="false"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:scrollbars="vertical"
+                tools:context="com.example.alexperez.alarmnotifier.SurveyFragment"
+                tools:showIn="@layout/activity_survey">
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/Date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="24dp"
+                        android:text="Date/Time: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/Date"
+                        android:layout_below="@+id/Date"
+                        android:layout_marginTop="10dp"
+                        android:text="Name: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/antenna"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/name"
+                        android:layout_below="@+id/name"
+                        android:layout_marginTop="10dp"
+                        android:text="Antenna: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/satellite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/antenna"
+                        android:layout_below="@+id/antenna"
+                        android:layout_marginTop="10dp"
+                        android:text="Satellite: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/alarmFault"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/satellite"
+                        android:layout_below="@+id/satellite"
+                        android:layout_marginTop="10dp"
+                        android:text="Alarm/Fault:"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/equipAffec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/alarmFault"
+                        android:layout_below="@+id/alarmFault"
+                        android:layout_marginTop="10dp"
+                        android:text="Equipment Affected: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/equipVendor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/equipAffec"
+                        android:layout_below="@+id/equipAffec"
+                        android:layout_marginTop="10dp"
+                        android:text="Equipment Vendor: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/severity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/equipVendor"
+                        android:layout_below="@+id/equipVendor"
+                        android:layout_marginTop="10dp"
+                        android:text="Severity: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/descriptionOfIA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/severity"
+                        android:layout_below="@+id/severity"
+                        android:layout_marginTop="10dp"
+                        android:text="Description of Issue/Anomaly (Please be as detailed as Possible): "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/answerOfIA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/descriptionOfIA"
+                        android:layout_below="@+id/descriptionOfIA"
+                        android:layout_marginTop="10dp"
+                        android:text="Answer Goes Here!"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/resolveIA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/answerOfIA"
+                        android:layout_below="@+id/answerOfIA"
+                        android:layout_marginTop="10dp"
+                        android:text="How long did it take you to resolve this issue/anomaly?"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/responseToresolveIA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/resolveIA"
+                        android:layout_below="@+id/resolveIA"
+                        android:layout_marginTop="10dp"
+                        android:text="Answer Goes Here!"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/resolution"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/responseToresolveIA"
+                        android:layout_below="@+id/responseToresolveIA"
+                        android:layout_marginTop="10dp"
+                        android:text="Resolution?"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/responseToresolution"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/resolution"
+                        android:layout_below="@+id/resolution"
+                        android:layout_marginTop="10dp"
+                        android:text="Answer Goes Here!"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/moratorium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/responseToresolution"
+                        android:layout_below="@+id/responseToresolution"
+                        android:layout_marginTop="10dp"
+                        android:text="Was This a Moratorium?"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/responseToMoratorium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/moratorium"
+                        android:layout_below="@+id/moratorium"
+                        android:layout_marginTop="10dp"
+                        android:text="Answer Goes Here!"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/outage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/responseToMoratorium"
+                        android:layout_below="@+id/responseToMoratorium"
+                        android:layout_marginTop="10dp"
+                        android:text="Was There An Outage?"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/responseToOutage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/outage"
+                        android:layout_below="@+id/outage"
+                        android:layout_marginTop="10dp"
+                        android:text="Answer Goes Here!"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/outageTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/responseToOutage"
+                        android:layout_below="@+id/responseToOutage"
+                        android:layout_marginTop="10dp"
+                        android:text="If YES, How Long Was The Outage?"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/responseToOutageTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/outageTime"
+                        android:layout_below="@+id/outageTime"
+                        android:layout_marginTop="10dp"
+                        android:text="Answer Goes Here!"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <!-- Side navigation drawer UI -->
+    <ListView
+        android:id="@+id/navList"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|start"
+        android:background="#ffeeeeee" />
+
+</android.support.v4.widget.DrawerLayout>

@@ -14,45 +14,6 @@
         tools:context="com.example.alexperez.alarmnotifier.AnomalyFragment">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Acknowledged Alarms:"
-            android:id="@+id/ackAlarmText"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-
-        <ListView
-            android:id="@+id/ackAlarmsList"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@+id/ackAlarmText"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Current Alarms:"
-            android:textColor="#FF0000"
-            android:id="@+id/cAlarmsText"
-            android:layout_marginTop="35dp"
-            android:layout_below="@+id/location"
-            android:layout_centerHorizontal="true" />
-
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="350dp"
-            android:id="@+id/cAlarmList"
-            android:layout_alignTop="@+id/cAlarmsText"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="10dp"
-            android:layout_above="@+id/ackAlarmText" />
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -78,6 +39,45 @@
             android:layout_below="@+id/welcome"
             android:layout_centerHorizontal="true" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Current Alarms:"
+            android:textColor="#FF0000"
+            android:id="@+id/cAlarmsText"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/location"
+            android:layout_centerHorizontal="true" />
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:id="@+id/cAlarmList"
+            android:layout_alignTop="@+id/cAlarmsText"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="40dp"
+            android:layout_above="@+id/ackAlarmText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Acknowledged Alarms:"
+            android:id="@+id/ackAlarmText"
+            android:layout_marginTop="5dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+        <ListView
+            android:id="@+id/ackAlarmsList"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/ackAlarmText"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true" />
+
     </RelativeLayout>
 
     <!-- Side navigation drawer UI -->
@@ -86,6 +86,10 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="left|start"
-        android:background="#ffeeeeee" />
+        android:background="#E5E8E8"
+
+        />
+        <!-- android:background="@android:color/transparent"
+             android:background="#ffeeeeee"-->
 
 </android.support.v4.widget.DrawerLayout>

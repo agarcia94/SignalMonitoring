@@ -36,7 +36,7 @@
         <Spinner
             android:id="@+id/typeOfField"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:entries="@array/timeToFinish_arrays"
             android:prompt="@string/timeToFinish_prompt"
             android:layout_below="@+id/home"
@@ -47,7 +47,7 @@
             android:id="@+id/answerOfIA"
             android:textStyle="bold"
             android:layout_width="140dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:singleLine="true"
             android:maxLines="1"
             android:background="@android:drawable/edit_text"
@@ -68,6 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listView"
+            android:layout_marginTop="15dp"
             android:layout_below="@+id/typeOfField"
             android:layout_alignEnd="@+id/imageButton" />
 

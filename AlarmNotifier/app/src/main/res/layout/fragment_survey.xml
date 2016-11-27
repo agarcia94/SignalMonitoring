@@ -119,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="How long did it take you to resolve this issue/anomaly" />
+            android:text="How long did it take you to resolve this issue/anomaly?" />
 
         <Spinner
             android:id="@+id/spinner1"
