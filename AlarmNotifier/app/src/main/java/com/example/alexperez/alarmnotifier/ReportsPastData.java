@@ -3,12 +3,7 @@ package com.example.alexperez.alarmnotifier;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -59,6 +54,7 @@ public class ReportsPastData extends AppCompatActivity {
                 } else if (mAdapter.getItem(position).equals("Logout")) {
                     Toast.makeText(ReportsPastData.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getApplicationContext(), Login.class);
+                    SaveSharedPreference.clearUserName(ReportsPastData.this);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 } else {

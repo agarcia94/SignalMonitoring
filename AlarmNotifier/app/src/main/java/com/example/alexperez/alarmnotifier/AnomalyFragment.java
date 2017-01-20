@@ -69,7 +69,7 @@ public class AnomalyFragment extends Fragment {
         ackAlarms = (ListView)rootView.findViewById(R.id.ackAlarmsList);
 
         //String profile = getActivity().getIntent().getStringExtra("profile");
-        userProfile = getActivity().getIntent().getStringExtra("profile");
+        userProfile = SaveSharedPreference.getUserName(getActivity());
         String username = "";
         String location = "";
         try {
@@ -91,7 +91,7 @@ public class AnomalyFragment extends Fragment {
         TextView locationText = (TextView)rootView.findViewById(R.id.location);
         locationText.setText(locationText.getText() + " " + location);
 
-        Log.d("anomalyProfile", getActivity().getIntent().getStringExtra("profile"));
+        //Log.d("anomalyProfile", getActivity().getIntent().getStringExtra("profile"));
 
 
 

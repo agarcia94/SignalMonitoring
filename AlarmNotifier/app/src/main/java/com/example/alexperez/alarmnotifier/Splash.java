@@ -47,7 +47,7 @@ public class Splash extends Activity {
                 iv.startAnimation(an2);
                 finish();
                 intro.stop();
-                Intent i = new Intent(getBaseContext(),Login.class);
+                Intent i = new Intent(getBaseContext(),Anomaly.class);
                 startActivity(i);
             }
 

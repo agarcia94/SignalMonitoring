@@ -34,11 +34,8 @@ public class LoginFragment extends Fragment {
     //final String IP_ADDRESS = "10.85.41.232";
     final String IP_ADDRESS = "192.168.1.8";
 
-
-
     public LoginFragment() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,6 +88,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
+
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -111,6 +109,8 @@ public class LoginFragment extends Fragment {
                         if(match){
                             match = false; //Set match to false to reset the match for the next user
                             Toast.makeText(rootView.getContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                            SaveSharedPreference.setUserName(getActivity(), userProfile.toString());
+                            Log.d("SSP", "this is " + SaveSharedPreference.getUserName(getActivity()));
                             Intent intent = new Intent(getActivity(), Anomaly.class);
                             intent.putExtra("profile", userProfile.toString());
                             startActivity(intent);
@@ -118,11 +118,13 @@ public class LoginFragment extends Fragment {
                         else{
                             Toast.makeText(rootView.getContext(), "No record found", Toast.LENGTH_SHORT).show();
                             //*****BYPASSING for debugging purposes*************/////
-//                            match = false; //Set match to false to reset the match for the next user
-//                            Toast.makeText(rootView.getContext(), "Login successful", Toast.LENGTH_SHORT).show();
-//                            Intent intent = new Intent(getActivity(), Anomaly.class);
-//                            intent.putExtra("profile", userProfile.toString());
-//                            startActivity(intent);
+                            match = false; //Set match to false to reset the match for the next user
+                            Toast.makeText(rootView.getContext(), "Bypass successful", Toast.LENGTH_SHORT).show();
+                            SaveSharedPreference.setUserName(getActivity().getApplicationContext(), "{username:'fakeyao', location:'LABC'}");
+                            Log.d("SSP", "this is " + SaveSharedPreference.getUserName(getActivity().getApplicationContext()));
+                            Intent intent = new Intent(getActivity(), Anomaly.class);
+                            intent.putExtra("profile", "{username:'fakeyao', location:'LABC'}");
+                            startActivity(intent);
                         }
                     }
                 }, 1000);

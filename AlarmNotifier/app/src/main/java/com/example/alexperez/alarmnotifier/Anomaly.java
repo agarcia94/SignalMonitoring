@@ -2,17 +2,15 @@ package com.example.alexperez.alarmnotifier;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,23 +30,35 @@ public class Anomaly extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //SaveSharedPreference.clearUserName(Anomaly.this);
+        Log.d("SSPA", "this is" + SaveSharedPreference.getUserName(Anomaly.this));
+        if(SaveSharedPreference.getUserName(getApplicationContext()).length() == 0)
+        {
+            // call Login Activity
+            Intent i = new Intent(getApplicationContext(), Login.class);
+            startActivity(i);
+        }
+        else
+        {
+            // Stay at the current activity.
+
+        }
         setContentView(R.layout.activity_anomaly);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        userProfile = getIntent().getStringExtra("profile");
+        userProfile = SaveSharedPreference.getUserName(Anomaly.this);
 
         mDrawerList = (ListView)findViewById(R.id.navList);
 
         addDrawerItems();
     }
 
+
     @Override
     protected void onRestart() {
         super.onRestart();  // Always call the superclass method first
 
-        Fragment frg = null;
-        frg = getFragmentManager().findFragmentByTag("AnomalyFragment");
+        Fragment frg = getFragmentManager().findFragmentByTag("AnomalyFragment");
         final FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(frg);
         ft.attach(frg);
@@ -63,25 +73,23 @@ public class Anomaly extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(mAdapter.getItem(position).equals("Logout")){
+                if (mAdapter.getItem(position).equals("Logout")) {
                     Toast.makeText(Anomaly.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getApplicationContext(), Login.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    SaveSharedPreference.clearUserName(Anomaly.this);
                     startActivity(i);
-                }
-                else if (mAdapter.getItem(position).equals("Subscription")) {
+                } else if (mAdapter.getItem(position).equals("Subscription")) {
                     Intent i = new Intent(getApplicationContext(), SubscribeActivity.class);
                     userProfile = getIntent().getStringExtra("profile");
                     i.putExtra("profile", userProfile);
                     startActivity(i);
-                }
-                else if (mAdapter.getItem(position).equals("Reports")) {
+                } else if (mAdapter.getItem(position).equals("Reports")) {
                     Intent i = new Intent(getApplicationContext(), Reports.class);
                     userProfile = getIntent().getStringExtra("profile");
                     i.putExtra("profile", userProfile);
                     startActivity(i);
-                }
-                else{
+                } else {
                     Toast.makeText(Anomaly.this, "Head To That Function", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -99,6 +107,7 @@ public class Anomaly extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 Intent i = new Intent(getApplicationContext(), Login.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                SaveSharedPreference.clearUserName(Anomaly.this);
                 startActivity(i);
             }
         });
