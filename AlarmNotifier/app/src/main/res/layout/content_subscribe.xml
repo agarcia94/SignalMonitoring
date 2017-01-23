@@ -36,8 +36,8 @@
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Location 2"
-        android:id="@+id/sw_location2"
+        android:text="LABC"
+        android:id="@+id/LABC"
         android:layout_below="@+id/sw_location1"
         android:layout_alignParentStart="true"
         android:layout_marginTop="29dp"

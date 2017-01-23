@@ -10,7 +10,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,19 +29,14 @@ public class Anomaly extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //SaveSharedPreference.clearUserName(Anomaly.this);
-        Log.d("SSPA", "this is" + SaveSharedPreference.getUserName(Anomaly.this));
+
         if(SaveSharedPreference.getUserName(getApplicationContext()).length() == 0)
         {
             // call Login Activity
             Intent i = new Intent(getApplicationContext(), Login.class);
             startActivity(i);
         }
-        else
-        {
-            // Stay at the current activity.
 
-        }
         setContentView(R.layout.activity_anomaly);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
