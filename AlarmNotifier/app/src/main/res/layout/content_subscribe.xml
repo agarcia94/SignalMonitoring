@@ -12,45 +12,169 @@
     tools:context=".SubscribeActivity"
     tools:showIn="@layout/activity_subscribe">
 
-    <Switch
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="testTopic"
-        android:id="@+id/sw_testTopic"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:checked="false" />
+        android:id="@+id/scrollView"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/btn_home">
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Location 1"
-        android:id="@+id/sw_location1"
-        android:checked="false"
-        android:layout_below="@+id/sw_testTopic"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="25dp"
-        android:layout_alignEnd="@+id/sw_testTopic" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LABC"
-        android:id="@+id/LABC"
-        android:layout_below="@+id/sw_location1"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="29dp"
-        android:layout_alignEnd="@+id/sw_location1"
-        android:checked="false" />
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LABC      - Los Angeles Broadcast Center "
+                android:id="@+id/sw_LABC"
+                android:layout_alignParentStart="true"
+                android:checked="false" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LADF      - Los Angeles Diverse Facility "
+                android:id="@+id/sw_LADF"
+                android:checked="false"
+                android:layout_below="@+id/sw_LABC"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CBC       - California Broadcast Center"
+                android:id="@+id/sw_CBC"
+                android:layout_below="@+id/sw_LADF"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:checked="false" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CRBC      - Castle Rock Broadcast Center"
+                android:id="@+id/sw_CRBC"
+                android:layout_below="@+id/sw_CBC"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:checked="false" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CRDF      - Castle Rock Diverse Facility"
+                android:id="@+id/sw_CRDF"
+                android:layout_below="@+id/sw_CRBC"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:checked="false" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ECUF      - East Coast Uplink Facility"
+                android:id="@+id/sw_ECUF"
+                android:layout_below="@+id/sw_CRDF"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:checked="false" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="MWUF      - Midwest Uplink Facility"
+                android:id="@+id/sw_MWUF"
+                android:layout_below="@+id/sw_ECUF"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:checked="false" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="MWDF      - Midwest Diverse Facility"
+                android:id="@+id/sw_MWDF"
+                android:layout_below="@+id/sw_MWUF"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:checked="false" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NEUF      - Northeast Coast Uplink Facility"
+                android:id="@+id/sw_NEUF"
+                android:layout_below="@+id/sw_MWDF"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:checked="false" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NDUF      - Northeast Coast Diverse Facility"
+                android:id="@+id/sw_NDUF"
+                android:layout_below="@+id/sw_NEUF"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:checked="false" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NWUF      - Northwest Uplink Facility"
+                android:id="@+id/sw_NWUF"
+                android:layout_below="@+id/sw_NDUF"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:checked="false" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NWDF      - Northwest Diverse Facility"
+                android:id="@+id/sw_NWDF"
+                android:layout_below="@+id/sw_NWUF"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:checked="false" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SWUF      - Southwest Uplink Facility"
+                android:id="@+id/sw_SWUF"
+                android:layout_below="@+id/sw_NWDF"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:checked="false" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SWDF      - Southwest Uplink Facility"
+                android:id="@+id/sw_SWDF"
+                android:layout_below="@+id/sw_SWUF"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="15dp"
+                android:checked="false" />
+
+        </RelativeLayout>
+    </ScrollView>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home"
+        android:textStyle="bold"
+        android:textColor="#ffffffff"
+        android:background="#3498DB"
+        android:text="Go Back to Home Page ..."
         android:id="@+id/btn_home"
+        android:layout_marginBottom="48dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="175dp" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
