@@ -1,5 +1,7 @@
 package com.example.alexperez.alarmnotifier;
 
+import android.content.AsyncTaskLoader;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -30,9 +32,9 @@ public class LoginFragment extends Fragment {
     private boolean match = false;
     private JSONObject userProfile = new JSONObject();
 
-    //final String IP_ADDRESS = "192.168.1.67";
+    final String IP_ADDRESS = "192.168.43.253";
     //final String IP_ADDRESS = "10.85.41.232";
-    final String IP_ADDRESS = "192.168.1.8";
+    //final String IP_ADDRESS = "192.168.1.8";
 
     public LoginFragment() {
     }
@@ -62,6 +64,7 @@ public class LoginFragment extends Fragment {
 
                     String[] userFacts = {userInfo, passwordInfo};
 
+                    //SendUserData data = new SendUserData(getContext(),"");
                     SendUserData data = new SendUserData();
                     data.execute(userFacts);
 
@@ -119,14 +122,6 @@ public class LoginFragment extends Fragment {
                         }
                         else{
                             Toast.makeText(rootView.getContext(), "No record found", Toast.LENGTH_SHORT).show();
-                            //*****BYPASSING for debugging purposes*************/////
-                            /*match = false; //Set match to false to reset the match for the next user
-                            Toast.makeText(rootView.getContext(), "Bypass successful", Toast.LENGTH_SHORT).show();
-                            SaveSharedPreference.setNameAppendSubs(getActivity().getApplicationContext(), "{'username':'fakeyao', 'location':'LABC'}");
-                            Log.d("SSP", "this is " + SaveSharedPreference.getUserName(getActivity().getApplicationContext()));
-                            Intent intent = new Intent(getActivity(), Anomaly.class);
-                            intent.putExtra("profile", "{'username':'fakeyao', 'location':'LABC'}");
-                            startActivity(intent);*/
                         }
                     }
                 }, 1000);
@@ -141,7 +136,6 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                        //Uri.parse("http://192.168.43.253:8080/UserManagement/MongoService/register"));
                         Uri.parse("http://" + IP_ADDRESS +":8080/UserManagement/MongoService/register"));
 
 
@@ -150,6 +144,17 @@ public class LoginFragment extends Fragment {
         });
         return rootView;
     }
+
+//   public class SendUserData extends AsyncTaskLoader<Void>{
+//        public SendUserData(Context context, String args) {
+//            super(context);
+//        }
+//
+//        @Override
+//        public Void loadInBackground(){
+//            return null;
+//        }
+//    }
 
     class SendUserData extends AsyncTask<String, Void, Void> {
         @Override

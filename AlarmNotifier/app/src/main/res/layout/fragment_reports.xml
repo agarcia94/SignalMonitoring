@@ -69,7 +69,7 @@
         <ImageButton
             android:layout_width="74dp"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton"
+            android:id="@+id/searchButton"
             android:background="@null"
             android:src="@drawable/search_dark"
             android:layout_below="@+id/home"
@@ -81,7 +81,7 @@
             android:id="@+id/listView"
             android:layout_marginTop="15dp"
             android:layout_below="@+id/typeOfField"
-            android:layout_alignEnd="@+id/imageButton" />
+            android:layout_alignEnd="@+id/searchButton" />
 
     </RelativeLayout>
 

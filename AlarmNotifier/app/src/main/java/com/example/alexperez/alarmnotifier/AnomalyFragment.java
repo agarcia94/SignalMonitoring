@@ -1,9 +1,15 @@
 package com.example.alexperez.alarmnotifier;
 
+
+import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,20 +36,22 @@ import java.util.regex.Pattern;
 
 
 
-public class AnomalyFragment extends Fragment {
+public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCallbacks<JSONObject>{
 
     private ListView ackAlarms,currentAlarms;
     private ArrayAdapter<String> adapter,currentAdapter;
 
     private String userProfile = "";
-    private JSONObject alarmJSON;
+
+
+    static JSONObject alarmJSON;
 
     private ArrayList<String> data = new ArrayList<>();
     private ArrayList<String> ackData = new ArrayList<>();
 
     //final String IP_ADDRESS = "10.85.41.232";
-    //final String IP_ADDRESS = "192.168.1.67";
-    final String IP_ADDRESS = "192.168.1.8";
+    final static String IP_ADDRESS = "192.168.43.253";
+    //final String IP_ADDRESS = "192.168.1.8";
 
 
     public AnomalyFragment() {
@@ -53,8 +61,7 @@ public class AnomalyFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        FetchAlarmTask task = new FetchAlarmTask();
-        task.execute();
+        getLoaderManager().initLoader(1, null, this).forceLoad();
     }
 
 
@@ -95,8 +102,8 @@ public class AnomalyFragment extends Fragment {
 
 
 
-        adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, ackData);
-        currentAdapter = new ArrayAdapter(getActivity(), R.layout.crow, R.id.textView, data);
+        adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, ackData); //acknowledged alarms
+        currentAdapter = new ArrayAdapter(getActivity(), R.layout.crow, R.id.textView, data); //current alarms
 
         currentAlarms.setAdapter(currentAdapter);
         ackAlarms.setAdapter(adapter);
@@ -192,149 +199,79 @@ public class AnomalyFragment extends Fragment {
 
     }
 
-    class FetchAlarmTask extends AsyncTask<Void, Void, Void> {
+    @Override
+    public Loader<JSONObject> onCreateLoader(int id, Bundle args) {
+        return new FetchAlarmTaskLoader(getContext());
+    }
 
-        @Override
-        protected Void doInBackground(Void...voids){
-            HttpURLConnection urlConnection = null;
-            BufferedReader reader = null;
-
-            String alarmJSONStr = null;
-
-            try{
-
-                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/alarms");
-
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                // Read the input stream into a String
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                if (inputStream == null) {
-                    // Nothing to do.
-                    return null;
-                }
-
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging a *lot* easier if you print out the completed
-                    // buffer for debugging.
-                    buffer.append(line + "\n");
-                }
-
-                if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
-                    return null;
-                }
-
-                alarmJSONStr = buffer.toString();
-
-                try {
-                    alarmJSON = new JSONObject(alarmJSONStr);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                Log.d("alarm", alarmJSONStr);
-
-            }catch(IOException o){
-                o.printStackTrace();
-            }
-
-            return null;
-
-        }
-
-        @Override
-        protected void onPostExecute(Void voidItem) {
-            super.onPostExecute(voidItem);
-
-            try{
+    @Override
+    public void onLoadFinished(Loader<JSONObject> loader, JSONObject jdata) {
+        alarmJSON = jdata;
+        try{
 //                String parameterItems = alarmJSON.getString("parameter");
 //                String ackAlarms = alarmJSON.getString("requiresAcknowledgment");
-                JSONArray alarmArray = alarmJSON.getJSONArray("alarms");
+            JSONArray alarmArray = alarmJSON.getJSONArray("alarms");
 
-                for(int i = 0; i < alarmArray.length(); i++){
-                    JSONObject alarm = alarmArray.getJSONObject(i);
-                    String parameterItems = alarm.getString("parameter");
-                    Boolean ackAlarms = alarm.getBoolean("requiresAcknowledgment");
+            for(int i = 0; i < alarmArray.length(); i++){
+                JSONObject alarm = alarmArray.getJSONObject(i);
+                String parameterItems = alarm.getString("parameter");
+                Boolean ackAlarms = alarm.getBoolean("requiresAcknowledgment");
 
 
-                    if(ackAlarms == false) {
-                        JSONObject userInfo = new JSONObject(userProfile);
-                        String location = userInfo.getString("location");
+                if(ackAlarms == false) {
+                    JSONObject userInfo = new JSONObject(userProfile);
+                    String location = userInfo.getString("location");
 
-                        if(parameterItems.contains(location)){
-                            String[] parameterFields = parameterItems.split("-");
+                    if(parameterItems.contains(location)){
+                        String[] parameterFields = parameterItems.split("-");
 
-                            String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                            for(int j = 0; j < anomalyNameArray.length; j++){
-                                System.out.println("anomaly name: " + anomalyNameArray[j]);
-                            }
-
-                            String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                            ackData.add(alarmInfo);
+                        String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                        for(int j = 0; j < anomalyNameArray.length; j++){
+                            System.out.println("anomaly name: " + anomalyNameArray[j]);
                         }
-                    }
 
-
-                    if(ackAlarms == true){
-                        JSONObject userInfo = new JSONObject(userProfile);
-                        String location = userInfo.getString("location");
-
-                        if(parameterItems.contains(location)){
-                            String[] parameterFields = parameterItems.split("-");
-
-                            String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                            for(int j = 0; j < anomalyNameArray.length; j++){
-                                System.out.println("anomaly name: " + anomalyNameArray[j]);
-                            }
-
-                            String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                            data.add(alarmInfo);
-                        }
+                        String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                        ackData.add(alarmInfo);
                     }
                 }
 
-//                if(ackAlarms.equalsIgnoreCase("false")) {
-//                    String[] parameterFields = parameterItems.split("-");
-//
-//                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-//                    for (int j = 0; j < anomalyNameArray.length; j++) {
-//                        System.out.println("anomaly name: " + anomalyNameArray[j]);
-//                    }
-//
-//                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-//                    ackData.add(alarmInfo);
-//                }
-//
-//
-//                if(ackAlarms.equalsIgnoreCase("true")){
-//                    String[] parameterFields = parameterItems.split("-");
-//
-//                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-//                    for(int j = 0; j < anomalyNameArray.length; j++){
-//                        System.out.println("anomaly name: " + anomalyNameArray[j]);
-//                    }
-//
-//                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-//                    data.add(alarmInfo);
-//
-//                }
 
+                if(ackAlarms == true){
+                    JSONObject userInfo = new JSONObject(userProfile);
+                    String location = userInfo.getString("location");
 
-            }catch(JSONException o){
-                o.printStackTrace();
+                    if(parameterItems.contains(location)){
+                        String[] parameterFields = parameterItems.split("-");
+
+                        String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                        for(int j = 0; j < anomalyNameArray.length; j++){
+                            System.out.println("anomaly name: " + anomalyNameArray[j]);
+                        }
+
+                        String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                        data.add(alarmInfo);
+                    }
+                }
             }
 
-//            adapter.addAll(data);
-//            currentAdapter.addAll(ackData);
 
+        }catch(JSONException o){
+            o.printStackTrace();
         }
+
     }
+
+    @Override
+    public void onLoaderReset(Loader<JSONObject> loader) {
+
+    }
+
+
+//    @Override
+//    public void onLoadFinished(Loader<JSONObject> loader, JSONObject jString) {
+//    }
+
+
+
+
 }
