@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sections_icons">
+        <item>@drawable/ic_action_search</item>
+        <item>@drawable/ic_action_cancel</item>
+        <item>@drawable/ic_action_important</item>
+    </string-array>
+</resources>

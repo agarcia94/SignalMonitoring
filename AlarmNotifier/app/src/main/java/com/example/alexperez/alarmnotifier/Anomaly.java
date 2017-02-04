@@ -7,28 +7,31 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Anomaly extends AppCompatActivity {
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
-
+    private DrawerLayout mDrawerLayout;
     private String userProfile = "";
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +48,11 @@ public class Anomaly extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         userProfile = SaveSharedPreference.getUserName(Anomaly.this);
-
+        mTitle = mDrawerTitle = getTitle();
         mDrawerList = (ListView)findViewById(R.id.navList);
-
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         addDrawerItems();
+
     }
 
 
@@ -64,25 +68,41 @@ public class Anomaly extends AppCompatActivity {
     }
 
     private void addDrawerItems() {
-        String[] array = { "Reports","Logout" , "Subscription" };
+        final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons);
+        String[] array = { "   Reports","   Logout" , "   Subscription" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
+        mDrawerList.setAdapter(new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_activated_1,
+                android.R.id.text1,
+                array
+        ) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                int resourceId = typedArray.getResourceId(position, 0);
+                Drawable drawable = getResources().getDrawable(resourceId);
+                ((TextView) v).setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
+                return v;
+            }
+        });
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mAdapter.getItem(position).equals("Logout")) {
+                if (mAdapter.getItem(position).equals("   Logout")) {
                     Toast.makeText(Anomaly.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getApplicationContext(), Login.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     SaveSharedPreference.clearUserName(Anomaly.this);
                     startActivity(i);
-                } else if (mAdapter.getItem(position).equals("Subscription")) {
+                } else if (mAdapter.getItem(position).equals("   Subscription")) {
                     Intent i = new Intent(getApplicationContext(), SubscribeActivity.class);
                     userProfile = getIntent().getStringExtra("profile");
                     i.putExtra("profile", userProfile);
                     startActivity(i);
-                } else if (mAdapter.getItem(position).equals("Reports")) {
+                } else if (mAdapter.getItem(position).equals("   Reports")) {
                     Intent i = new Intent(getApplicationContext(), Reports.class);
                     userProfile = getIntent().getStringExtra("profile");
                     i.putExtra("profile", userProfile);

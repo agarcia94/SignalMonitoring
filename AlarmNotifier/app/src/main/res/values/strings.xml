@@ -28,6 +28,9 @@
         <item>No</item>
     </string-array>
 
+    <string name="drawer_open">Open Drawer</string>
+    <string name="drawer_close">Close Drawer</string>
+
     <string-array name="outageTime_arrays">
         <item>0 - 5 Minutes</item>
         <item>5 - 10 Minutes</item>
