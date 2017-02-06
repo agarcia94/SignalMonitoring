@@ -1,7 +1,5 @@
 package com.example.alexperez.alarmnotifier;
 
-import android.content.AsyncTaskLoader;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -32,7 +30,7 @@ public class LoginFragment extends Fragment {
     private boolean match = false;
     private JSONObject userProfile = new JSONObject();
 
-    final String IP_ADDRESS = "192.168.43.253";
+    final String IP_ADDRESS = "192.168.0.12";
     //final String IP_ADDRESS = "10.85.41.232";
     //final String IP_ADDRESS = "192.168.1.8";
 

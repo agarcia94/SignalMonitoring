@@ -1,8 +1,6 @@
 package com.example.alexperez.alarmnotifier;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -56,16 +54,16 @@ public class Anomaly extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();  // Always call the superclass method first
-
-        Fragment frg = getFragmentManager().findFragmentByTag("AnomalyFragment");
-        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(frg);
-        ft.attach(frg);
-        ft.commit();
-    }
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();  // Always call the superclass method first
+//
+//        Fragment frg = getFragmentManager().findFragmentByTag("AnomalyFragment");
+//        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.detach(frg);
+//        ft.attach(frg);
+//        ft.commit();
+//    }
 
     private void addDrawerItems() {
         final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons);

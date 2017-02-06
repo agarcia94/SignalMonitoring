@@ -24,6 +24,15 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
         super(context);
     }
 
+    @Override
+    protected void onStartLoading() {
+        if(AnomalyFragment.alarmJSON == null){
+            forceLoad();
+        }else{
+            super.deliverResult(AnomalyFragment.alarmJSON);
+        }
+
+    }
 
     @Override
     public JSONObject loadInBackground() {
@@ -78,5 +87,11 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
         }
 
         return AnomalyFragment.alarmJSON;
+    }
+
+    @Override
+    public void deliverResult(JSONObject data) {
+        AnomalyFragment.alarmJSON = data;
+        super.deliverResult(data);
     }
 }
