@@ -54,22 +54,10 @@ public class Anomaly extends AppCompatActivity {
     }
 
 
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();  // Always call the superclass method first
-//
-//        Fragment frg = getFragmentManager().findFragmentByTag("AnomalyFragment");
-//        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        ft.detach(frg);
-//        ft.attach(frg);
-//        ft.commit();
-//    }
-
     private void addDrawerItems() {
-        final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons);
-        String[] array = { "   Reports","   Logout" , "   Subscription" };
+        final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons_anomaly);
+        String[] array = { "          Reports", "          Subscription", "          Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
-        mDrawerList.setAdapter(mAdapter);
         mDrawerList.setAdapter(new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_activated_1,
@@ -89,18 +77,18 @@ public class Anomaly extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mAdapter.getItem(position).equals("   Logout")) {
+                if (mAdapter.getItem(position).equals("          Logout")) {
                     Toast.makeText(Anomaly.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getApplicationContext(), Login.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     SaveSharedPreference.clearUserName(Anomaly.this);
                     startActivity(i);
-                } else if (mAdapter.getItem(position).equals("   Subscription")) {
+                } else if (mAdapter.getItem(position).equals("          Subscription")) {
                     Intent i = new Intent(getApplicationContext(), SubscribeActivity.class);
                     userProfile = getIntent().getStringExtra("profile");
                     i.putExtra("profile", userProfile);
                     startActivity(i);
-                } else if (mAdapter.getItem(position).equals("   Reports")) {
+                } else if (mAdapter.getItem(position).equals("          Reports")) {
                     Intent i = new Intent(getApplicationContext(), Reports.class);
                     userProfile = getIntent().getStringExtra("profile");
                     i.putExtra("profile", userProfile);

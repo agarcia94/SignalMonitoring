@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="sections_icons">
-        <item>@drawable/ic_action_search</item>
-        <item>@drawable/ic_action_cancel</item>
-        <item>@drawable/ic_action_important</item>
+    <string-array name="sections_icons_anomaly">
+        <item>@drawable/ic_search</item>
+        <item>@drawable/ic_star</item>
+        <item>@drawable/ic_exit</item>
+    </string-array>
+
+    <string-array name="sections_icons_detail">
+        <item>@drawable/ic_home</item>
+        <item>@drawable/ic_search</item>
+        <item>@drawable/ic_star</item>
+        <item>@drawable/ic_exit</item>
     </string-array>
 </resources>

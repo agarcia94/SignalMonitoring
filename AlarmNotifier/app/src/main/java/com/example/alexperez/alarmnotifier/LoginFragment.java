@@ -48,7 +48,7 @@ public class LoginFragment extends Fragment {
         final EditText username = (EditText)rootView.findViewById(R.id.userInfo);
         final EditText password = (EditText)rootView.findViewById(R.id.passwordInfo);
         password.setFocusableInTouchMode(true);
-        password.requestFocus();
+        username.requestFocus();
 
         password.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {

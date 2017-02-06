@@ -1,6 +1,5 @@
 package com.example.alexperez.alarmnotifier;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,25 +22,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-
-
 public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCallbacks<JSONObject>{
 
     private ListView ackAlarms,currentAlarms;
     private ArrayAdapter<String> adapter,currentAdapter;
-
     private String userProfile = "";
-
-
     static JSONObject alarmJSON;
-
     private ArrayList<String> data;
     private ArrayList<String> ackData;
 
     //final String IP_ADDRESS = "10.85.41.232";
     final static String IP_ADDRESS = "192.168.0.12";
     //final String IP_ADDRESS = "192.168.1.8";
-
 
     public AnomalyFragment() {
         // Required empty public constructor
@@ -52,15 +44,6 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
         super.onStart();
         getLoaderManager().initLoader(1, null, this).forceLoad();
     }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        data = new ArrayList<>();
-//        ackData = new ArrayList<>();
-//        alarmJSON = null;
-//        getLoaderManager().initLoader(1, null, this).forceLoad();
-//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +55,6 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
         ackAlarms = (ListView)rootView.findViewById(R.id.ackAlarmsList);
         data = new ArrayList<>();
         ackData = new ArrayList<>();
-        //String profile = getActivity().getIntent().getStringExtra("profile");
         userProfile = SaveSharedPreference.getUserName(getActivity());
         String username = "";
         String location = "";
@@ -91,19 +73,8 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
         TextView welcomeText = (TextView)rootView.findViewById(R.id.welcome);
         welcomeText.setText(welcomeText.getText() + " " + username);
 
-
         TextView locationText = (TextView)rootView.findViewById(R.id.location);
         locationText.setText(locationText.getText() + " " + location);
-
-        //Log.d("anomalyProfile", getActivity().getIntent().getStringExtra("profile"));
-
-
-
-        /*adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, ackData); //acknowledged alarms
-        currentAdapter = new ArrayAdapter(getActivity(), R.layout.crow, R.id.textView, data); //current alarms
-
-        currentAlarms.setAdapter(currentAdapter);
-        ackAlarms.setAdapter(adapter);*/
 
         currentAlarms.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -135,7 +106,6 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                             intent.putExtra("alarm", currentAlarm.toString());
                             break;
                         }
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -144,7 +114,6 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                 startActivity(intent);
             }
         });
-
 
         ackAlarms.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -209,7 +178,6 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                     String parameterItems = alarm.getString("parameter");
                     Boolean ackAlarms = alarm.getBoolean("requiresAcknowledgment");
 
-
                     if(ackAlarms == false) {
                         JSONObject userInfo = new JSONObject(userProfile);
                         String location = userInfo.getString("location");
@@ -226,7 +194,6 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                             ackData.add(alarmInfo);
                         }
                     }
-
 
                     if(ackAlarms == true){
                         JSONObject userInfo = new JSONObject(userProfile);
@@ -245,8 +212,6 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                         }
                     }
                 }
-
-
             }catch(JSONException o){
                 o.printStackTrace();
             }
@@ -258,9 +223,6 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
 
         currentAlarms.setAdapter(currentAdapter);
         ackAlarms.setAdapter(adapter);
-//        ackAlarms.invalidate();
-//        currentAlarms.invalidate();
-
 
     }
 
@@ -268,13 +230,5 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     public void onLoaderReset(Loader<JSONObject> loader) {
         alarmJSON = null;
     }
-
-
-//    @Override
-//    public void onLoadFinished(Loader<JSONObject> loader, JSONObject jString) {
-//    }
-
-
-
 
 }
