@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -172,43 +173,52 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
 //                String parameterItems = alarmJSON.getString("parameter");
 //                String ackAlarms = alarmJSON.getString("requiresAcknowledgment");
                 JSONArray alarmArray = alarmJSON.getJSONArray("alarms");
-
+                Log.d("alarmJson", alarmJSON.toString());
                 for(int i = 0; i < alarmArray.length(); i++){
                     JSONObject alarm = alarmArray.getJSONObject(i);
                     String parameterItems = alarm.getString("parameter");
                     Boolean ackAlarms = alarm.getBoolean("requiresAcknowledgment");
 
                     if(ackAlarms == false) {
-                        JSONObject userInfo = new JSONObject(userProfile);
-                        String location = userInfo.getString("location");
+                        /*JSONObject userInfo = new JSONObject(userProfile);
+                        String location = userInfo.getString("location");*/
+                        String[] subsArr = SaveSharedPreference.getSubLocations(getActivity());
+                        Log.d("subLoc", subsArr.toString());
+                        for(int s = 0; s < subsArr.length; s++){
+                            Log.d("subLoc", subsArr[s]);
+                            if(parameterItems.contains(subsArr[s])){
+                                String[] parameterFields = parameterItems.split("-");
 
-                        if(parameterItems.contains(location)){
-                            String[] parameterFields = parameterItems.split("-");
+                                String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                                for(int j = 0; j < anomalyNameArray.length; j++){
+                                    System.out.println("anomaly name: " + anomalyNameArray[j]);
+                                }
 
-                            String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                            for(int j = 0; j < anomalyNameArray.length; j++){
-                                System.out.println("anomaly name: " + anomalyNameArray[j]);
+                                String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                                ackData.add(alarmInfo);
+                                break;
                             }
-
-                            String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                            ackData.add(alarmInfo);
                         }
+
                     }
 
                     if(ackAlarms == true){
-                        JSONObject userInfo = new JSONObject(userProfile);
-                        String location = userInfo.getString("location");
+                        /*JSONObject userInfo = new JSONObject(userProfile);
+                        String location = userInfo.getString("location");*/
+                        String[] subsArr = SaveSharedPreference.getSubLocations(getActivity());
+                        for(int s = 0; s < subsArr.length; s++){
+                            if(parameterItems.contains(subsArr[s])){
+                                String[] parameterFields = parameterItems.split("-");
 
-                        if(parameterItems.contains(location)){
-                            String[] parameterFields = parameterItems.split("-");
+                                String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                                for(int j = 0; j < anomalyNameArray.length; j++){
+                                    System.out.println("anomaly name: " + anomalyNameArray[j]);
+                                }
 
-                            String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                            for(int j = 0; j < anomalyNameArray.length; j++){
-                                System.out.println("anomaly name: " + anomalyNameArray[j]);
+                                String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                                data.add(alarmInfo);
+                                break;
                             }
-
-                            String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                            data.add(alarmInfo);
                         }
                     }
                 }

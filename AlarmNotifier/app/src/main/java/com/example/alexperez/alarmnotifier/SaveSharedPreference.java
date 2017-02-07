@@ -11,6 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by yao on 1/20/2017.
  */
@@ -98,5 +101,24 @@ public class SaveSharedPreference {
             e.printStackTrace();
         }
 
+    }
+
+    public static String[] getSubLocations(Context ctx){
+        String[] locations;
+        JSONArray subs;
+        JSONObject userInfo = null;
+        try {
+            userInfo = new JSONObject(getUserName(ctx));
+            subs = userInfo.getJSONArray("subs");
+            List<String> list = new ArrayList<String>();
+            for (int i=0; i<subs.length(); i++) {
+                list.add( subs.getString(i) );
+            }
+            String[] stringArray = list.toArray(new String[list.size()]);
+            return stringArray;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
