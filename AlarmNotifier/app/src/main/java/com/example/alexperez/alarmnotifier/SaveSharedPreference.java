@@ -119,6 +119,7 @@ public class SaveSharedPreference {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        String [] empty = new String[0];
+        return empty;
     }
 }

@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Reports Searcher"
+            android:text="Survey Archive Searcher"
             android:id="@+id/title"
             android:textStyle="bold"
             android:layout_alignParentTop="true"
@@ -45,31 +45,30 @@
             android:src="@drawable/back" />
 
         <Spinner
-            android:id="@+id/typeOfField"
+            android:id="@+id/base_Location"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:entries="@array/timeToFinish_arrays"
             android:prompt="@string/timeToFinish_prompt"
-            android:layout_below="@+id/home"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/answerOfIA" />
+            android:layout_below="@+id/back"
+            android:layout_toStartOf="@+id/year" />
 
         <EditText
-            android:id="@+id/answerOfIA"
+            android:id="@+id/type_Of_Problem"
             android:textStyle="bold"
-            android:layout_width="140dp"
+            android:layout_width="100dp"
             android:layout_height="40dp"
             android:singleLine="true"
             android:maxLines="1"
             android:background="@android:drawable/edit_text"
             android:textColor="@android:color/primary_text_light"
-            android:layout_alignTop="@+id/typeOfField"
+            android:layout_alignTop="@+id/base_Location"
             android:layout_toStartOf="@+id/home" />
 
         <ImageButton
             android:layout_width="74dp"
             android:layout_height="wrap_content"
-            android:id="@+id/searchButton"
+            android:id="@+id/imageButton"
             android:background="@null"
             android:src="@drawable/search_dark"
             android:layout_below="@+id/home"
@@ -80,8 +79,17 @@
             android:layout_height="wrap_content"
             android:id="@+id/listView"
             android:layout_marginTop="15dp"
-            android:layout_below="@+id/typeOfField"
-            android:layout_alignEnd="@+id/searchButton" />
+            android:layout_below="@+id/base_Location"
+            android:layout_alignEnd="@+id/imageButton" />
+
+        <Spinner
+            android:id="@+id/year"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:entries="@array/timeToFinish_arrays"
+            android:prompt="@string/timeToFinish_prompt"
+            android:layout_alignTop="@+id/type_Of_Problem"
+            android:layout_toStartOf="@+id/type_Of_Problem" />
 
     </RelativeLayout>
 

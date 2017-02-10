@@ -50,7 +50,7 @@ public class DetailsFragment extends Fragment {
 
     //IP ADDRESS
     //final String IP_ADDRESS = "10.85.41.232";
-    final String IP_ADDRESS = "192.168.1.67";
+    final String IP_ADDRESS = "192.168.43.253";
     //final String IP_ADDRESS = "192.168.1.8";
 
 

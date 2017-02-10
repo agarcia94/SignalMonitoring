@@ -3,45 +3,31 @@ package com.example.alexperez.alarmnotifier;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class Reports extends AppCompatActivity {
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
-    private String reportType = "";
-    private String IP_ADDRESS = "192.168.43.253";
 
-    private String userProfile = "";
+    String userProfile = "";
+    Calendar calendar = Calendar.getInstance();
+    int calender_year = calendar.get(Calendar.YEAR);
+    //String current_year = Integer.toString(calender_year);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,30 +43,99 @@ public class Reports extends AppCompatActivity {
         addDrawerItems();
 
         // Get reference of widgets from XML layout
-        final Spinner spinner = (Spinner)findViewById(R.id.typeOfField);
+        final Spinner spinner = (Spinner)findViewById(R.id.base_Location);
+        final Spinner yearSpinner = (Spinner)findViewById(R.id.year);
 
         // Initializing a String Array
         String[] type = new String[]{
-                "Select an item...",
-                "Year",
-                "Vendor",
                 "Base Location",
+                "LABC",
+                "LADF",
+                "CBC",
+                "CRBC",
+                "CRDF",
+                "ECUF",
+                "MQUF",
+                "MWDF",
+                "NEUF",
+                "NDUF",
+                "NWUF",
+                "NWDF",
+                "SWUF",
+                "SWDF"
         };
 
         final List<String> typeList = new ArrayList<>(Arrays.asList(type));
+        //final List<String> yearList = new ArrayList<>(Arrays.asList(year));
 
-        // Initializing an ArrayAdapter
-        final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item,typeList){
+        ArrayList<String> yearList = new ArrayList<String>();
+        yearList.add("Year");
+        for (int i = 1980; i <= calender_year; i++) {
+            yearList.add(Integer.toString(i));
+        }
+
+        final ArrayAdapter<String> yearArrayAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item,yearList){
             @Override
             public boolean isEnabled(int position){
-                if(position == 0)
-                {
+                if(position == 0) {
                     // Disable the first item from Spinner
                     // First item will be use for hint
                     return false;
                 }
-                else
-                {
+                else {
+                    return true;
+                }
+            }
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if(position == 0){
+                    // Set the hint text color gray, The first item is the placeholder
+                    tv.setTextColor(Color.GRAY);
+                }
+                else {
+                    //Differentiate the two
+                    tv.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
+        yearArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+        assert yearSpinner != null; //Base Case?? Provided by Android
+        yearSpinner.setAdapter(yearArrayAdapter);
+
+        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItemText = (String) parent.getItemAtPosition(position);
+                // If user change the default selection
+                // First item is disable and it is used for hint
+                if (position > 0) {
+                    // Notify the selected item text
+                    Toast.makeText
+                            (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //Do Nothing, as nothing should happen if nothing is selected yet
+            }
+        });
+
+        // Initializing the Base Location Adapter
+        final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item,typeList){
+            @Override
+            public boolean isEnabled(int position){
+                if(position == 0) {
+                    // Disable the first item from Spinner
+                    // First item will be use for hint
+                    return false;
+                }
+                else {
                     return true;
                 }
             }
@@ -107,17 +162,14 @@ public class Reports extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                reportType = (String) parent.getItemAtPosition(position);
+                String selectedItemText = (String) parent.getItemAtPosition(position);
                 // If user change the default selection
                 // First item is disable and it is used for hint
                 if (position > 0) {
                     // Notify the selected item text
-
                     Toast.makeText
-                            (getApplicationContext(), "Field Selected : " + reportType, Toast.LENGTH_SHORT)
+                            (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
                             .show();
-
-
                 }
             }
 
@@ -126,26 +178,6 @@ public class Reports extends AppCompatActivity {
 
             }
         });
-
-        ImageButton searchButton = (ImageButton)findViewById(R.id.searchButton);
-        if (searchButton != null) {
-            searchButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    EditText answerOfIA = (EditText)findViewById(R.id.answerOfIA);
-                    if(!answerOfIA.getText().toString().isEmpty()){
-                        String answer = answerOfIA.getText().toString();
-
-                        String[] reportFields = {reportType, answer};
-                        SendReportType sendReport = new SendReportType();
-                        sendReport.execute(reportFields);
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "No field selected", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
 
     }
 
@@ -179,75 +211,6 @@ public class Reports extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    class SendReportType extends AsyncTask<String, Void, Void> {
-
-        @Override
-        protected Void doInBackground(String... args){
-            Log.d("enter", "entered function");
-            HttpURLConnection client = null;
-
-            String reportTypeSelection = args[0];
-            String reportTypeValue = args[1];
-
-            try{
-                JSONObject reportObject = new JSONObject();
-                if(reportTypeSelection.equals("Base Location")){
-                    reportObject.put("location", reportTypeValue);
-                }
-                else if(reportTypeSelection.equals("Vendor")){
-                    reportObject.put("vendor",reportTypeValue);
-                }
-
-                Log.d("reportObject", reportObject.toString());
-
-                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/report");
-
-                client = (HttpURLConnection) url.openConnection();
-                client.setRequestMethod("POST");
-                client.setRequestProperty("Content-Type", "application/json");
-                client.setRequestProperty("Accept", "application/json");
-                client.setDoOutput(true);
-
-                OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
-                Log.d("profile", reportObject.toString());
-                wr.write(reportObject.toString());
-                wr.flush();
-                wr.close();
-
-                Log.d("output", "output stream");
-
-                StringBuilder sb = new StringBuilder();
-                int HttpResult = client.getResponseCode();
-                if (HttpResult == HttpURLConnection.HTTP_OK) {
-                    BufferedReader br = new BufferedReader(
-                            new InputStreamReader(client.getInputStream()));
-                    String line = null;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                    br.close();
-                    Log.d("reportResponse", sb.toString());
-
-                    System.out.println("" + sb.toString());
-
-
-                } else {
-                    Log.d("hello", client.getResponseMessage());
-                    System.out.println("Server response: " + client.getResponseMessage());
-                }
-
-
-            }catch(Exception o) {
-                o.printStackTrace();
-            }finally {
-                if(client != null) // Make sure the connection is not null.
-                    client.disconnect();
-            }
-
-            return null;
-        }
     }
 
 }

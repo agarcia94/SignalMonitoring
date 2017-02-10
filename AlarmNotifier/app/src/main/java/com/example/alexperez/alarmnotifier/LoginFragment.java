@@ -29,8 +29,9 @@ import java.net.URL;
 public class LoginFragment extends Fragment {
     private boolean match = false;
     private JSONObject userProfile = new JSONObject();
+    View rootView = null;
 
-    final String IP_ADDRESS = "192.168.0.12";
+    final String IP_ADDRESS = "192.168.43.253";
     //final String IP_ADDRESS = "10.85.41.232";
     //final String IP_ADDRESS = "192.168.1.8";
 
@@ -41,7 +42,8 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        //final View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
         Button login = (Button)rootView.findViewById(R.id.login);
 
@@ -66,25 +68,6 @@ public class LoginFragment extends Fragment {
                     SendUserData data = new SendUserData();
                     data.execute(userFacts);
 
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable(){
-                        @Override
-                        public void run(){
-                            if(match){
-                                match = false; //Set match to false to reset the match for the next user
-                                Toast.makeText(rootView.getContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                                SaveSharedPreference.setNameAppendSubs(getActivity(), userProfile.toString());
-                                Log.d("SSP", "this is " + SaveSharedPreference.getUserName(getActivity()));
-                                Intent intent = new Intent(getActivity(), Anomaly.class);
-                                intent.putExtra("profile", userProfile.toString());
-                                startActivity(intent);
-                            }
-                            else{
-                                Toast.makeText(rootView.getContext(), "No record found", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }, 1000);
-
                     return true;
                 }
                 return false;
@@ -104,27 +87,7 @@ public class LoginFragment extends Fragment {
 
                 SendUserData data = new SendUserData();
                 data.execute(userFacts);
-
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable(){
-                    @Override
-                    public void run(){
-                        if(match){
-                            match = false; //Set match to false to reset the match for the next user
-                            Toast.makeText(rootView.getContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                            SaveSharedPreference.setNameAppendSubs(getActivity(), userProfile.toString());
-                            Log.d("SSP", "this is " + SaveSharedPreference.getUserName(getActivity()));
-                            Intent intent = new Intent(getActivity(), Anomaly.class);
-                            intent.putExtra("profile", userProfile.toString());
-                            startActivity(intent);
-                        }
-                        else{
-                            Toast.makeText(rootView.getContext(), "No record found", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, 1000);
-
-
+                
             }
         });
 
@@ -143,16 +106,6 @@ public class LoginFragment extends Fragment {
         return rootView;
     }
 
-//   public class SendUserData extends AsyncTaskLoader<Void>{
-//        public SendUserData(Context context, String args) {
-//            super(context);
-//        }
-//
-//        @Override
-//        public Void loadInBackground(){
-//            return null;
-//        }
-//    }
 
     class SendUserData extends AsyncTask<String, Void, Void> {
         @Override
@@ -219,6 +172,22 @@ public class LoginFragment extends Fragment {
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void item){
+            if(match){
+                match = false; //Set match to false to reset the match for the next user
+                Toast.makeText(rootView.getContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                SaveSharedPreference.setNameAppendSubs(getActivity(), userProfile.toString());
+                Log.d("SSP", "this is " + SaveSharedPreference.getUserName(getActivity()));
+                Intent intent = new Intent(getActivity(), Anomaly.class);
+                intent.putExtra("profile", userProfile.toString());
+                startActivity(intent);
+            }
+            else{
+                Toast.makeText(rootView.getContext(), "No record found", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

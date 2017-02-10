@@ -33,7 +33,7 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     private ArrayList<String> ackData;
 
     //final String IP_ADDRESS = "10.85.41.232";
-    final static String IP_ADDRESS = "192.168.0.12";
+    final static String IP_ADDRESS = "192.168.43.253";
     //final String IP_ADDRESS = "192.168.1.8";
 
     public AnomalyFragment() {
@@ -128,7 +128,7 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                     String itemInAdapter = adapter.getItem(i);
                     JSONArray alarmArray = alarmJSON.getJSONArray("alarms");
 
-                    for(int j = 0; j < alarmArray.length(); j++){
+                    for (int j = 0; j < alarmArray.length(); j++) {
                         JSONObject currentAlarm = alarmArray.getJSONObject(j);
                         String parameter = currentAlarm.getString("parameter");
 
@@ -139,9 +139,9 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                         String antenna = antennaAbbreviationArray[0];
                         String abbreviation = antennaAbbreviationArray[1];
 
-                        if(parameter.contains(anomalyName)
+                        if (parameter.contains(anomalyName)
                                 && parameter.contains(antenna)
-                                && parameter.contains(abbreviation)){
+                                && parameter.contains(abbreviation)) {
 
                             intent.putExtra("alarm", currentAlarm.toString());
                             break;
