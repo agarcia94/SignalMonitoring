@@ -35,7 +35,7 @@ public class SurveyFragment extends Fragment {
     private String userProfile = "";
 
     //final String IP_ADDRESS = "10.85.43.2";
-    final String IP_ADDRESS = "192.168.43.253";
+    final String IP_ADDRESS = "10.85.47.144";
     //final String IP_ADDRESS = "192.168.1.8";
 
 

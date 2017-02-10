@@ -1,41 +1,34 @@
 package com.example.alexperez.alarmnotifier;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ReportsFragment extends Fragment {
+public class ComparisonsReportsFragment extends Fragment {
     private String userProfile = "";
-    final String IP_ADDRESS = "10.85.47.144";
-    //final String IP_ADDRESS = "192.168.1.67";
-    //final String IP_ADDRESS = "192.168.1.8";
 
-    public ReportsFragment() {
+    public ComparisonsReportsFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_reports, container, false);
-
-        EditText typeOfProb = (EditText)rootView.findViewById(R.id.type_Of_Problem);
-        String userString = typeOfProb.getText().toString().trim();
+        final View rootView = inflater.inflate(R.layout.fragment_comparisons_reports, container, false);
 
         ImageButton home = (ImageButton)rootView.findViewById(R.id.home);
-        home.setOnClickListener(new View.OnClickListener() {
+        home.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
+            public void onClick(View v){
                 Intent intent = new Intent(getActivity(), Anomaly.class);
                 userProfile = getActivity().getIntent().getStringExtra("profile");
-                intent.putExtra("profile", userProfile);
+                intent.putExtra("profile",userProfile);
                 startActivity(intent);
             }
         });
@@ -51,16 +44,6 @@ public class ReportsFragment extends Fragment {
             }
         });
 
-        ImageButton searchButton = (ImageButton)rootView.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ReportsPastData.class);
-                userProfile = getActivity().getIntent().getStringExtra("profile");
-                intent.putExtra("profile",userProfile);
-                startActivity(intent);
-            }
-        });
         return rootView;
     }
 }

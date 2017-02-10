@@ -50,7 +50,6 @@ public class Anomaly extends AppCompatActivity {
         mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         addDrawerItems();
-
     }
 
 
@@ -93,7 +92,13 @@ public class Anomaly extends AppCompatActivity {
                     userProfile = getIntent().getStringExtra("profile");
                     i.putExtra("profile", userProfile);
                     startActivity(i);
-                } else {
+                }else if (mAdapter.getItem(position).equals("          Comparison Reports")){
+                    Intent i = new Intent(getApplicationContext(), ComparisonsReports.class);
+                    userProfile = getIntent().getStringExtra("profile");
+                    i.putExtra("profile", userProfile);
+                    startActivity(i);
+                }
+                else {
                     Toast.makeText(Anomaly.this, "Head To That Function", Toast.LENGTH_SHORT).show();
                 }
             }

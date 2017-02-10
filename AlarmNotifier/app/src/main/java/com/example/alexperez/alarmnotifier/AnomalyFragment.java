@@ -33,7 +33,7 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     private ArrayList<String> ackData;
 
     //final String IP_ADDRESS = "10.85.41.232";
-    final static String IP_ADDRESS = "192.168.43.253";
+    final static String IP_ADDRESS = "192.168.1.6";
     //final String IP_ADDRESS = "192.168.1.8";
 
     public AnomalyFragment() {
