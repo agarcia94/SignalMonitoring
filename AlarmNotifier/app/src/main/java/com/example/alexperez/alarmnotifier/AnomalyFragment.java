@@ -182,44 +182,24 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                     if(ackAlarms == false) {
                         /*JSONObject userInfo = new JSONObject(userProfile);
                         String location = userInfo.getString("location");*/
-                        String[] subsArr = SaveSharedPreference.getSubLocations(getActivity());
-                        Log.d("subLoc", subsArr.toString());
-                        for(int s = 0; s < subsArr.length; s++){
-                            Log.d("subLoc", subsArr[s]);
-                            if(parameterItems.contains(subsArr[s])){
-                                String[] parameterFields = parameterItems.split("-");
+                        String[] parameterFields = parameterItems.split("-");
 
-                                String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                                for(int j = 0; j < anomalyNameArray.length; j++){
-                                    System.out.println("anomaly name: " + anomalyNameArray[j]);
-                                }
-
-                                String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                                ackData.add(alarmInfo);
-                                break;
-                            }
+                        String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                        for(int j = 0; j < anomalyNameArray.length; j++){
+                            System.out.println("anomaly name: " + anomalyNameArray[j]);
                         }
+
+                        String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                        ackData.add(alarmInfo);
 
                     }
 
                     if(ackAlarms == true){
-                        /*JSONObject userInfo = new JSONObject(userProfile);
-                        String location = userInfo.getString("location");*/
-                        String[] subsArr = SaveSharedPreference.getSubLocations(getActivity());
-                        for(int s = 0; s < subsArr.length; s++){
-                            if(parameterItems.contains(subsArr[s])){
-                                String[] parameterFields = parameterItems.split("-");
 
-                                String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                                for(int j = 0; j < anomalyNameArray.length; j++){
-                                    System.out.println("anomaly name: " + anomalyNameArray[j]);
-                                }
-
-                                String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                        String[] parameterFields = parameterItems.split("-");
+                        String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                        String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
                                 data.add(alarmInfo);
-                                break;
-                            }
-                        }
                     }
                 }
             }catch(JSONException o){

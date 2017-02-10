@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -97,7 +96,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://" + IP_ADDRESS +":8080/UserManagement/MongoService/register"));
+                        Uri.parse("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/register"));
 
 
                 startActivity(browserIntent);
@@ -126,7 +125,7 @@ public class LoginFragment extends Fragment {
                 userProfile.put("password", password);
 
                 //URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/login");
-                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/login");
+                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/login");
 
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");

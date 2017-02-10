@@ -12,13 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -312,7 +309,7 @@ public class DetailsFragment extends Fragment {
             String location = args[0];
 
             try{
-                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/report");
+                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/report");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
@@ -378,7 +375,7 @@ public class DetailsFragment extends Fragment {
             try{
                 alarmACK.put("alarm",alarmID);
 
-                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/ack");
+                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/ack");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
@@ -435,7 +432,7 @@ public class DetailsFragment extends Fragment {
 
             try{
 
-                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/alarms");
+                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/alarms");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
