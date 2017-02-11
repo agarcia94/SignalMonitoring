@@ -55,6 +55,7 @@ public class SubscribeActivity extends AppCompatActivity {
         switches.put("CBC", R.id.sw_CBC);
         switches.put("CRBC", R.id.sw_CRBC);
         switches.put("CRDF", R.id.sw_CRDF);
+        switches.put("ECUF", R.id.sw_ECUF);
         switches.put("MWUF", R.id.sw_MWUF);
         switches.put("MWDF", R.id.sw_MWDF);
         switches.put("NEUF", R.id.sw_NEUF);

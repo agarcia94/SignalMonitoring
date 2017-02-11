@@ -31,6 +31,8 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     static JSONObject alarmJSON;
     private ArrayList<String> data;
     private ArrayList<String> ackData;
+    private TextView load1;
+    private TextView load2;
 
     //final String IP_ADDRESS = "10.85.41.232";
     final static String IP_ADDRESS = "192.168.1.6";
@@ -43,6 +45,8 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onStart() {
         super.onStart();
+        load1.setVisibility(View.VISIBLE);
+        load2.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -55,6 +59,9 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
         ackAlarms = (ListView)rootView.findViewById(R.id.ackAlarmsList);
         data = new ArrayList<>();
         ackData = new ArrayList<>();
+        load1 = (TextView) rootView.findViewById(R.id.loading1);
+        load2 = (TextView) rootView.findViewById(R.id.loading2);
+
         userProfile = SaveSharedPreference.getUserName(getActivity());
         String username = "";
         String location = "";
@@ -207,7 +214,8 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
             }
 
         }
-
+        load1.setVisibility(View.GONE);
+        load2.setVisibility(View.GONE);
         adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, ackData); //acknowledged alarms
         currentAdapter = new ArrayAdapter(getActivity(), R.layout.crow, R.id.textView, data); //current alarms
 
@@ -221,4 +229,12 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
         alarmJSON = null;
     }
 
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        alarmJSON = new JSONObject();
+        data = new ArrayList<String>();
+        ackData = new ArrayList<String>();
+        getLoaderManager().initLoader(1, null, this).forceLoad();
+    }
 }

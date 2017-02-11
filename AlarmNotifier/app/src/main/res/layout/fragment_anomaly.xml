@@ -7,7 +7,29 @@
 
         tools:context="com.example.alexperez.alarmnotifier.AnomalyFragment">
 
-        <TextView
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Loading..."
+        android:textColor="#B17575"
+        android:id="@+id/loading1"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/cAlarmsText"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Loading..."
+        android:textColor="#B17575"
+        android:id="@+id/loading2"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/ackAlarmText"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -44,7 +66,7 @@
             android:layout_below="@+id/location"
             android:layout_centerHorizontal="true" />
 
-        <ListView
+    <ListView
             android:layout_width="wrap_content"
             android:layout_height="300dp"
             android:id="@+id/cAlarmList"
@@ -63,12 +85,12 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
 
-        <ListView
+    <ListView
             android:id="@+id/ackAlarmsList"
             android:layout_width="wrap_content"
             android:layout_height="150dp"
             android:layout_marginTop="8dp"
-            android:layout_below="@+id/ackAlarmText"
+            android:layout_below="@+id/loading2"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true" />
 
