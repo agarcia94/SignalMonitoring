@@ -41,9 +41,8 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onStart() {
         super.onStart();
-        load1.setVisibility(View.VISIBLE);
-        load2.setVisibility(View.VISIBLE);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +56,8 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
         ackData = new ArrayList<>();
         load1 = (TextView) rootView.findViewById(R.id.loading1);
         load2 = (TextView) rootView.findViewById(R.id.loading2);
-
+        load1.setVisibility(View.VISIBLE);
+        load2.setVisibility(View.VISIBLE);
         // Get user information from application context
         userProfile = SaveSharedPreference.getUserName(getActivity());
 

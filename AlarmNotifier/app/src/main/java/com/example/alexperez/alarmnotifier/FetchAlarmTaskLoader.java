@@ -30,7 +30,7 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
 
     @Override
     protected void onStartLoading() {
-        forceLoad();
+        super.onStartLoading();
     }
 
     @Override
@@ -99,8 +99,9 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
                 Log.d("hello", o.toString());
                 o.printStackTrace();
             }finally {
-                if(client != null) // Make sure the connection is not null.
+                if (client != null) {// Make sure the connection is not null.
                     client.disconnect();
+                }
             }
 
         }
