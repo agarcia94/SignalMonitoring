@@ -30,12 +30,7 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
 
     @Override
     protected void onStartLoading() {
-        if(AnomalyFragment.alarmJSON == null){
-            forceLoad();
-        }else{
-            super.deliverResult(AnomalyFragment.alarmJSON);
-        }
-
+        forceLoad();
     }
 
     @Override
@@ -109,14 +104,11 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
             }
 
         }
-
-        AnomalyFragment.alarmJSON = jsonParent;
         return jsonParent;
     }
 
     @Override
     public void deliverResult(JSONObject data) {
-        AnomalyFragment.alarmJSON = data;
         super.deliverResult(data);
     }
 

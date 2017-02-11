@@ -39,7 +39,9 @@ public class Details extends AppCompatActivity {
 
     private void addDrawerItems() {
         final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons_detail);
-        String[] array = { "          Home","          Reports","          Subscription", "          Logout" };
+        String[] array = { "          Home","          Reports",
+                "          Subscription","          Comparison Reports",
+                "          Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setAdapter(new ArrayAdapter<String>(
@@ -82,6 +84,11 @@ public class Details extends AppCompatActivity {
                     startActivity(i);
                 } else if (mAdapter.getItem(position).equals("          Subscription")){
                     Intent i = new Intent(getApplicationContext(), Reports.class);
+                    startActivity(i);
+                }else if (mAdapter.getItem(position).equals("          Comparison Reports")){
+                    Intent i = new Intent(getApplicationContext(), ComparisonsReports.class);
+                    userProfile = getIntent().getStringExtra("profile");
+                    i.putExtra("profile", userProfile);
                     startActivity(i);
                 }
                 else {

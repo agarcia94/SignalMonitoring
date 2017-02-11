@@ -55,7 +55,8 @@ public class Anomaly extends AppCompatActivity {
 
     private void addDrawerItems() {
         final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons_anomaly);
-        String[] array = { "          Reports", "          Subscription", "          Logout" };
+        String[] array = { "          Reports", "          Subscription", "          Comparison Reports",
+                "          Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(new ArrayAdapter<String>(
                 this,
