@@ -45,12 +45,6 @@ public class DetailsFragment extends Fragment {
     private JSONObject testAlarmJSON = null;
 
 
-    //IP ADDRESS
-    //final String IP_ADDRESS = "10.85.41.232";
-    final String IP_ADDRESS = "10.85.47.144";
-    //final String IP_ADDRESS = "192.168.1.8";
-
-
     public DetailsFragment() {
         // Required empty public constructor
     }
@@ -473,6 +467,9 @@ public class DetailsFragment extends Fragment {
 
             }catch(IOException o){
                 o.printStackTrace();
+            }finally {
+                if(urlConnection != null) // Make sure the connection is not null.
+                    urlConnection.disconnect();
             }
 
             return null;
@@ -506,6 +503,9 @@ public class DetailsFragment extends Fragment {
 
             }catch(JSONException o){
                 o.printStackTrace();
+            }
+            finally{
+
             }
 
 
