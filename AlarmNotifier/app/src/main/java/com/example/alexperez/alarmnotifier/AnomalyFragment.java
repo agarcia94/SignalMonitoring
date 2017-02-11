@@ -43,7 +43,6 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onStart() {
         super.onStart();
-        getLoaderManager().initLoader(1, null, this).forceLoad();
     }
 
     @Override
@@ -66,6 +65,7 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
 
             if (location.length() > 0){
                 FirebaseMessaging.getInstance().subscribeToTopic(location);
+                getLoaderManager().initLoader(1, null, this).forceLoad();
             }
         } catch (JSONException e) {
             e.printStackTrace();
