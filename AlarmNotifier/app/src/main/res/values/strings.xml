@@ -49,4 +49,5 @@
     <string name="title_activity_subscribe">subscribeActivity</string>
     <string name="title_activity_reports_past_data">ReportsPastData</string>
     <string name="title_activity_comparisons_reports">ComparisonsReports</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 </resources>
