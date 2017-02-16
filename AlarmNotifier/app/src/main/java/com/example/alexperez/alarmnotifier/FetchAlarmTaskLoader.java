@@ -39,7 +39,6 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
         BufferedReader reader = null;
         JSONObject jsonResponse = null;
         String alarmJSONStr = null;
-        JSONObject jsonParent = null;
         JSONObject locInfo = new JSONObject();
         JSONArray subs = new JSONArray();
         List<String> list = new ArrayList<String>();
@@ -47,17 +46,11 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
         try {
             locInfo = new JSONObject(SaveSharedPreference.getUserName(ctx));
             subs = locInfo.getJSONArray("subs");
-            jsonParent = new JSONObject().put("alarms", new JSONArray());
-            for (int i=0; i<subs.length(); i++) {
-                list.add( subs.getString(i) );
-            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        for(int i = 0; i < list.size(); i++){
             try{
-                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/report");
+                URL url = new URL("http://192.168.0.12:8080/UserManagement/MongoService/alarmsByLocation");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
@@ -66,7 +59,7 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
 
                 OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
                 JSONObject userInfo = new JSONObject();
-                userInfo.put("location", list.get(i));
+                userInfo.put("locationArray", subs);
 
                 wr.write(userInfo.toString());
                 wr.flush();
@@ -82,19 +75,12 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
                         sb.append(line + "\n");
                     }
                     br.close();
-                    if(sb.toString().length() > 0){
+                    if(sb.toString().length() > 0)
                         jsonResponse = new JSONObject(sb.toString());
-                        JSONArray currResponse = jsonResponse.getJSONArray("alarms");
-                        JSONArray temp = new JSONArray();
-                        temp = concatArray(jsonParent.getJSONArray("alarms"), currResponse);
-                        jsonParent.put("alarms", temp);
-                    }
-
+                    else return null;
                 } else {
                     System.out.println("Server response: " + client.getResponseMessage());
                 }
-
-
             }catch(Exception o) {
                 Log.d("hello", o.toString());
                 o.printStackTrace();
@@ -103,9 +89,7 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
                     client.disconnect();
                 }
             }
-
-        }
-        return jsonParent;
+        return jsonResponse;
     }
 
     @Override
@@ -113,14 +97,4 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
         super.deliverResult(data);
     }
 
-    private JSONArray concatArray(JSONArray... arrs)
-            throws JSONException {
-        JSONArray result = new JSONArray();
-        for (JSONArray arr : arrs) {
-            for (int i = 0; i < arr.length(); i++) {
-                result.put(arr.get(i));
-            }
-        }
-        return result;
-    }
 }

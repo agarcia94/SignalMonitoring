@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,9 +65,6 @@ public class SurveyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(getActivity(), Anomaly.class);
-                userProfile = getActivity().getIntent().getStringExtra("profile");
-                intent.putExtra("profile", userProfile);
-
                 TextView date = (TextView)rootView.findViewById(R.id.Date);
                 String[] dateInfo = date.getText().toString().split(": ");
                 String timestamp = dateInfo[1].trim();
@@ -111,7 +107,6 @@ public class SurveyFragment extends Fragment {
                 if(!answerOfIA.getText().toString().isEmpty())
                     IAanswerInfo = answerOfIA.getText().toString();
 
-
                 if(isOtherResolutionType){
                     EditText other = (EditText)rootView.findViewById(R.id.other);
                     if(other.getText().toString().isEmpty())
@@ -119,7 +114,6 @@ public class SurveyFragment extends Fragment {
                     else
                         resolutionType = other.getText().toString();
                 }
-
 
                 //Log.d("arrayYeah",answerOfIA.getText().toString());
 
@@ -178,7 +172,7 @@ public class SurveyFragment extends Fragment {
             String parameter = alarmObject.getString("parameter");
 
             TextView name = (TextView)rootView.findViewById(R.id.name);
-            userProfile = getActivity().getIntent().getStringExtra("profile");
+            userProfile = SaveSharedPreference.getUserName(getActivity());
 
             JSONObject userInfo = new JSONObject(userProfile);
             String username = userInfo.getString("username");
@@ -325,9 +319,6 @@ public class SurveyFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 outageDuration = parent.getItemAtPosition(position).toString();
-//                Toast.makeText(parent.getContext(),
-//                        "OnItemSelectedListener : " + outageDuration,
-//                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -335,8 +326,6 @@ public class SurveyFragment extends Fragment {
 
             }
         });
-
-        Log.d("surveyProfile", getActivity().getIntent().getStringExtra("profile"));
 
         return rootView;
     }
@@ -351,10 +340,8 @@ public class SurveyFragment extends Fragment {
             String survey = args[0];
 
             try{
-
-
                 //URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/login");
-                URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/survey");
+                URL url = new URL("http://192.168.0.12:8080/UserManagement/MongoService/survey");
 
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");

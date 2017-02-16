@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,8 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -41,8 +38,10 @@ public class DetailsFragment extends Fragment {
     private JSONArray reportMatches;
     private String userProfile = "";
     private String alarmID = "";
-    private boolean ackAlarmList = false;
     private JSONObject testAlarmJSON = null;
+    private AlertDialog.Builder builder = null;
+    private String detailString = null;
+    private Button accept;
 
 
     public DetailsFragment() {
@@ -55,8 +54,8 @@ public class DetailsFragment extends Fragment {
 
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
+        builder = new AlertDialog.Builder(getActivity());
+        accept = (Button)rootView.findViewById(R.id.accept);
         //TEST PURPOSE FOR LISTVIEW ON DETAILS
 //        pastAnomListView = (ListView)rootView.findViewById(R.id.pastAnomListView);
 //        results.add(0,"Hello");
@@ -64,8 +63,7 @@ public class DetailsFragment extends Fragment {
 //        simPastAnomaliesAdap = new ArrayAdapter(getActivity(), R.layout.past_anomalies_custom, R.id.textView, results);
 //        pastAnomListView.setAdapter(simPastAnomaliesAdap);
 
-        final Intent intent = getActivity().getIntent();
-        final String detailString = intent.getStringExtra("details");
+        Intent intent = getActivity().getIntent();
         String alarmJSON = intent.getStringExtra("alarm");
         Log.d("alarm", alarmJSON);
 
@@ -84,6 +82,11 @@ public class DetailsFragment extends Fragment {
             String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
             String fault = anomalyNameArray[1];
             int nameIndex = fault.indexOf("(");
+            boolean requiresAcknowledgement = alarmObject.getBoolean("requiresAcknowledgment");
+            if(!requiresAcknowledgement) {
+                accept.setEnabled(false);
+                accept.setOnClickListener(null);
+                accept.setBackgroundColor(Color.GRAY);}
 
             if(nameIndex != -1){
                 fault = fault.substring(0,nameIndex);
@@ -117,103 +120,16 @@ public class DetailsFragment extends Fragment {
         }
 
         TextView tv = (TextView)rootView.findViewById(R.id.detailsText);
+        detailString = intent.getStringExtra("details");
         tv.setText(detailString);
 
         Log.d("detailsProfile", getActivity().getIntent().getStringExtra("profile"));
 
-        try {
-            JSONObject alarmObject = new JSONObject(alarmJSON);
-            boolean requiresAcknowledgement = alarmObject.getBoolean("requiresAcknowledgment");
-            if(!requiresAcknowledgement) {
-                Button accept = (Button)rootView.findViewById(R.id.accept);
-                accept.setEnabled(false);
-                accept.setBackgroundColor(Color.GRAY);
-
-                //ackAlarmList = true;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        final Button accept = (Button)rootView.findViewById(R.id.accept);
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 FetchAlarmTask verifyAlarm = new FetchAlarmTask();
                 verifyAlarm.execute();
-
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (ackAlarmList) { // if matching record in database needs acknowledgement
-                            Intent intent = new Intent(getActivity(), Survey.class);
-
-                            System.out.println("AlarmID: " + alarmID);
-                            String[] ackID = {alarmID};
-
-                            SendACK data = new SendACK();
-                            data.execute(ackID);
-
-                            //Start The Survey Page
-                            intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
-                            intent.putExtra("alarm",getActivity().getIntent().getStringExtra("alarm"));
-                            startActivity(intent);
-                        } else { // if matching record in database has already been acknowledged
-                            builder.setTitle(detailString);
-                            builder.setIcon(R.drawable.exit).show();
-                            builder.setMessage("Alarm Has Been Acknowledged");
-                            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    Intent intent = new Intent(getActivity(), Anomaly.class);
-                                    userProfile = getActivity().getIntent().getStringExtra("profile");
-                                    intent.putExtra("profile", userProfile);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    //intent.putExtra("alarm", getActivity().getIntent().getStringExtra("alarm"));
-                                    //intent.putExtra("details", getActivity().getIntent().getStringExtra("details"));
-                                    startActivity(intent);
-                                }
-                            });
-                        }
-                    }
-                }, 1000);
-
-
-                //If Alarm does not exist within Acknowledged List
-                //Then it has not yet been accepted, redirect user to Survey
-//                if(!ackAlarmList){
-//                    Intent intent = new Intent(getActivity(), Survey.class);
-//
-//                    System.out.println("AlarmID: " + alarmID);
-//                    String[] ackID = {alarmID};
-//
-//                    SendACK data = new SendACK();
-//                    data.execute(ackID);
-//
-//                    //Start The Survey Page
-//                    intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
-//                    intent.putExtra("alarm",getActivity().getIntent().getStringExtra("alarm"));
-//                    startActivity(intent);
-//                }
-//                //If It exists in Acknowledged alram list, than tell user
-//                //it has been accepted and redirect him/her to same page
-//                else{
-//                    builder.setTitle(detailString);
-//                    builder.setIcon(R.drawable.exit).show();
-//                    builder.setMessage("Alarm Has Been Acknowledged");
-//                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            Intent intent = new Intent(getActivity(), Details.class);
-//                            userProfile = getActivity().getIntent().getStringExtra("profile");
-//                            intent.putExtra("profile", userProfile);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                            intent.putExtra("alarm", getActivity().getIntent().getStringExtra("alarm"));
-//                            intent.putExtra("details", getActivity().getIntent().getStringExtra("details"));
-//                            startActivity(intent);
-//                        }
-//                    });
-//                }
             }
         });
 
@@ -222,8 +138,6 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(getActivity(), Anomaly.class);
-                userProfile = getActivity().getIntent().getStringExtra("profile");
-                intent.putExtra("profile",userProfile);
                 startActivity(intent);
             }
         });
@@ -232,44 +146,8 @@ public class DetailsFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if AckAlarmList is False, it means we are in Current Alarms Listview
-                //Meaning we need to use pops up to see if user wasnts to decline
-                if(!ackAlarmList){
-                    builder.setTitle(detailString);
-                    builder.setIcon(R.drawable.exit).show();
-                    builder.setMessage("Would you Like To Decline Responsibility? ");
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent intent = new Intent(getActivity(), Anomaly.class);
-                            userProfile = getActivity().getIntent().getStringExtra("profile");
-                            intent.putExtra("profile", userProfile);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                        }
-                    });
-                    builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent intent = new Intent(getActivity(), Details.class);
-                            userProfile = getActivity().getIntent().getStringExtra("profile");
-                            intent.putExtra("profile", userProfile);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.putExtra("alarm", getActivity().getIntent().getStringExtra("alarm"));
-                            //intent.putExtra("profile",getActivity().getIntent().getStringExtra("profile"));
-                            intent.putExtra("details", getActivity().getIntent().getStringExtra("details"));
-                            startActivity(intent);
-                        }
-                    });
-                    builder.show();
-                }
-                //We are in AckAlarms, were the user is just viewing the alarms that has been Ack
-                //Popup is not needed in this case
-                else{
-                    Intent intent = new Intent(getActivity(), Anomaly.class);
-                    userProfile = getActivity().getIntent().getStringExtra("profile");
-                    intent.putExtra("profile", userProfile);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(getActivity(), Anomaly.class);
+                startActivity(intent);
             }
         });
 
@@ -278,15 +156,96 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), Reports.class);
-                userProfile = getActivity().getIntent().getStringExtra("profile");
-                intent.putExtra("profile", userProfile);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
-
-
         return rootView;
+    }
+
+    class FetchAlarmTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void...voids){
+            HttpURLConnection client = null;
+            BufferedReader reader = null;
+            String alarmJSONStr = null;
+
+            try{
+                URL url = new URL("http://192.168.0.12:8080/UserManagement/MongoService/isReqAckd");
+                client = (HttpURLConnection) url.openConnection();
+                client.setRequestMethod("POST");
+                client.setRequestProperty("Content-Type", "application/json");
+                client.setRequestProperty("Accept", "application/json");
+                client.setDoOutput(true);
+
+                OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
+                JSONObject alarmJSON = new JSONObject(getActivity().getIntent().getStringExtra("alarm"));
+                String oid = alarmJSON.getJSONObject("_id").getString("$oid");
+                Log.d("oid", oid);
+                JSONObject userInfo = new JSONObject();
+                userInfo.put("_id", oid);
+
+                wr.write(userInfo.toString());
+                wr.flush();
+                wr.close();
+
+                StringBuilder sb = new StringBuilder();
+                int HttpResult = client.getResponseCode();
+                if (HttpResult == HttpURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(
+                            new InputStreamReader(client.getInputStream()));
+                    String line = null;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+                    if(sb.toString().length() > 0) {
+                        JSONObject response = new JSONObject(sb.toString());
+                        Log.d("isReqAckd", response.toString());
+                        Boolean uh = response.getBoolean("isReqAckd");
+                        Log.d("isReqAckd", uh.toString());
+                        return uh;
+                    }
+                    else return null;
+                } else {
+                    System.out.println("Server response: " + client.getResponseMessage());
+                }
+            }catch(Exception o) {
+                Log.d("hello", o.toString());
+                o.printStackTrace();
+            }finally {
+                if (client != null) {// Make sure the connection is not null.
+                    client.disconnect();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isReqAckd) {
+            super.onPostExecute(isReqAckd);
+            if(isReqAckd){
+                Intent intent = new Intent(getActivity(), Survey.class);
+                System.out.println("AlarmID: " + alarmID);
+                String[] ackID = {alarmID};
+                SendACK data = new SendACK();
+                data.execute(ackID);
+
+                //Start The Survey Page
+                intent.putExtra("alarm", getActivity().getIntent().getStringExtra("alarm"));
+                startActivity(intent);
+            }else{
+                builder.setTitle(detailString);
+                builder.setIcon(R.drawable.exit).show();
+                builder.setMessage("Alarm Has Been Acknowledged");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(getActivity(), Anomaly.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+        }
     }
 
     class SendLocationData extends AsyncTask<String, Void, Void> {
@@ -303,7 +262,7 @@ public class DetailsFragment extends Fragment {
             String location = args[0];
 
             try{
-                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/report");
+                URL url = new URL("http://192.168.0.12:8080/UserManagement/MongoService/report");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
@@ -311,7 +270,7 @@ public class DetailsFragment extends Fragment {
                 client.setDoOutput(true);
 
                 JSONObject locationInfo = new JSONObject();
-                locationInfo.put("location",location);
+                locationInfo.put("location", location);
 
                 OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
                 Log.d("locationProfile", locationInfo.toString());
@@ -348,7 +307,6 @@ public class DetailsFragment extends Fragment {
                 if(client != null) // Make sure the connection is not null.
                     client.disconnect();
             }
-
             return null;
         }
     }
@@ -369,7 +327,7 @@ public class DetailsFragment extends Fragment {
             try{
                 alarmACK.put("alarm",alarmID);
 
-                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/ack");
+                URL url = new URL("http://192.168.0.12:8080/UserManagement/MongoService/ack");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
@@ -402,115 +360,14 @@ public class DetailsFragment extends Fragment {
                     Log.d("hello", client.getResponseMessage());
                     System.out.println("Server response: " + client.getResponseMessage());
                 }
-
-
             }catch(Exception o) {
                 o.printStackTrace();
             }finally {
                 if(client != null) // Make sure the connection is not null.
                     client.disconnect();
             }
-
             return null;
         }
     }
-
-    class FetchAlarmTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void...voids){
-            HttpURLConnection urlConnection = null;
-            BufferedReader reader = null;
-
-            String alarmJSONStr = null;
-
-            try{
-
-                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/alarms");
-
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                // Read the input stream into a String
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                if (inputStream == null) {
-                    // Nothing to do.
-                    return null;
-                }
-
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging a *lot* easier if you print out the completed
-                    // buffer for debugging.
-                    buffer.append(line + "\n");
-                }
-
-                if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
-                    return null;
-                }
-
-                alarmJSONStr = buffer.toString();
-
-                try {
-                    testAlarmJSON = new JSONObject(alarmJSONStr);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                Log.d("alarm", alarmJSONStr);
-
-            }catch(IOException o){
-                o.printStackTrace();
-            }finally {
-                if(urlConnection != null) // Make sure the connection is not null.
-                    urlConnection.disconnect();
-            }
-
-            return null;
-
-        }
-
-        @Override
-        protected void onPostExecute(Void voidItem) {
-            super.onPostExecute(voidItem);
-
-            try{
-                JSONArray alarmArray = testAlarmJSON.getJSONArray("alarms");
-
-                for(int i = 0; i < alarmArray.length(); i++){
-                    JSONObject alarm = alarmArray.getJSONObject(i);
-                    String alarmIDNumber = alarm.getJSONObject("_id").getString("$oid");
-
-                    if(alarmIDNumber.equals(alarmID)){
-                        Log.d("alarmMatch", "true");
-                        Boolean ackAlarms = alarm.getBoolean("requiresAcknowledgment");
-                        if(ackAlarms){
-                            ackAlarmList = true;
-                            Log.d("ackAlarm", "true");
-                        }else{
-                            ackAlarmList = false;
-                            Log.d("ackAlarm","false");
-                        }
-                    }
-                }
-
-
-            }catch(JSONException o){
-                o.printStackTrace();
-            }
-            finally{
-
-            }
-
-
-        }
-    }
-
 
 }
