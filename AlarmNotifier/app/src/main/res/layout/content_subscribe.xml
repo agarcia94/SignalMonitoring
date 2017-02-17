@@ -5,20 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".SubscribeActivity"
     tools:showIn="@layout/activity_subscribe">
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:layout_above="@+id/btn_home"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_above="@+id/btn_home">
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/subTitle">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -167,14 +167,29 @@
     </ScrollView>
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
         android:textStyle="bold"
         android:textColor="#ffffffff"
         android:background="#3498DB"
         android:text="Go Back to Home Page ..."
         android:id="@+id/btn_home"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:background="#3498DB"
+        android:padding="5dp"
+        android:text="Subscribe to any stations to receive\n their notifications and information"
+        android:id="@+id/subTitle"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"/>
 
 </RelativeLayout>
