@@ -64,8 +64,8 @@ public class DetailsFragment extends Fragment {
 //        pastAnomListView.setAdapter(simPastAnomaliesAdap);
 
         Intent intent = getActivity().getIntent();
-        String alarmJSON = intent.getStringExtra("alarm");
-        Log.d("alarm", alarmJSON);
+        String alarmJSON = intent.getStringExtra("currAlarm");
+        //Log.d("currAlarm", alarmJSON);
 
         try {
             JSONObject alarmObject = new JSONObject(alarmJSON);
@@ -83,14 +83,6 @@ public class DetailsFragment extends Fragment {
             String fault = anomalyNameArray[1];
             int nameIndex = fault.indexOf("(");
             boolean requiresAcknowledgement = alarmObject.getBoolean("requiresAcknowledgment");
-            if(!requiresAcknowledgement) {
-                accept.setEnabled(false);
-                accept.setOnClickListener(null);
-                accept.setBackgroundColor(Color.GRAY);}
-
-            if(nameIndex != -1){
-                fault = fault.substring(0,nameIndex);
-            }
 
             JSONObject deviceAttributes = alarmObject.getJSONObject("deviceAttributes");
             String affectEquipment = deviceAttributes.getString("DeviceId");
@@ -114,6 +106,15 @@ public class DetailsFragment extends Fragment {
 
             TextView severityView = (TextView)rootView.findViewById(R.id.severity);
             severityView.setText(severityView.getText() + " " + severity);
+
+            if(!requiresAcknowledgement) {
+                accept.setEnabled(false);
+                accept.setOnClickListener(null);
+                accept.setBackgroundColor(Color.GRAY);}
+
+            if(nameIndex != -1){
+                fault = fault.substring(0,nameIndex);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -169,9 +170,8 @@ public class DetailsFragment extends Fragment {
             HttpURLConnection client = null;
             BufferedReader reader = null;
             String alarmJSONStr = null;
-
             try{
-                URL url = new URL("http://192.168.0.12:8080/UserManagement/MongoService/isReqAckd");
+                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/isReqAckd");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
@@ -179,7 +179,7 @@ public class DetailsFragment extends Fragment {
                 client.setDoOutput(true);
 
                 OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
-                JSONObject alarmJSON = new JSONObject(getActivity().getIntent().getStringExtra("alarm"));
+                JSONObject alarmJSON = new JSONObject(getActivity().getIntent().getStringExtra("currAlarm"));
                 String oid = alarmJSON.getJSONObject("_id").getString("$oid");
                 Log.d("oid", oid);
                 JSONObject userInfo = new JSONObject();
@@ -232,7 +232,7 @@ public class DetailsFragment extends Fragment {
                 data.execute(ackID);
 
                 //Start The Survey Page
-                intent.putExtra("alarm", getActivity().getIntent().getStringExtra("alarm"));
+                intent.putExtra("currAlarm", getActivity().getIntent().getStringExtra("currAlarm"));
                 startActivity(intent);
             }else{
                 builder.setTitle(detailString);
@@ -262,7 +262,7 @@ public class DetailsFragment extends Fragment {
             String location = args[0];
 
             try{
-                URL url = new URL("http://192.168.0.12:8080/UserManagement/MongoService/report");
+                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/report");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
@@ -327,7 +327,7 @@ public class DetailsFragment extends Fragment {
             try{
                 alarmACK.put("alarm",alarmID);
 
-                URL url = new URL("http://192.168.0.12:8080/UserManagement/MongoService/ack");
+                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/ack");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");
@@ -335,7 +335,7 @@ public class DetailsFragment extends Fragment {
                 client.setDoOutput(true);
 
                 OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
-                Log.d("alarm", alarmACK.toString());
+                Log.d("currAlarm", alarmACK.toString());
                 wr.write(alarmACK.toString());
                 wr.flush();
                 wr.close();

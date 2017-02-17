@@ -55,7 +55,7 @@ public class Anomaly extends AppCompatActivity {
 
     private void addDrawerItems() {
         final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons_anomaly);
-        String[] array = { "          Reports", "          Subscription", "          Comparison Reports",
+        String[] array = { "          Reports", "          Subscription", "          Comparison",
                 "          Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(new ArrayAdapter<String>(
@@ -93,7 +93,7 @@ public class Anomaly extends AppCompatActivity {
                     userProfile = getIntent().getStringExtra("profile");
                     i.putExtra("profile", userProfile);
                     startActivity(i);
-                }else if (mAdapter.getItem(position).equals("          Comparison Reports")){
+                }else if (mAdapter.getItem(position).equals("          Comparison")){
                     Intent i = new Intent(getApplicationContext(), ComparisonsReports.class);
                     userProfile = getIntent().getStringExtra("profile");
                     i.putExtra("profile", userProfile);

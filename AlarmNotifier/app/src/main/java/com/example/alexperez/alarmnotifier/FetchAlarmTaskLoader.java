@@ -50,7 +50,7 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
             e.printStackTrace();
         }
             try{
-                URL url = new URL("http://192.168.0.12:8080/UserManagement/MongoService/alarmsByLocation");
+                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/alarmsByLocation");
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 client.setRequestProperty("Content-Type", "application/json");

@@ -1,7 +1,5 @@
 package com.example.alexperez.alarmnotifier;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
@@ -40,7 +38,7 @@ public class Details extends AppCompatActivity {
     private void addDrawerItems() {
         final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons_detail);
         String[] array = { "          Home","          Reports",
-                "          Subscription","          Comparison Reports",
+                "          Subscription","          Comparison",
                 "          Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
@@ -85,7 +83,7 @@ public class Details extends AppCompatActivity {
                 } else if (mAdapter.getItem(position).equals("          Subscription")){
                     Intent i = new Intent(getApplicationContext(), Reports.class);
                     startActivity(i);
-                }else if (mAdapter.getItem(position).equals("          Comparison Reports")){
+                }else if (mAdapter.getItem(position).equals("          Comparison")){
                     Intent i = new Intent(getApplicationContext(), ComparisonsReports.class);
                     userProfile = getIntent().getStringExtra("profile");
                     i.putExtra("profile", userProfile);
@@ -100,7 +98,9 @@ public class Details extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Intent i = new Intent(this, Anomaly.class);
+        startActivity(i);
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
         DetailsFragment DF = new DetailsFragment();
 
         builder.setTitle("Name Of Alarm");
@@ -126,7 +126,7 @@ public class Details extends AppCompatActivity {
 //                dialog.dismiss();
             }
         });
-        builder.show();
+        builder.show();*/
 
     }
 

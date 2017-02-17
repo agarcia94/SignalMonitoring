@@ -56,7 +56,7 @@ public class SurveyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.d("surveyAlarm", getActivity().getIntent().getStringExtra("alarm"));
+        Log.d("surveyAlarm", getActivity().getIntent().getStringExtra("currAlarm"));
 
         final View rootView = inflater.inflate(R.layout.fragment_survey, container, false);
 
@@ -166,7 +166,7 @@ public class SurveyFragment extends Fragment {
         });
 
         try {
-            JSONObject alarmObject = new JSONObject(getActivity().getIntent().getStringExtra("alarm"));
+            JSONObject alarmObject = new JSONObject(getActivity().getIntent().getStringExtra("currAlarm"));
 
             int severity = alarmObject.getInt("severity");
             String parameter = alarmObject.getString("parameter");
@@ -341,7 +341,7 @@ public class SurveyFragment extends Fragment {
 
             try{
                 //URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/login");
-                URL url = new URL("http://192.168.0.12:8080/UserManagement/MongoService/survey");
+                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/survey");
 
                 client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");

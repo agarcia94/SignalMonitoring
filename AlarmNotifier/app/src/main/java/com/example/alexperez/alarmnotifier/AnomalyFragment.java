@@ -107,19 +107,19 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                     for(int j = 0; j < alarmArray.length(); j++){
                         JSONObject currentAlarm = alarmArray.getJSONObject(j);
                         String parameter = currentAlarm.getString("parameter");
-
+                        boolean isReq = currentAlarm.getBoolean("requiresAcknowledgment");
                         String[] itemFields = itemInAdapter.split(" ", 2);
                         String anomalyName = itemFields[1];
 
                         String[] antennaAbbreviationArray = itemFields[0].split("-");
                         String antenna = antennaAbbreviationArray[0];
                         String abbreviation = antennaAbbreviationArray[1];
-
                         if(parameter.contains(anomalyName)
                                 && parameter.contains(antenna)
-                                && parameter.contains(abbreviation)){
+                                && parameter.contains(abbreviation) && isReq){
 
-                            intent.putExtra("alarm", currentAlarm.toString());
+                            intent.putExtra("currAlarm", currentAlarm.toString());
+                            Log.d("currAlarmAno", currentAlarm.toString());
                             break;
                         }
                     }
@@ -146,6 +146,7 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                     for (int j = 0; j < alarmArray.length(); j++) {
                         JSONObject currentAlarm = alarmArray.getJSONObject(j);
                         String parameter = currentAlarm.getString("parameter");
+                        boolean isReq = currentAlarm.getBoolean("requiresAcknowledgment");
 
                         String[] itemFields = itemInAdapter.split(" ", 2);
                         String anomalyName = itemFields[1];
@@ -156,9 +157,9 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
 
                         if (parameter.contains(anomalyName)
                                 && parameter.contains(antenna)
-                                && parameter.contains(abbreviation)) {
+                                && parameter.contains(abbreviation) && !isReq) {
 
-                            intent.putExtra("alarm", currentAlarm.toString());
+                            intent.putExtra("currAlarm", currentAlarm.toString());
                             break;
                         }
 
@@ -182,42 +183,46 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoadFinished(Loader<JSONObject> loader, JSONObject jdata) {
-        alarmJSON = jdata;
-        try{
-            JSONArray alarmArray = jdata.getJSONArray("alarms");
-            Log.d("alarmJson", jdata.toString());
-            for(int i = 0; i < alarmArray.length(); i++){
-                JSONObject alarm = alarmArray.getJSONObject(i);
-                String parameterItems = alarm.getString("parameter");
-                Boolean ackAlarms = alarm.getBoolean("requiresAcknowledgment");
-                if(ackAlarms == false) {
-                    String[] parameterFields = parameterItems.split("-");
-                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                    ackData.add(alarmInfo);
-                }
+        if(jdata != null){
+            alarmJSON = jdata;
+            try{
+                JSONArray alarmArray = jdata.getJSONArray("alarms");
+                Log.d("alarmJson", jdata.toString());
+                for(int i = 0; i < alarmArray.length(); i++){
+                    JSONObject alarm = alarmArray.getJSONObject(i);
+                    String parameterItems = alarm.getString("parameter");
+                    Boolean ackAlarms = alarm.getBoolean("requiresAcknowledgment");
+                    if(ackAlarms == false) {
+                        String[] parameterFields = parameterItems.split("-");
+                        String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                        String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                        Log.d("alarmInfoAno", alarmInfo);
+                        ackData.add(alarmInfo);
+                    }
 
-                if(ackAlarms == true){
-                    String[] parameterFields = parameterItems.split("-");
-                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                    data.add(alarmInfo);
+                    if(ackAlarms == true){
+                        String[] parameterFields = parameterItems.split("-");
+                        String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                        String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                        data.add(alarmInfo);
+                    }
                 }
+            }catch(JSONException o){
+                o.printStackTrace();
             }
-        }catch(JSONException o){
-            o.printStackTrace();
+
+            // Temporary remove the loading labels when data is ready
+            load1.setVisibility(View.GONE);
+            load2.setVisibility(View.GONE);
+
+            // Update the adapter and load data into according list views
+            adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, ackData); //acknowledged alarms
+            currentAdapter = new ArrayAdapter(getActivity(), R.layout.crow, R.id.textView, data); //current alarms
+
+            currentAlarms.setAdapter(currentAdapter);
+            ackAlarms.setAdapter(adapter);
         }
 
-        // Temporary remove the loading labels when data is ready
-        load1.setVisibility(View.GONE);
-        load2.setVisibility(View.GONE);
-
-        // Update the adapter and load data into according list views
-        adapter = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, ackData); //acknowledged alarms
-        currentAdapter = new ArrayAdapter(getActivity(), R.layout.crow, R.id.textView, data); //current alarms
-
-        currentAlarms.setAdapter(currentAdapter);
-        ackAlarms.setAdapter(adapter);
 
     }
 
