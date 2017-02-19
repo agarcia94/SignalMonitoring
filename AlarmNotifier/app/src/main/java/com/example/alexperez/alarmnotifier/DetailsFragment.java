@@ -11,11 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +29,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 
@@ -38,14 +41,43 @@ public class DetailsFragment extends Fragment {
     private JSONArray reportMatches;
     private String userProfile = "";
     private String alarmID = "";
-    private JSONObject testAlarmJSON = null;
     private AlertDialog.Builder builder = null;
     private String detailString = null;
     private Button accept;
 
+    private JSONArray surveys = null;
+
 
     public DetailsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        try {
+            JSONObject currentAlarm = new JSONObject(getActivity().getIntent().getStringExtra("currAlarm"));
+            String baseLocation = currentAlarm.getString("parameter").split("-")[1];
+            String errorType = currentAlarm.getString("parameter").split("-")[0];
+
+            String[] timestampInfo = currentAlarm.getString("timestamp").split(" ");
+            String year = timestampInfo[timestampInfo.length - 1];
+
+            JSONObject surveyCriteria = new JSONObject();
+            surveyCriteria.put("base_Location", baseLocation);
+            surveyCriteria.put("year", year);
+            surveyCriteria.put("type_Of_Problem", errorType);
+
+            JSONObject[] surveyObjects = {surveyCriteria};
+
+            FetchSimilarSurveys similarSurveys = new FetchSimilarSurveys();
+            similarSurveys.execute(surveyObjects);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
@@ -56,16 +88,53 @@ public class DetailsFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_details, container, false);
         builder = new AlertDialog.Builder(getActivity());
         accept = (Button)rootView.findViewById(R.id.accept);
-        //TEST PURPOSE FOR LISTVIEW ON DETAILS
-//        pastAnomListView = (ListView)rootView.findViewById(R.id.pastAnomListView);
-//        results.add(0,"Hello");
-//        results.add(1,"World");
-//        simPastAnomaliesAdap = new ArrayAdapter(getActivity(), R.layout.past_anomalies_custom, R.id.textView, results);
-//        pastAnomListView.setAdapter(simPastAnomaliesAdap);
+        pastAnomListView = (ListView)rootView.findViewById(R.id.pastAnomListView);
+
+        pastAnomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String surveyInfo = simPastAnomaliesAdap.getItem(i);
+                String[] surveyInfoPieces = surveyInfo.split(" - ");
+//                Log.d("piece1", surveyInfoPieces[0]);
+//                Log.d("piece2", surveyInfoPieces[1]);
+//                Log.d("piece3", surveyInfoPieces[2]);
+
+                Intent intent = new Intent(getActivity(), ReportsPastData.class);
+                userProfile = getActivity().getIntent().getStringExtra("profile");
+                intent.putExtra("profile", userProfile);
+
+                String errorType = surveyInfoPieces[0];
+                String alarmName = surveyInfoPieces[1];
+                String anomalyDate = surveyInfoPieces[2];
+
+                try{
+                    for(int j = 0; j < surveys.length(); j++){
+                        JSONObject survey = surveys.getJSONObject(j);
+                        String equipAffected = survey.getString("equipAffected");
+                        String anomalyType = equipAffected.split("-")[0];
+
+                        String alarm = survey.getString("alarm");
+                        String dateOfAnomaly = survey.getString("dateOfAnomaly");
+
+                        if(errorType.equals(anomalyType)
+                                && alarmName.equals(alarm)
+                                && anomalyDate.equals(dateOfAnomaly)){
+                            intent.putExtra("relevantSurvey", survey.toString());
+                            break;
+                        }
+
+                    }
+                }catch(Exception o){
+
+                }
+
+                startActivity(intent);
+            }
+        });
 
         Intent intent = getActivity().getIntent();
         String alarmJSON = intent.getStringExtra("currAlarm");
-        //Log.d("currAlarm", alarmJSON);
+        Log.d("currAlarm", alarmJSON);
 
         try {
             JSONObject alarmObject = new JSONObject(alarmJSON);
@@ -161,6 +230,97 @@ public class DetailsFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    class FetchSimilarSurveys extends AsyncTask<JSONObject,Void,JSONObject>{
+
+        @Override
+        protected JSONObject doInBackground(JSONObject... params) {
+            JSONObject surveyCriteria = params[0];
+            HttpURLConnection client = null;
+
+            try{
+                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/surveyReport");
+
+                client = (HttpURLConnection) url.openConnection();
+                client.setRequestMethod("POST");
+                client.setRequestProperty("Content-Type", "application/json");
+                client.setRequestProperty("Accept", "application/json");
+                client.setDoOutput(true);
+
+                OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
+                Log.d("surveySearch", surveyCriteria.toString());
+                wr.write(surveyCriteria.toString());
+                wr.flush();
+                wr.close();
+
+                Log.d("output", "output stream");
+
+                StringBuilder sb = new StringBuilder();
+                int HttpResult = client.getResponseCode();
+                if (HttpResult == HttpURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(
+                            new InputStreamReader(client.getInputStream()));
+                    String line = null;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+
+                    JSONObject pastSurveys = new JSONObject(sb.toString());
+                    Log.d("pastSurveys", pastSurveys.toString());
+                    return pastSurveys;
+
+                    //System.out.println("" + sb.toString());
+
+                } else {
+                    Log.d("hello", client.getResponseMessage());
+                    System.out.println("Server response: " + client.getResponseMessage());
+                }
+
+
+            }catch(Exception o) {
+                o.printStackTrace();
+            }finally {
+                if(client != null) // Make sure the connection is not null.
+                    client.disconnect();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject param){
+            try{
+                surveys = param.getJSONArray("surveys");
+
+                if(surveys.length() == 0){
+                    results.clear();
+                    simPastAnomaliesAdap = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, results);
+                    pastAnomListView.setAdapter(simPastAnomaliesAdap);
+                    Toast.makeText(getContext(), "No surveys found", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    results.clear();
+                    for(int i =0; i < surveys.length(); i++){
+                        JSONObject survey = surveys.getJSONObject(i);
+                        String affectEquipment = survey.getString("equipAffected");
+                        String errorType = affectEquipment.split("-")[0];
+                        String anomalyDate = survey.getString("dateOfAnomaly");
+                        String alarm = survey.getString("alarm");
+
+                        String intro = errorType + " - " + alarm + " - " + anomalyDate;
+                        results.add(intro);
+                    }
+
+                    simPastAnomaliesAdap = new ArrayAdapter(getActivity(), R.layout.row, R.id.textView, results);
+                    pastAnomListView.setAdapter(simPastAnomaliesAdap);
+                }
+            }catch(Exception o){
+                Toast.makeText(getContext(),
+                        "JSON data not transferred successfully",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     class FetchAlarmTask extends AsyncTask<Void, Void, Boolean> {

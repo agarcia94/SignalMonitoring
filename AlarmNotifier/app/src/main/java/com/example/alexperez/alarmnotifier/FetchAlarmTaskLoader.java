@@ -49,46 +49,46 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-            try{
-                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/alarmsByLocation");
-                client = (HttpURLConnection) url.openConnection();
-                client.setRequestMethod("POST");
-                client.setRequestProperty("Content-Type", "application/json");
-                client.setRequestProperty("Accept", "application/json");
-                client.setDoOutput(true);
+        try{
+            URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/alarmsByLocation");
+            client = (HttpURLConnection) url.openConnection();
+            client.setRequestMethod("POST");
+            client.setRequestProperty("Content-Type", "application/json");
+            client.setRequestProperty("Accept", "application/json");
+            client.setDoOutput(true);
 
-                OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
-                JSONObject userInfo = new JSONObject();
-                userInfo.put("locationArray", subs);
+            OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
+            JSONObject userInfo = new JSONObject();
+            userInfo.put("locationArray", subs);
 
-                wr.write(userInfo.toString());
-                wr.flush();
-                wr.close();
+            wr.write(userInfo.toString());
+            wr.flush();
+            wr.close();
 
-                StringBuilder sb = new StringBuilder();
-                int HttpResult = client.getResponseCode();
-                if (HttpResult == HttpURLConnection.HTTP_OK) {
-                    BufferedReader br = new BufferedReader(
-                            new InputStreamReader(client.getInputStream()));
-                    String line = null;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                    br.close();
-                    if(sb.toString().length() > 0)
-                        jsonResponse = new JSONObject(sb.toString());
-                    else return null;
-                } else {
-                    System.out.println("Server response: " + client.getResponseMessage());
+            StringBuilder sb = new StringBuilder();
+            int HttpResult = client.getResponseCode();
+            if (HttpResult == HttpURLConnection.HTTP_OK) {
+                BufferedReader br = new BufferedReader(
+                        new InputStreamReader(client.getInputStream()));
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line + "\n");
                 }
-            }catch(Exception o) {
-                Log.d("hello", o.toString());
-                o.printStackTrace();
-            }finally {
-                if (client != null) {// Make sure the connection is not null.
-                    client.disconnect();
-                }
+                br.close();
+                if(sb.toString().length() > 0)
+                    jsonResponse = new JSONObject(sb.toString());
+                else return null;
+            } else {
+                System.out.println("Server response: " + client.getResponseMessage());
             }
+        }catch(Exception o) {
+            Log.d("hello", o.toString());
+            o.printStackTrace();
+        }finally {
+            if (client != null) {// Make sure the connection is not null.
+                client.disconnect();
+            }
+        }
         return jsonResponse;
     }
 

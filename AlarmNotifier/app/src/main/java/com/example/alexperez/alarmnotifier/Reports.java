@@ -108,25 +108,25 @@ public class Reports extends AppCompatActivity {
         assert yearSpinner != null; //Base Case?? Provided by Android
         yearSpinner.setAdapter(yearArrayAdapter);
 
-        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItemText = (String) parent.getItemAtPosition(position);
-                // If user change the default selection
-                // First item is disable and it is used for hint
-                if (position > 0) {
-                    // Notify the selected item text
-                    Toast.makeText
-                            (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
-                            .show();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //Do Nothing, as nothing should happen if nothing is selected yet
-            }
-        });
+//        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String selectedItemText = (String) parent.getItemAtPosition(position);
+//                // If user change the default selection
+//                // First item is disable and it is used for hint
+//                if (position > 0) {
+//                    // Notify the selected item text
+//                    Toast.makeText
+//                            (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
+//                            .show();
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//                //Do Nothing, as nothing should happen if nothing is selected yet
+//            }
+//        });
 
         // Initializing the Base Location Adapter
         final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item,typeList){
@@ -161,25 +161,25 @@ public class Reports extends AppCompatActivity {
         assert spinner != null; //Base Case?? Provided by Android
         spinner.setAdapter(spinnerArrayAdapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItemText = (String) parent.getItemAtPosition(position);
-                // If user change the default selection
-                // First item is disable and it is used for hint
-                if (position > 0) {
-                    // Notify the selected item text
-                    Toast.makeText
-                            (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
-                            .show();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String selectedItemText = (String) parent.getItemAtPosition(position);
+//                // If user change the default selection
+//                // First item is disable and it is used for hint
+//                if (position > 0) {
+//                    // Notify the selected item text
+//                    Toast.makeText
+//                            (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
+//                            .show();
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
     }
 

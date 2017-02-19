@@ -30,7 +30,7 @@ public class LoginFragment extends Fragment {
     private JSONObject userProfile = new JSONObject();
     View rootView = null;
 
-    final String IP_ADDRESS = "192.168.1.6";
+    final String IP_ADDRESS = "192.168.1.67";
     //final String IP_ADDRESS = "10.85.41.232";
     //final String IP_ADDRESS = "192.168.1.8";
 
@@ -98,6 +98,9 @@ public class LoginFragment extends Fragment {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW,
                         Uri.parse("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/register"));
 
+//                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+//                        Uri.parse("http://" + IP_ADDRESS +  ":8080/cs4961stu20/MongoService/register"));
+
 
                 startActivity(browserIntent);
             }
@@ -124,7 +127,7 @@ public class LoginFragment extends Fragment {
                 userProfile.put("username",username);
                 userProfile.put("password", password);
 
-                //URL url = new URL("http://192.168.43.253:8080/UserManagement/MongoService/login");
+                //URL url = new URL("http://" + IP_ADDRESS + ":8080/UserManagement/MongoService/login");
                 URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/login");
 
                 client = (HttpURLConnection) url.openConnection();
