@@ -94,6 +94,17 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true" />
 
+    <ImageView
+        android:layout_width="36sp"
+        android:layout_height="36sp"
+        android:id="@+id/btn_menu"
+        android:src="@drawable/btn_menu"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/transparent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
 </RelativeLayout>
 
 
