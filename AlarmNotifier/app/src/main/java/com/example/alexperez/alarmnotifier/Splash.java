@@ -34,9 +34,8 @@ public class Splash extends Activity {
                 //-----------------------------------------------------------------------------------------------------------------------
                 final AudioManager mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
                 //final int originalVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC), 0);
                 //-----------------------------------------------------------------------------------------------------------------------
-
                 intro.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 //intro.setVolume(1.0f, 1.0f);
                 intro.start();
