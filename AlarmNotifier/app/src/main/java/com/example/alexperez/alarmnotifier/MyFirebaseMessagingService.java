@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -60,13 +61,15 @@ public class    MyFirebaseMessagingService extends FirebaseMessagingService {
      */
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, Anomaly.class);
+        Uri sound = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.softbells);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_logo)
-                .setAutoCancel(true)
+                .setAutoCancel(true).setContentTitle("Alarms!").setContentText(messageBody)
+                .setSound(sound)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
