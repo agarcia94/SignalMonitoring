@@ -29,7 +29,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 
@@ -41,7 +40,6 @@ public class DetailsFragment extends Fragment {
     private JSONArray reportMatches;
     private String userProfile = "";
     private String alarmID = "";
-    private AlertDialog.Builder builder = null;
     private String detailString = null;
     private Button accept;
 
@@ -86,7 +84,6 @@ public class DetailsFragment extends Fragment {
 
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-        builder = new AlertDialog.Builder(getActivity());
         accept = (Button)rootView.findViewById(R.id.accept);
         pastAnomListView = (ListView)rootView.findViewById(R.id.pastAnomListView);
 
@@ -392,18 +389,21 @@ public class DetailsFragment extends Fragment {
                 data.execute(ackID);
 
                 //Start The Survey Page
+                intent.putExtra("alarmOid", alarmID);
                 intent.putExtra("currAlarm", getActivity().getIntent().getStringExtra("currAlarm"));
                 startActivity(intent);
             }else{
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(detailString);
                 builder.setIcon(R.drawable.exit).show();
-                builder.setMessage("Alarm Has Been Acknowledged");
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                builder.setMessage("Alarm Has Been Acknowledged!");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(getActivity(), Anomaly.class);
                         startActivity(intent);
                     }
                 });
+                builder.show();
             }
         }
     }

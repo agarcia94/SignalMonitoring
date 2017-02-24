@@ -154,7 +154,7 @@ public class SurveyFragment extends Fragment {
                 builder.setTitle("Survey Has Been Submitted");
                 builder.setMessage("Will Be Re-Directed To Home Page");
                 builder.setIcon(R.drawable.check).show();
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         startActivity(intent);
                     }
@@ -371,23 +371,18 @@ public class SurveyFragment extends Fragment {
 
                     System.out.println("" + sb.toString());
 
-
                 } else {
                     Log.d("hello", client.getResponseMessage());
                     System.out.println("Server response: " + client.getResponseMessage());
                 }
-
-
             }catch(Exception o) {
                 o.printStackTrace();
             }finally {
                 if(client != null) // Make sure the connection is not null.
                     client.disconnect();
             }
-
             return null;
         }
     }
-
 
 }
