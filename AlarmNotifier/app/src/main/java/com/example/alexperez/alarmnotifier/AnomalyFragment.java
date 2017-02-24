@@ -1,10 +1,14 @@
 package com.example.alexperez.alarmnotifier;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +37,7 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     private ArrayList<String> ackData;
     private TextView load1;
     private TextView load2;
+    private LoaderManager.LoaderCallbacks<JSONObject> loadercb = this;
 
     public AnomalyFragment() {
         // Required empty public constructor
@@ -41,6 +46,8 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onStart() {
         super.onStart();
+        IntentFilter inF = new IntentFilter("data_changed");
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(dataChangeReceiver, inF);
     }
 
 
@@ -58,6 +65,7 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
         load2 = (TextView) rootView.findViewById(R.id.loading2);
         load1.setVisibility(View.VISIBLE);
         load2.setVisibility(View.VISIBLE);
+
         // Get user information from application context
         userProfile = SaveSharedPreference.getUserName(getActivity());
 
@@ -79,7 +87,7 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                     data = new ArrayList<>();
                     ackData = new ArrayList<>();
                     alarmJSON = new JSONObject();
-                    getLoaderManager().restartLoader(1, null, this);
+                    getLoaderManager().restartLoader(1, null, this).forceLoad();
                 }
             }
         } catch (JSONException e) {
@@ -229,5 +237,25 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoaderReset(Loader<JSONObject> loader) {
         alarmJSON = null;
+    }
+
+    private BroadcastReceiver dataChangeReceiver= new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(getLoaderManager().getLoader(1) == null){
+                getLoaderManager().initLoader(1, null, loadercb).forceLoad();
+            }else{
+                data = new ArrayList<>();
+                ackData = new ArrayList<>();
+                alarmJSON = new JSONObject();
+                getLoaderManager().restartLoader(1, null, loadercb).forceLoad();
+            }
+        }
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(dataChangeReceiver);
     }
 }
