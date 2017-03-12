@@ -105,6 +105,14 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"/>
 
+    <Spinner
+        android:id="@+id/limit"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:entries="@array/limit"
+        android:layout_above="@+id/ackAlarmsList"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>
 
 

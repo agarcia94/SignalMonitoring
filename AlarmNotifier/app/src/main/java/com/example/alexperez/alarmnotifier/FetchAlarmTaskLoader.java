@@ -50,7 +50,7 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
             e.printStackTrace();
         }
         try{
-            URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/alarmsByLocation");
+            URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/anomalies");
             client = (HttpURLConnection) url.openConnection();
             client.setRequestMethod("POST");
             client.setRequestProperty("Content-Type", "application/json");
@@ -60,7 +60,8 @@ class FetchAlarmTaskLoader extends AsyncTaskLoader<JSONObject> {
             OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
             JSONObject userInfo = new JSONObject();
             userInfo.put("locationArray", subs);
-
+            userInfo.put("limit", SaveSharedPreference.getLimit(getContext()));
+            System.out.println("To server: "+ userInfo.toString());
             wr.write(userInfo.toString());
             wr.flush();
             wr.close();

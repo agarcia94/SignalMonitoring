@@ -33,7 +33,8 @@ public class SaveSharedPreference {
         }catch(Exception e) {
 
         }
-        editor.putString(PREF_USER_NAME, userName.substring(0, userName.length()-1) + ",'subs':['" + userLocation +"']}");
+        editor.putString(PREF_USER_NAME, userName.substring(0, userName.length()-1) +
+                ",'subs':['" + userLocation +"'], 'limit':'10'}");
         Log.d("SSP", "user = " + PREF_USER_NAME);
         editor.commit();
     }
@@ -50,6 +51,28 @@ public class SaveSharedPreference {
         return getSharedPreferences(ctx).getString(PREF_USER_NAME, "");
     }
 
+    public static String getName(Context ctx){
+        try {
+            JSONObject userInfo = new JSONObject(getUserName(ctx));
+            String username = userInfo.getString("username");
+            return username;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String getLoc(Context ctx){
+        try {
+            JSONObject userInfo = new JSONObject(getUserName(ctx));
+            String location = userInfo.getString("location");
+            return location;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public static void clearUserName(Context ctx)
     {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
@@ -62,7 +85,7 @@ public class SaveSharedPreference {
     {
         JSONArray subs;
         try {
-            JSONObject userInfo = new JSONObject(PREF_USER_NAME);
+            JSONObject userInfo = new JSONObject(getUserName(ctx));
             subs = userInfo.getJSONArray("subs");
             for(int i = 0; i < subs.length(); i++){
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(subs.getString(i));
@@ -75,8 +98,19 @@ public class SaveSharedPreference {
 
     public static void subscribingTo(Context ctx, String location){
         //
-        String userInfo = getUserName(ctx);
-        setUserName(ctx, userInfo.substring(0, userInfo.length() - 2) + ",'" + location + "']}");
+        JSONObject userInfo = new JSONObject();
+        try {
+            userInfo = new JSONObject(getUserName(ctx));
+            JSONArray subs = userInfo.getJSONArray("subs");
+            subs.put(location);
+            userInfo.remove("subs");
+            userInfo.put("subs", subs);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        setUserName(ctx, userInfo.toString());
         Log.d("SSP", "user = " + getUserName(ctx));
     }
 
@@ -121,5 +155,51 @@ public class SaveSharedPreference {
         }
         String [] empty = new String[0];
         return empty;
+    }
+
+    public static int getLimitPosition(Context ctx){
+        try {
+            JSONObject userInfo = new JSONObject(getUserName(ctx));
+            int lim = userInfo.getInt("limit");
+            if (lim == 1){
+                return 0;
+            }
+            else{
+                return lim / 5;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static void setLimitPosition(Context ctx, int position){
+        try {
+            int val;
+            if (position == 0){
+                val = 1;
+            }else{
+                val = position * 5;
+            }
+            JSONObject userInfo = new JSONObject(getUserName(ctx));
+            userInfo.remove("limit");
+            userInfo.put("limit", val);
+            setUserName(ctx, userInfo.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int getLimit(Context ctx){
+        try{
+            JSONObject userInfo = new JSONObject(getUserName(ctx));
+            int lim = userInfo.getInt("limit");
+            return lim;
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return 5;
     }
 }

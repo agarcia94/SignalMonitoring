@@ -18,6 +18,14 @@
         <item>Other</item>
     </string-array>
 
+    <string-array name="limit">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+    </string-array>
+
     <string-array name="moratorium_arrays">
         <item>Yes</item>
         <item>No</item>

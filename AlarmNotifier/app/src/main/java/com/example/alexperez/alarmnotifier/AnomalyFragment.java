@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -31,13 +32,16 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
 
     private ListView ackAlarms,currentAlarms;
     private ArrayAdapter<String> adapter,currentAdapter;
-    private String userProfile = "";
-    private JSONObject alarmJSON;
     private ArrayList<String> data;
     private ArrayList<String> ackData;
+    JSONArray currentAlarmArray;
+    JSONArray pastAlarmArray;
     private TextView load1;
     private TextView load2;
+    private Spinner limitSpinner;
     private LoaderManager.LoaderCallbacks<JSONObject> loadercb = this;
+    private String username = "";
+    private String location = "";
 
     public AnomalyFragment() {
         // Required empty public constructor
@@ -46,6 +50,10 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onStart() {
         super.onStart();
+        if(SaveSharedPreference.getLoc(getActivity()).length() > 0){
+            FirebaseMessaging.getInstance().subscribeToTopic(SaveSharedPreference.getLoc(getActivity()));
+            loadit();
+        }
         IntentFilter inF = new IntentFilter("data_changed");
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(dataChangeReceiver, inF);
     }
@@ -54,51 +62,32 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        System.out.println("mango mango");
         // Initialize Views
         View rootView = inflater.inflate(R.layout.fragment_anomaly, container, false);
         currentAlarms = (ListView)rootView.findViewById(R.id.cAlarmList);
         ackAlarms = (ListView)rootView.findViewById(R.id.ackAlarmsList);
+        limitSpinner = (Spinner) rootView.findViewById(R.id.limit);
         data = new ArrayList<>();
         ackData = new ArrayList<>();
         load1 = (TextView) rootView.findViewById(R.id.loading1);
         load2 = (TextView) rootView.findViewById(R.id.loading2);
         load1.setVisibility(View.VISIBLE);
         load2.setVisibility(View.VISIBLE);
-
-        // Get user information from application context
-        userProfile = SaveSharedPreference.getUserName(getActivity());
-
-        // Check if there is any existing user logged in
-        String username = "";
-        String location = "";
-        try {
-            JSONObject userInfo = new JSONObject(userProfile);
-            username = userInfo.getString("username");
-            location = userInfo.getString("location");
-
-            if (location.length() > 0){
-                // If there is existing user, start loading data from server
-                FirebaseMessaging.getInstance().subscribeToTopic(location);
-
-                if(getLoaderManager().getLoader(1) == null){
-                    getLoaderManager().initLoader(1, null, this).forceLoad();
-                }else{
-                    data = new ArrayList<>();
-                    ackData = new ArrayList<>();
-                    alarmJSON = new JSONObject();
-                    getLoaderManager().restartLoader(1, null, this).forceLoad();
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        ArrayAdapter<CharSequence> limAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.limit, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        limAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        limitSpinner.setAdapter(limAdapter);
 
         TextView welcomeText = (TextView)rootView.findViewById(R.id.welcome);
-        welcomeText.setText(welcomeText.getText() + " " + username);
+        welcomeText.setText(welcomeText.getText() + " " + SaveSharedPreference.getName(getActivity()));
 
         TextView locationText = (TextView)rootView.findViewById(R.id.location);
-        locationText.setText(locationText.getText() + " " + location);
+        locationText.setText(locationText.getText() + " " + SaveSharedPreference.getLoc(getActivity()));
+
+        //limitSpinner.setSelection(SaveSharedPreference.getLimitPosition(getActivity()));
 
         currentAlarms.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -106,16 +95,13 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                 Intent intent = new Intent(getActivity(), Details.class);
                 //userProfile = getActivity().getIntent().getStringExtra("profile");
                 intent.putExtra("details", currentAdapter.getItem(i));
-                intent.putExtra("profile", userProfile);
 
                 try {
                     String itemInAdapter = currentAdapter.getItem(i);
-                    JSONArray alarmArray = alarmJSON.getJSONArray("alarms");
 
-                    for(int j = 0; j < alarmArray.length(); j++){
-                        JSONObject currentAlarm = alarmArray.getJSONObject(j);
+                    for(int j = 0; j < currentAlarmArray.length(); j++){
+                        JSONObject currentAlarm = currentAlarmArray.getJSONObject(j);
                         String parameter = currentAlarm.getString("parameter");
-                        boolean isReq = currentAlarm.getBoolean("requiresAcknowledgment");
                         String[] itemFields = itemInAdapter.split(" ", 2);
                         String anomalyName = itemFields[1];
 
@@ -124,7 +110,7 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                         String abbreviation = antennaAbbreviationArray[1];
                         if(parameter.contains(anomalyName)
                                 && parameter.contains(antenna)
-                                && parameter.contains(abbreviation) && isReq){
+                                && parameter.contains(abbreviation)){
 
                             intent.putExtra("currAlarm", currentAlarm.toString());
                             Log.d("currAlarmAno", currentAlarm.toString());
@@ -145,16 +131,13 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
                 Intent intent = new Intent(getActivity(), Details.class);
                 //userProfile = getActivity().getIntent().getStringExtra("profile");
                 intent.putExtra("details", adapter.getItem(i));
-                intent.putExtra("profile", userProfile);
 
                 try {
                     String itemInAdapter = adapter.getItem(i);
-                    JSONArray alarmArray = alarmJSON.getJSONArray("alarms");
 
-                    for (int j = 0; j < alarmArray.length(); j++) {
-                        JSONObject currentAlarm = alarmArray.getJSONObject(j);
+                    for (int j = 0; j < pastAlarmArray.length(); j++) {
+                        JSONObject currentAlarm = pastAlarmArray.getJSONObject(j);
                         String parameter = currentAlarm.getString("parameter");
-                        boolean isReq = currentAlarm.getBoolean("requiresAcknowledgment");
 
                         String[] itemFields = itemInAdapter.split(" ", 2);
                         String anomalyName = itemFields[1];
@@ -165,7 +148,7 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
 
                         if (parameter.contains(anomalyName)
                                 && parameter.contains(antenna)
-                                && parameter.contains(abbreviation) && !isReq) {
+                                && parameter.contains(abbreviation)) {
 
                             intent.putExtra("currAlarm", currentAlarm.toString());
                             break;
@@ -180,6 +163,21 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
             }
         });
 
+        limitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                SaveSharedPreference.setLimitPosition(getActivity(), position);
+                System.out.println("am i here" + position + SaveSharedPreference.getUserName(getActivity()));
+                loadit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // do nothing
+            }
+
+        });
+        limitSpinner.setSelection(SaveSharedPreference.getLimitPosition(getActivity()));
         return rootView;
 
     }
@@ -192,29 +190,30 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoadFinished(Loader<JSONObject> loader, JSONObject jdata) {
         if(jdata != null){
-            alarmJSON = jdata;
             try{
-                JSONArray alarmArray = jdata.getJSONArray("alarms");
+                currentAlarmArray = jdata.getJSONArray("current");
+                pastAlarmArray = jdata.getJSONArray("past");
                 Log.d("alarmJson", jdata.toString());
-                for(int i = 0; i < alarmArray.length(); i++){
-                    JSONObject alarm = alarmArray.getJSONObject(i);
+                for(int i = 0; i < currentAlarmArray.length(); i++){
+                    JSONObject alarm = currentAlarmArray.getJSONObject(i);
                     String parameterItems = alarm.getString("parameter");
-                    Boolean ackAlarms = alarm.getBoolean("requiresAcknowledgment");
-                    if(ackAlarms == false) {
-                        String[] parameterFields = parameterItems.split("-");
-                        String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                        String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                        Log.d("alarmInfoAno", alarmInfo);
-                        ackData.add(alarmInfo);
-                    }
 
-                    if(ackAlarms == true){
-                        String[] parameterFields = parameterItems.split("-");
-                        String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
-                        String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
-                        data.add(alarmInfo);
-                    }
+                    String[] parameterFields = parameterItems.split("-");
+                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                    data.add(alarmInfo);
                 }
+
+                for(int i = 0; i < pastAlarmArray.length(); i++){
+                    JSONObject alarm = pastAlarmArray.getJSONObject(i);
+                    String parameterItems = alarm.getString("parameter");
+                    String[] parameterFields = parameterItems.split("-");
+                    String[] anomalyNameArray = parameterFields[3].split(Pattern.quote("."));
+                    String alarmInfo = parameterFields[2] + "-" + parameterFields[0] + " " + anomalyNameArray[1];
+                    Log.d("alarmInfoAno", alarmInfo);
+                    ackData.add(alarmInfo);
+                }
+
             }catch(JSONException o){
                 o.printStackTrace();
             }
@@ -236,20 +235,12 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoaderReset(Loader<JSONObject> loader) {
-        alarmJSON = null;
     }
 
     private BroadcastReceiver dataChangeReceiver= new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(getLoaderManager().getLoader(1) == null){
-                getLoaderManager().initLoader(1, null, loadercb).forceLoad();
-            }else{
-                data = new ArrayList<>();
-                ackData = new ArrayList<>();
-                alarmJSON = new JSONObject();
-                getLoaderManager().restartLoader(1, null, loadercb).forceLoad();
-            }
+            loadit();
         }
     };
 
@@ -257,5 +248,19 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(dataChangeReceiver);
+    }
+
+
+    private void loadit(){
+        currentAlarmArray = new JSONArray();
+        pastAlarmArray = new JSONArray();
+        if(getLoaderManager().getLoader(1) == null){
+            getLoaderManager().initLoader(1, null, loadercb).forceLoad();
+        }else{
+            System.out.println("loadit");
+            data = new ArrayList<>();
+            ackData = new ArrayList<>();
+            getLoaderManager().restartLoader(1, null, loadercb).forceLoad();
+        }
     }
 }

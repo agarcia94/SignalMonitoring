@@ -92,13 +92,9 @@ public class DetailsFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String surveyInfo = simPastAnomaliesAdap.getItem(i);
                 String[] surveyInfoPieces = surveyInfo.split(" - ");
-//                Log.d("piece1", surveyInfoPieces[0]);
-//                Log.d("piece2", surveyInfoPieces[1]);
-//                Log.d("piece3", surveyInfoPieces[2]);
 
                 Intent intent = new Intent(getActivity(), ReportsPastData.class);
-                userProfile = getActivity().getIntent().getStringExtra("profile");
-                intent.putExtra("profile", userProfile);
+                userProfile = SaveSharedPreference.getUserName(getActivity());
 
                 String errorType = surveyInfoPieces[0];
                 String alarmName = surveyInfoPieces[1];
@@ -189,8 +185,6 @@ public class DetailsFragment extends Fragment {
         TextView tv = (TextView)rootView.findViewById(R.id.detailsText);
         detailString = intent.getStringExtra("details");
         tv.setText(detailString);
-
-        Log.d("detailsProfile", getActivity().getIntent().getStringExtra("profile"));
 
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -529,5 +523,4 @@ public class DetailsFragment extends Fragment {
             return null;
         }
     }
-
 }
