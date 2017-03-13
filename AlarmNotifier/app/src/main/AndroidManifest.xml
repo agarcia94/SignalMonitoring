@@ -91,7 +91,12 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".Anomaly">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Anomaly" />
+        </activity>
     </application>
 
 </manifest>

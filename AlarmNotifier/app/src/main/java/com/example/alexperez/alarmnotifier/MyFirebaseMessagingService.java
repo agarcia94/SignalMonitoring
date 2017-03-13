@@ -49,7 +49,7 @@ public class    MyFirebaseMessagingService extends FirebaseMessagingService {
 
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent("data_changed"));
 
-        sendNotification(remoteMessage.getNotification().getBody());
+        sendNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -61,7 +61,7 @@ public class    MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String messageTitle, String messageBody) {
         Intent intent = new Intent(this, Anomaly.class);
         Uri sound = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.softbells);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -70,7 +70,7 @@ public class    MyFirebaseMessagingService extends FirebaseMessagingService {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_logo)
-                .setAutoCancel(true).setContentTitle("Alarms!").setContentText(messageBody)
+                .setAutoCancel(true).setContentTitle(messageTitle).setContentText(messageBody)
                 .setSound(sound)
                 .setContentIntent(pendingIntent);
 

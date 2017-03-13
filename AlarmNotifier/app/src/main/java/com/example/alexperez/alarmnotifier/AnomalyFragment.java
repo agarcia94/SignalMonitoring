@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -38,7 +37,6 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
     JSONArray pastAlarmArray;
     private TextView load1;
     private TextView load2;
-    private Spinner limitSpinner;
     private LoaderManager.LoaderCallbacks<JSONObject> loadercb = this;
     private String username = "";
     private String location = "";
@@ -67,19 +65,12 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
         View rootView = inflater.inflate(R.layout.fragment_anomaly, container, false);
         currentAlarms = (ListView)rootView.findViewById(R.id.cAlarmList);
         ackAlarms = (ListView)rootView.findViewById(R.id.ackAlarmsList);
-        limitSpinner = (Spinner) rootView.findViewById(R.id.limit);
         data = new ArrayList<>();
         ackData = new ArrayList<>();
         load1 = (TextView) rootView.findViewById(R.id.loading1);
         load2 = (TextView) rootView.findViewById(R.id.loading2);
         load1.setVisibility(View.VISIBLE);
         load2.setVisibility(View.VISIBLE);
-        ArrayAdapter<CharSequence> limAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.limit, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        limAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        limitSpinner.setAdapter(limAdapter);
 
         TextView welcomeText = (TextView)rootView.findViewById(R.id.welcome);
         welcomeText.setText(welcomeText.getText() + " " + SaveSharedPreference.getName(getActivity()));
@@ -163,21 +154,6 @@ public class AnomalyFragment extends Fragment implements LoaderManager.LoaderCal
             }
         });
 
-        limitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                SaveSharedPreference.setLimitPosition(getActivity(), position);
-                System.out.println("am i here" + position + SaveSharedPreference.getUserName(getActivity()));
-                loadit();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // do nothing
-            }
-
-        });
-        limitSpinner.setSelection(SaveSharedPreference.getLimitPosition(getActivity()));
         return rootView;
 
     }

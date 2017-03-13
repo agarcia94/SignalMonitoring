@@ -1,37 +1,60 @@
 package com.example.alexperez.alarmnotifier;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    private Spinner limitSpinner;
+    private Context ctx = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        myToolbar.setTitle("Settings");
+        myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+
+        // Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        final Spinner historySpinner = (Spinner)findViewById(R.id.history_spinner);
+        // ----------------------- Set up limit spinner ------------------------------//
+        limitSpinner = (Spinner) findViewById(R.id.limit);
+        //final Spinner historySpinner = (Spinner)findViewById(R.id.history_spinner);
+        ArrayAdapter<CharSequence> limAdapter = ArrayAdapter.createFromResource(this, R.array.limit, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        limAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        limitSpinner.setAdapter(limAdapter);
+        limitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                SaveSharedPreference.setLimitPosition(ctx, position);
+            }
 
-        String[] history_Days = new String[]{
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // do nothing
+            }
+
+        });
+        limitSpinner.setSelection(SaveSharedPreference.getLimitPosition(this));
+        // ------------------------- limit Spinner ----------------------------------//
+
+        /*String[] history_Days = new String[]{
                 "Select One",
                 "Today",
                 "Past 2 Days",
@@ -94,7 +117,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
                 //Do Nothing, as nothing should happen if nothing is selected yet
             }
-        });
+        });*/
     }
 
 }

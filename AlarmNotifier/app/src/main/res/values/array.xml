@@ -4,6 +4,7 @@
         <item>@drawable/ic_search</item>
         <item>@drawable/ic_subscribe</item>
         <item>@drawable/ic_comparison</item>
+        <item>@drawable/ic_settings</item>
         <item>@drawable/ic_exit</item>
     </string-array>
 
