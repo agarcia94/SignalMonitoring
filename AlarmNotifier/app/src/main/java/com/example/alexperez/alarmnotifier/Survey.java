@@ -10,9 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -57,11 +56,12 @@ public class Survey extends AppCompatActivity {
 
     }
 
-    class DeclineTask extends AsyncTask<Void, Void, Void> {
+    class DeclineTask extends AsyncTask<Void, Integer, Void> {
 
         @Override
         protected Void doInBackground(Void... args){
             HttpURLConnection client = null;
+            Integer[] progress = new Integer[1];
             String oid = getIntent().getStringExtra("alarmOid");
 
             try{
@@ -79,32 +79,45 @@ public class Survey extends AppCompatActivity {
                 wr.write(query);
                 wr.flush();
                 wr.close();
-
+                progress[0] = 0;
+                publishProgress(progress);
                 StringBuilder sb = new StringBuilder();
                 int HttpResult = client.getResponseCode();
-                if (HttpResult == HttpURLConnection.HTTP_OK) {
-                    BufferedReader br = new BufferedReader(
-                            new InputStreamReader(client.getInputStream()));
-                    String line = null;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                    br.close();
+                if (HttpResult == 204) {
                     Log.d("decline", sb.toString());
 
                     System.out.println("" + sb.toString());
-
                 } else {
-                    Log.d("decline", client.getResponseMessage());
+                    Log.d("decline", HttpResult+ "");
+                    progress[0] = 1;
+                    publishProgress(progress);
                     System.out.println("Server response: " + client.getResponseMessage());
                 }
             }catch(Exception o) {
                 o.printStackTrace();
+                progress[0] = 3;
+                publishProgress(progress);
             }finally {
                 if(client != null) // Make sure the connection is not null.
                     client.disconnect();
             }
+            progress[0] = 2;
+            publishProgress(progress);
             return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            if(values[0] == 0){
+                Toast.makeText(Survey.this, "Declined! Notifying other technicians.", Toast.LENGTH_SHORT).show();
+            }else if(values[0] == 1){
+                Toast.makeText(Survey.this, "HTTP response error.", Toast.LENGTH_SHORT).show();
+            }else if(values[0] == 2){
+                Toast.makeText(Survey.this, "Alarm declined.", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(Survey.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override

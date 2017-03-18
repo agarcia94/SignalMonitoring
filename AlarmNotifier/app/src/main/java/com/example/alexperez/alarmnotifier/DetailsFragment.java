@@ -64,7 +64,8 @@ public class DetailsFragment extends Fragment {
 
             JSONObject surveyCriteria = new JSONObject();
             surveyCriteria.put("base_Location", baseLocation);
-            surveyCriteria.put("year", year);
+            surveyCriteria.put("year_low", year);
+            surveyCriteria.put("year_high", year);
             surveyCriteria.put("type_Of_Problem", errorType);
 
             JSONObject[] surveyObjects = {surveyCriteria};
@@ -399,69 +400,6 @@ public class DetailsFragment extends Fragment {
                 });
                 builder.show();
             }
-        }
-    }
-
-    class SendLocationData extends AsyncTask<String, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(String... args){
-            Log.d("enter", "entered function");
-            HttpURLConnection client = null;
-
-            String location = args[0];
-
-            try{
-                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/report");
-                client = (HttpURLConnection) url.openConnection();
-                client.setRequestMethod("POST");
-                client.setRequestProperty("Content-Type", "application/json");
-                client.setRequestProperty("Accept", "application/json");
-                client.setDoOutput(true);
-
-                JSONObject locationInfo = new JSONObject();
-                locationInfo.put("location", location);
-
-                OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
-                Log.d("locationProfile", locationInfo.toString());
-                wr.write(locationInfo.toString());
-                wr.flush();
-                wr.close();
-
-                Log.d("locationOutput", "output stream");
-
-                StringBuilder sb = new StringBuilder();
-                int HttpResult = client.getResponseCode();
-                if (HttpResult == HttpURLConnection.HTTP_OK) {
-                    BufferedReader br = new BufferedReader(
-                            new InputStreamReader(client.getInputStream()));
-                    String line = null;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                    br.close();
-                    Log.d("reportResponse", sb.toString());
-
-                    JSONObject reportResponse = new JSONObject(sb.toString());
-                    reportMatches = reportResponse.getJSONArray("alarms");
-
-                } else {
-                    Log.d("hello", client.getResponseMessage());
-                    System.out.println("Server response: " + client.getResponseMessage());
-                }
-
-
-            }catch(Exception o) {
-                o.printStackTrace();
-            }finally {
-                if(client != null) // Make sure the connection is not null.
-                    client.disconnect();
-            }
-            return null;
         }
     }
 

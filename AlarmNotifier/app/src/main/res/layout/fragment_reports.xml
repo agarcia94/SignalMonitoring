@@ -44,52 +44,176 @@
             android:background="@null"
             android:src="@drawable/back" />
 
-        <Spinner
-            android:id="@+id/base_Location"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:entries="@array/timeToFinish_arrays"
-            android:prompt="@string/timeToFinish_prompt"
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scroll"
             android:layout_below="@+id/back"
-            android:layout_toStartOf="@+id/year" />
+            android:fadeScrollbars="false"
+            android:layout_above="@+id/btn_search">
 
-        <EditText
-            android:id="@+id/type_Of_Problem"
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/criteria"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    >
+
+                    <Spinner
+                        android:id="@+id/base_Location"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="#F2EFFF"
+                        android:entries="@array/timeToFinish_arrays"
+                        android:prompt="@string/timeToFinish_prompt"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/typeText"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Type of Alarm (Key word): "
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_below="@+id/base_Location"/>
+
+                    <EditText
+                        android:id="@+id/type_Of_Problem"
+                        android:layout_width="120dp"
+                        android:layout_height="35dp"
+                        android:paddingLeft="10dp"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@android:drawable/edit_text"
+                        android:textColor="@android:color/primary_text_light"
+                        android:layout_alignTop="@+id/typeText"
+                        android:layout_toEndOf="@+id/typeText"/>
+
+                    <com.appyvet.rangebar.RangeBar
+                        xmlns:custom="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/yearRange"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        custom:tickStart="2000"
+                        custom:tickInterval="1"
+                        custom:pinMaxFont="10sp"
+                        android:layout_below="@+id/typeText"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="16dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textRangeStart"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Starting from: "
+                        android:layout_marginTop="30dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_below="@+id/yearRange"
+                        android:layout_alignStart="@+id/yearRange"
+                        android:layout_marginStart="19dp" />
+
+                    <NumberPicker
+                        android:id="@+id/editRangeStart"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_width="50dp"
+                        android:layout_height="80dp"
+                        android:paddingLeft="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="16dp"
+                        android:textColor="@android:color/primary_text_light"
+                        android:layout_below="@+id/yearRange"
+                        android:layout_toEndOf="@+id/textRangeStart" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textRangeEnd"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text=" to "
+                        android:layout_marginLeft="16dp"
+                        android:layout_alignBaseline="@+id/textRangeStart"
+                        android:layout_alignBottom="@+id/textRangeStart"
+                        android:layout_toStartOf="@+id/editRangeEnd" />
+
+                    <NumberPicker
+                        android:id="@+id/editRangeEnd"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_width="50dp"
+                        android:layout_height="80dp"
+                        android:paddingLeft="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="16dp"
+                        android:textColor="@android:color/primary_text_light"
+                        android:layout_below="@+id/yearRange"
+                        android:layout_alignStart="@+id/type_Of_Problem" />
+
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_result"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Results: "
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_below="@+id/criteria"
+                    android:layout_alignStart="@+id/criteria"
+                    android:layout_marginStart="19dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/result_count"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:layout_marginTop="3dp"
+                    android:layout_below="@+id/txt_result"
+                    android:layout_alignStart="@+id/txt_result" />
+
+
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="400dp"
+                    android:id="@+id/surveysView"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@+id/result_count"
+                    android:layout_alignStart="@+id/result_count"
+                    android:layout_marginStart="19dp" />
+
+
+            </RelativeLayout>
+        </ScrollView>
+
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
             android:textStyle="bold"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:background="@android:drawable/edit_text"
-            android:textColor="@android:color/primary_text_light"
-            android:layout_alignTop="@+id/base_Location"
-            android:layout_toStartOf="@+id/home" />
-
-        <ImageButton
-            android:layout_width="74dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/searchButton"
-            android:background="@null"
-            android:src="@drawable/search_dark"
-            android:layout_below="@+id/home"
-            android:layout_alignEnd="@+id/home" />
-
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/surveysView"
-            android:layout_marginTop="15dp"
-            android:layout_below="@+id/base_Location"
-            android:layout_alignEnd="@+id/searchButton" />
-
-        <Spinner
-            android:id="@+id/year"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:entries="@array/timeToFinish_arrays"
-            android:prompt="@string/timeToFinish_prompt"
-            android:layout_alignTop="@+id/type_Of_Problem"
-            android:layout_toStartOf="@+id/type_Of_Problem" />
+            android:textColor="#ffffffff"
+            android:background="#3498DB"
+            android:text="Search"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/btn_search"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 

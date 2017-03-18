@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -46,7 +44,7 @@ public class Reports extends AppCompatActivity {
 
         // Get reference of widgets from XML layout
         final Spinner spinner = (Spinner)findViewById(R.id.base_Location);
-        final Spinner yearSpinner = (Spinner)findViewById(R.id.year);
+        //final Spinner yearSpinner = (Spinner)findViewById(R.id.year);
 
         // Initializing a String Array
         String[] type = new String[]{
@@ -105,8 +103,8 @@ public class Reports extends AppCompatActivity {
             }
         };
         yearArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
-        assert yearSpinner != null; //Base Case?? Provided by Android
-        yearSpinner.setAdapter(yearArrayAdapter);
+        //assert yearSpinner != null; //Base Case?? Provided by Android
+        //yearSpinner.setAdapter(yearArrayAdapter);
 
 //        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override

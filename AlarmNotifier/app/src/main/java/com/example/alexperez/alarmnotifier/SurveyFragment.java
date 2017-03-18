@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -255,11 +254,6 @@ public class SurveyFragment extends Fragment {
                     resolutionType = parent.getItemAtPosition(position).toString();
                     isOtherResolutionType = false;
                 }
-
-                Toast.makeText(parent.getContext(),
-                        "OnItemSelectedListener : " + resolutionType,
-                        Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
