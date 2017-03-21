@@ -173,6 +173,7 @@ public class DetailsFragment extends Fragment {
             if(!requiresAcknowledgement) {
                 accept.setEnabled(false);
                 accept.setOnClickListener(null);
+                accept.setText("Anomaly Resolved");
                 accept.setBackgroundColor(Color.GRAY);}
 
             if(nameIndex != -1){
