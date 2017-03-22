@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="#000000"
-                android:layout_below="@+id/spinner6"
+                android:layout_below="@+id/input2Spinner"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="14dp" />
 
@@ -101,7 +101,7 @@
                 android:layout_marginTop="22dp"
                 android:text="Input 2:"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_below="@+id/spinner"
+                android:layout_below="@+id/input1Spinner"
                 android:layout_alignStart="@+id/first_Input" />
 
             <TextView
@@ -226,17 +226,51 @@
             <Spinner
                 android:layout_width="65dp"
                 android:layout_height="20dp"
-                android:id="@+id/spinner"
+                android:id="@+id/input1Spinner"
                 android:layout_alignBaseline="@+id/first_Input"
                 android:layout_alignBottom="@+id/first_Input"
                 android:layout_toEndOf="@+id/unit_In_Fleet" />
 
+            <EditText
+                android:layout_width="115dp"
+                android:hint="Keyword"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:background="@android:drawable/edit_text"
+                android:textColor="@android:color/primary_text_light"
+                android:layout_height="40dp"
+                android:layout_toEndOf="@+id/input1Spinner"
+                android:layout_marginLeft="15dp"
+                android:id="@+id/input1keyword" />
+
             <Spinner
                 android:layout_width="65dp"
                 android:layout_height="20dp"
-                android:id="@+id/spinner6"
+                android:id="@+id/input2Spinner"
                 android:layout_alignBottom="@+id/second_Input"
-                android:layout_alignStart="@+id/spinner" />
+                android:layout_alignStart="@+id/input1Spinner" />
+
+            <EditText
+                android:layout_width="115dp"
+                android:layout_height="40dp"
+                android:hint="Keyword"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:background="@android:drawable/edit_text"
+                android:textColor="@android:color/primary_text_light"
+                android:id="@+id/input2keyword"
+                android:layout_above="@+id/midline"
+                android:layout_alignStart="@+id/input1keyword" />
+
+            <ImageButton
+                android:layout_width="65dp"
+                android:layout_height="70dp"
+                android:id="@+id/searchButton"
+                android:background="@null"
+                android:src="@drawable/search_dark"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/textView8"
+                android:layout_marginLeft="10dp" />
         </RelativeLayout>
 
     </RelativeLayout>
