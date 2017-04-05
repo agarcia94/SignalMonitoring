@@ -2,6 +2,26 @@
     <string name="app_name">Alarm Notifier</string>
     <string name="timeToFinish_prompt">Settings</string>
 
+    <string-array name="vendorOptions">
+        <item>CPI TWTA</item>
+        <item>XICOM TWTA</item>
+    </string-array>
+    
+    <string-array name="freqOptions">
+        <item>Ku</item>
+        <item>DBS</item>
+        <item>RB</item>
+        <item>Ka</item>
+        <item>All Freqs</item>
+    </string-array>
+    
+    <string-array name="rangeOptions">
+        <item>This Month</item>
+        <item>Last Month</item>
+        <item>Last 12 Months</item>
+        <item>To Date</item>
+    </string-array>
+
     <string-array name="timeToFinish_arrays">
         <item>0 - 5 Minutes</item>
         <item>5 - 10 Minutes</item>

@@ -90,6 +90,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="5dp"
+                android:textSize="9dp"
                 android:text="Vendor:"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -99,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="Freq:"
+                android:textSize="9dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_below="@+id/vendorSpinner"
                 android:layout_alignStart="@+id/vendorInput" />
@@ -109,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="Range:"
+                android:textSize="9dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_below="@+id/freqInput"
                 android:layout_alignStart="@+id/vendorInput"
@@ -213,45 +216,53 @@
                 android:textAppearance="?android:attr/textAppearanceSmall" />
             <!-- First Set Of Spinners for the Versus-->
             <Spinner
-                android:layout_width="100dp"
+                android:layout_width="146dp"
                 android:layout_height="20dp"
                 android:id="@+id/vendorSpinner"
+                android:entries="@array/vendorOptions"
                 android:layout_alignBottom="@+id/vendorInput"
-                android:layout_toEndOf="@+id/unit_In_Fleet" />
+                android:layout_toEndOf="@+id/vendorInput"
+                android:layout_marginLeft="1dp" />
 
             <Spinner
-                android:layout_width="100dp"
+                android:layout_width="146dp"
                 android:layout_height="20dp"
                 android:id="@+id/freqSpinner"
+                android:entries="@array/freqOptions"
                 android:layout_alignBottom="@+id/freqInput"
                 android:layout_alignStart="@+id/vendorSpinner" />
 
             <Spinner
-                android:layout_width="100dp"
+                android:layout_width="146dp"
                 android:layout_height="20dp"
                 android:id="@+id/rangeSpinner"
+                android:entries="@array/rangeOptions"
                 android:layout_alignBottom="@+id/rangeInput"
                 android:layout_alignStart="@+id/freqSpinner" />
 
             <!-- Second Set Of Spinners for the Versus-->
             <Spinner
-                android:layout_width="100dp"
+                android:layout_width="148dp"
                 android:layout_height="20dp"
                 android:id="@+id/vendorSpinner2"
+                android:entries="@array/vendorOptions"
                 android:layout_alignBottom="@+id/vendorInput2"
-                android:layout_toEndOf="@+id/unit_In_Fleet2" />
+                android:layout_toEndOf="@+id/vendorInput2"
+                android:layout_marginLeft="1dp"  />
 
             <Spinner
-                android:layout_width="100dp"
+                android:layout_width="148dp"
                 android:layout_height="20dp"
                 android:id="@+id/freqSpinner2"
+                android:entries="@array/freqOptions"
                 android:layout_alignBottom="@+id/freqInput2"
                 android:layout_alignStart="@+id/vendorSpinner2" />
 
             <Spinner
-                android:layout_width="100dp"
+                android:layout_width="148dp"
                 android:layout_height="20dp"
                 android:id="@+id/rangeSpinner2"
+                android:entries="@array/rangeOptions"
                 android:layout_alignBottom="@+id/rangeInput2"
                 android:layout_alignStart="@+id/freqSpinner2" />
 
@@ -272,6 +283,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Vendor:"
+                android:textSize="9dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_alignTop="@+id/vendorInput"
                 android:layout_alignStart="@+id/unit_In_Fleet2" />
@@ -281,6 +293,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Freq:"
+                android:textSize="9dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_alignBottom="@+id/freqSpinner"
                 android:layout_alignStart="@+id/vendorInput2" />
@@ -290,6 +303,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Range:"
+                android:textSize="9dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_alignTop="@+id/rangeInput"
                 android:layout_alignStart="@+id/freqInput2" />
