@@ -61,70 +61,58 @@
                 android:id="@+id/bottomLine"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="123dp"
-                android:background="#000000" />
+                android:background="#000000"
+                android:layout_above="@+id/midline"
+                android:layout_alignParentStart="true" />
 
             <View
                 android:id="@+id/topLine"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_width="3dp"
+                android:layout_height="95dp"
                 android:background="#000000"
-                android:layout_below="@+id/input2Spinner"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="14dp" />
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/midline" />
 
             <View
                 android:id="@+id/midline"
-                android:layout_width="2dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/topLine"
-                android:layout_centerHorizontal="true"
-                android:background="#000000" />
+                android:layout_width="3dp"
+                android:layout_height="350dp"
+                android:background="#000000"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
 
             <TextView
-                android:id="@+id/first_Input"
+                android:id="@+id/vendorInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:text="Input 1:"
+                android:layout_marginTop="5dp"
+                android:text="Vendor:"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/second_Input"
+                android:id="@+id/freqInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
-                android:text="Input 2:"
+                android:layout_marginTop="13dp"
+                android:text="Freq"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_below="@+id/input1Spinner"
-                android:layout_alignStart="@+id/first_Input" />
+                android:layout_below="@+id/vendorSpinner"
+                android:layout_alignStart="@+id/vendorInput" />
 
             <TextView
-                android:id="@+id/first_Item"
+                android:id="@+id/rangeInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/bottomLine"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/topLine"
-                android:layout_toStartOf="@+id/midline"
-                android:text="Medium Text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:layout_marginTop="13dp"
+                android:text="Range:"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_below="@+id/freqInput"
+                android:layout_alignStart="@+id/vendorInput"
 
-            <TextView
-                android:id="@+id/second_Item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/first_Item"
-                android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/midline"
-                android:layout_toEndOf="@+id/midline"
-                android:text="Medium Text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                />
 
             <TextView
                 android:id="@+id/unit_In_Fleet"
@@ -138,47 +126,47 @@
                 android:layout_alignParentStart="true" />
 
             <TextView
-                android:id="@+id/anomalies_To_Date"
+                android:id="@+id/anomalies_Values"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/unit_In_Fleet"
                 android:layout_below="@+id/unit_In_Fleet"
                 android:layout_marginTop="15dp"
-                android:text="Anomalies To Date:"
+                android:text="Anomalies:"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/helix_Arc_Fault"
+                android:id="@+id/units_Affected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/anomalies_To_Date"
-                android:layout_below="@+id/anomalies_To_Date"
+                android:layout_alignStart="@+id/anomalies_Values"
+                android:layout_below="@+id/anomalies_Values"
                 android:layout_marginTop="15dp"
-                android:text="Helix Arc Fault:"
+                android:text="Units Affected:"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/high_Temp"
+                android:id="@+id/anomaly_Rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/helix_Arc_Fault"
-                android:layout_below="@+id/helix_Arc_Fault"
+                android:layout_alignStart="@+id/units_Affected"
+                android:layout_below="@+id/units_Affected"
                 android:layout_marginTop="15dp"
-                android:text="High Temp:"
+                android:text="Anomaly Rate:"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/helix_Current_Threshold"
+                android:id="@+id/mrf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/high_Temp"
-                android:layout_below="@+id/high_Temp"
+                android:layout_alignStart="@+id/anomaly_Rate"
+                android:layout_below="@+id/anomaly_Rate"
                 android:layout_marginTop="18dp"
-                android:text="Helix Current Threshold:"
+                android:text="Most Recurring Fault:"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/unit_In_Fleet2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/unit_In_Fleet"
@@ -188,89 +176,124 @@
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/anomalies_Values2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/anomalies_To_Date"
-                android:layout_alignStart="@+id/textView6"
-                android:text="Anomalies To Date:"
+                android:layout_alignBottom="@+id/anomalies_Values"
+                android:layout_alignStart="@+id/unit_In_Fleet2"
+                android:text="Anomalies:"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/units_Affected2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/helix_Arc_Fault"
-                android:layout_alignStart="@+id/textView7"
-                android:text="Helix Arc Fault:"
+                android:layout_alignBottom="@+id/units_Affected"
+                android:layout_alignStart="@+id/anomalies_Values2"
+                android:text="Units Affected:"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/anomaly_Rate2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/helix_Current_Threshold"
-                android:layout_alignStart="@+id/textView8"
-                android:text="High Temp:"
+                android:layout_above="@+id/mrf"
+                android:layout_alignStart="@+id/units_Affected2"
+                android:text="Anomaly Rate:"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/mrf2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/helix_Current_Threshold"
-                android:layout_alignStart="@+id/textView9"
-                android:text="Helix Current Threshold:"
+                android:layout_alignBottom="@+id/mrf"
+                android:layout_alignStart="@+id/anomaly_Rate2"
+                android:text="Most Recurring Fault:"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <Spinner
-                android:layout_width="65dp"
+                android:layout_width="100dp"
                 android:layout_height="20dp"
-                android:id="@+id/input1Spinner"
-                android:layout_alignBaseline="@+id/first_Input"
-                android:layout_alignBottom="@+id/first_Input"
+                android:id="@+id/vendorSpinner"
+                android:layout_alignBaseline="@+id/vendorInput"
+                android:layout_alignBottom="@+id/vendorInput"
                 android:layout_toEndOf="@+id/unit_In_Fleet" />
 
-            <EditText
-                android:layout_width="115dp"
-                android:hint="Keyword"
-                android:singleLine="true"
-                android:maxLines="1"
-                android:background="@android:drawable/edit_text"
-                android:textColor="@android:color/primary_text_light"
-                android:layout_height="40dp"
-                android:layout_toEndOf="@+id/input1Spinner"
-                android:layout_marginLeft="15dp"
-                android:id="@+id/input1keyword" />
+            <Spinner
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:id="@+id/freqSpinner"
+                android:layout_alignBottom="@+id/freqInput"
+                android:layout_alignStart="@+id/vendorSpinner" />
 
             <Spinner
-                android:layout_width="65dp"
+                android:layout_width="100dp"
                 android:layout_height="20dp"
-                android:id="@+id/input2Spinner"
-                android:layout_alignBottom="@+id/second_Input"
-                android:layout_alignStart="@+id/input1Spinner" />
+                android:id="@+id/rangeSpinner"
+                android:layout_alignBottom="@+id/rangeInput"
+                android:layout_alignStart="@+id/freqSpinner" />
+            <!-- Second Set Of Spinners for the Versus-->
+            <Spinner
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:id="@+id/vendorSpinner2"
+                android:layout_alignBaseline="@+id/vendorInput2"
+                android:layout_alignBottom="@+id/vendorInput2"
+                android:layout_toEndOf="@+id/unit_In_Fleet2" />
 
-            <EditText
-                android:layout_width="115dp"
-                android:layout_height="40dp"
-                android:hint="Keyword"
-                android:singleLine="true"
-                android:maxLines="1"
-                android:background="@android:drawable/edit_text"
-                android:textColor="@android:color/primary_text_light"
-                android:id="@+id/input2keyword"
-                android:layout_above="@+id/midline"
-                android:layout_alignStart="@+id/input1keyword" />
+            <Spinner
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:id="@+id/freqSpinner2"
+                android:layout_alignBottom="@+id/freqInput2"
+                android:layout_alignStart="@+id/vendorSpinner2" />
 
-            <ImageButton
-                android:layout_width="65dp"
-                android:layout_height="70dp"
-                android:id="@+id/searchButton"
-                android:background="@null"
-                android:src="@drawable/search_dark"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/textView8"
-                android:layout_marginLeft="10dp" />
+            <Spinner
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:id="@+id/rangeSpinner2"
+                android:layout_alignBottom="@+id/rangeInput2"
+                android:layout_alignStart="@+id/freqSpinner2" />
+
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="35dp"
+                android:text="Compare"
+                android:textColor="#ffffffff"
+                android:background="@drawable/roundbutton"
+                android:textStyle="bold"
+                android:id="@+id/compareButton"
+                android:layout_above="@+id/bottomLine"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="6dp" />
+
+            <TextView
+                android:id="@+id/vendorInput2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vendor:"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_alignTop="@+id/vendorInput"
+                android:layout_alignStart="@+id/unit_In_Fleet2" />
+
+            <TextView
+                android:id="@+id/freqInput2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Freq"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_alignBottom="@+id/freqSpinner"
+                android:layout_alignStart="@+id/vendorInput2" />
+
+            <TextView
+                android:id="@+id/rangeInput2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Range:"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_alignTop="@+id/rangeInput"
+                android:layout_alignStart="@+id/freqInput2" />
+
         </RelativeLayout>
 
     </RelativeLayout>
