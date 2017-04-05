@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -26,6 +27,7 @@ import java.net.URL;
 public class ComparisonsReportsFragment extends Fragment {
     private String userProfile = "";
     Spinner v1, v2, f1, f2, r1, r2;
+    TextView u1, u2, a1, a2, unit1, unit2, rate1, rate2, mrf1, mrf2;
     public ComparisonsReportsFragment() {
     }
 
@@ -40,6 +42,18 @@ public class ComparisonsReportsFragment extends Fragment {
         f2 = (Spinner) rootView.findViewById(R.id.freqSpinner2);
         r1 = (Spinner) rootView.findViewById(R.id.rangeSpinner);
         r2 = (Spinner) rootView.findViewById(R.id.rangeSpinner2);
+
+        u1 = (TextView) rootView.findViewById(R.id.unit_In_Fleet);
+        u2 = (TextView) rootView.findViewById(R.id.unit_In_Fleet2);
+        a1 = (TextView) rootView.findViewById(R.id.anomalies_Values);
+        a2 = (TextView) rootView.findViewById(R.id.anomalies_Values2);
+        unit1 = (TextView) rootView.findViewById(R.id.units_Affected);
+        unit2 = (TextView) rootView.findViewById(R.id.units_Affected2);
+        rate1 = (TextView) rootView.findViewById(R.id.anomaly_Rate);
+        rate2 = (TextView) rootView.findViewById(R.id.anomaly_Rate2);
+        mrf1 = (TextView) rootView.findViewById(R.id.mrf);
+        mrf2 = (TextView) rootView.findViewById(R.id.mrf2);
+
 
         ImageButton home = (ImageButton)rootView.findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener(){
@@ -156,6 +170,26 @@ public class ComparisonsReportsFragment extends Fragment {
         protected void onPostExecute(JSONObject result){
            // got result, update view ( left and right )
             Log.d("comparison", result.toString());
+            try{
+                JSONObject left = result.getJSONObject("left");
+                JSONObject right = result.getJSONObject("right");
+                String l_affected = left.getString("affected");
+                String r_affected = right.getString("affected");
+                String l_count = left.getString("totalCount");
+                String r_count = right.getString("totalCount");
+                String l_mrf = left.getString("MRF");
+                String r_mrf = right.getString("MRF");
+
+                a1.setText("Anomalies: " + l_count);
+                a2.setText("Anomalies: " + r_count);
+                unit1.setText("Units Affected: " + l_affected);
+                unit2.setText("Units Affected: " + r_affected);
+                mrf1.setText("Most Recurring Fault: \n\t" + l_mrf);
+                mrf2.setText("Most Recurring Fault: \n\t" + r_mrf);
+            }catch(Exception e){
+                Log.d("compareOnpostEx", e.toString());
+            }
+
         }
     }
 }
