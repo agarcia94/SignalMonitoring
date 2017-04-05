@@ -62,13 +62,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="#000000"
-                android:layout_above="@+id/midline"
-                android:layout_alignParentStart="true" />
+                android:layout_below="@+id/compareButton"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="18dp" />
 
             <View
                 android:id="@+id/topLine"
                 android:layout_width="3dp"
-                android:layout_height="95dp"
+                android:layout_height="92dp"
                 android:background="#000000"
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/midline" />
@@ -76,9 +77,9 @@
             <View
                 android:id="@+id/midline"
                 android:layout_width="3dp"
-                android:layout_height="350dp"
+                android:layout_height="415dp"
                 android:background="#000000"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/bottomLine"
                 android:layout_centerHorizontal="true" />
 
             <TextView
@@ -96,7 +97,7 @@
                 android:id="@+id/freqInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="15dp"
                 android:text="Freq"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_below="@+id/vendorSpinner"
@@ -106,7 +107,7 @@
                 android:id="@+id/rangeInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="15dp"
                 android:text="Range:"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_below="@+id/freqInput"
@@ -210,7 +211,7 @@
                 android:layout_alignStart="@+id/anomaly_Rate2"
                 android:text="Most Recurring Fault:"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-
+            <!-- First Set Of Spinners for the Versus-->
             <Spinner
                 android:layout_width="100dp"
                 android:layout_height="20dp"
@@ -232,6 +233,7 @@
                 android:id="@+id/rangeSpinner"
                 android:layout_alignBottom="@+id/rangeInput"
                 android:layout_alignStart="@+id/freqSpinner" />
+
             <!-- Second Set Of Spinners for the Versus-->
             <Spinner
                 android:layout_width="100dp"
@@ -263,9 +265,9 @@
                 android:background="@drawable/roundbutton"
                 android:textStyle="bold"
                 android:id="@+id/compareButton"
-                android:layout_above="@+id/bottomLine"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="6dp" />
+                android:layout_marginTop="12dp"
+                android:layout_below="@+id/topLine"
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:id="@+id/vendorInput2"
