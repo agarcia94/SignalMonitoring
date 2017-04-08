@@ -80,7 +80,7 @@ public class ComparisonsReports extends AppCompatActivity {
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 } else if (mAdapter.getItem(position).equals("          Subscription")) {
-                    Intent i = new Intent(getApplicationContext(), Reports.class);
+                    Intent i = new Intent(getApplicationContext(), SubscribeActivity.class);
                     startActivity(i);
                 } else {
                     Toast.makeText(ComparisonsReports.this, "Error On Calling", Toast.LENGTH_SHORT).show();

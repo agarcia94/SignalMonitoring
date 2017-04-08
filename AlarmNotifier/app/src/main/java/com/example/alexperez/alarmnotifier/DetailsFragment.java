@@ -37,7 +37,7 @@ public class DetailsFragment extends Fragment {
     private ListView pastAnomListView;
     private ArrayAdapter<String> simPastAnomaliesAdap;
     private JSONObject alarmACK = new JSONObject();
-    private JSONArray reportMatches;
+    //private JSONArray reportMatches;
     private String userProfile = "";
     private String alarmID = "";
     private String detailString = null;
@@ -128,7 +128,7 @@ public class DetailsFragment extends Fragment {
 
         Intent intent = getActivity().getIntent();
         String alarmJSON = intent.getStringExtra("currAlarm");
-        Log.d("currAlarm", alarmJSON);
+        Log.d("currAlarmDetails", alarmJSON);
 
         try {
             JSONObject alarmObject = new JSONObject(alarmJSON);
@@ -403,6 +403,72 @@ public class DetailsFragment extends Fragment {
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    class SendLocationData extends AsyncTask<String, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... args){
+            Log.d("enter", "entered function");
+            HttpURLConnection client = null;
+
+            String location = args[0];
+
+            try{
+                URL url = new URL("http://cs3.calstatela.edu:8080/cs4961stu20/MongoService/report");
+                client = (HttpURLConnection) url.openConnection();
+                client.setRequestMethod("POST");
+                client.setRequestProperty("Content-Type", "application/json");
+                client.setRequestProperty("Accept", "application/json");
+                client.setDoOutput(true);
+
+                JSONObject locationInfo = new JSONObject();
+                locationInfo.put("location", location);
+
+                OutputStreamWriter wr= new OutputStreamWriter(client.getOutputStream());
+                Log.d("locationProfile", locationInfo.toString());
+                wr.write(locationInfo.toString());
+                wr.flush();
+                wr.close();
+
+                Log.d("locationOutput", "output stream");
+
+                StringBuilder sb = new StringBuilder();
+                int HttpResult = client.getResponseCode();
+                if (HttpResult == HttpURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(
+                            new InputStreamReader(client.getInputStream()));
+                    String line = null;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+                    Log.d("reportResponse", sb.toString());
+
+                    JSONObject reportResponse = new JSONObject(sb.toString());
+                    //reportMatches = reportResponse.getJSONArray("alarms");
+
+                } else {
+                    Log.d("hello", client.getResponseMessage());
+                    System.out.println("Server response: " + client.getResponseMessage());
+                }
+
+
+            }catch(Exception o) {
+                o.printStackTrace();
+            }finally {
+                if(client != null) // Make sure the connection is not null.
+                    client.disconnect();
+            }
+            return null;
+        }
+    }
+
+>>>>>>> Stashed changes
     class SendACK extends AsyncTask<String, Void, Void> {
         @Override
         protected void onPreExecute() {
