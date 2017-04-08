@@ -209,8 +209,7 @@ public class DetailsFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Anomaly.class);
-                startActivity(intent);
+               getActivity().onBackPressed();
             }
         });
 

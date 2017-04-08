@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -179,6 +180,11 @@ public class ComparisonsReportsFragment extends Fragment {
                 String r_count = right.getString("totalCount");
                 String l_mrf = left.getString("MRF");
                 String r_mrf = right.getString("MRF");
+                int l_uif = left.getInt("uif");
+                int r_uif = right.getInt("uif");
+                double l_rate = left.getDouble("rate") * 100;
+                double r_rate = right.getDouble("rate") * 100;
+                DecimalFormat df = new DecimalFormat("####0.00");
 
                 a1.setText("Anomalies: " + l_count);
                 a2.setText("Anomalies: " + r_count);
@@ -186,6 +192,11 @@ public class ComparisonsReportsFragment extends Fragment {
                 unit2.setText("Units Affected: " + r_affected);
                 mrf1.setText("Most Recurring Fault: \n\t" + l_mrf);
                 mrf2.setText("Most Recurring Fault: \n\t" + r_mrf);
+                u1.setText("Unit In Fleet: " + l_uif);
+                u2.setText("Unit In Fleet: " + r_uif);
+                rate1.setText("Anomaly Rate: " + df.format(l_rate));
+                rate2.setText("Anomaly Rate: " + df.format(r_rate));
+
             }catch(Exception e){
                 Log.d("compareOnpostEx", e.toString());
             }
