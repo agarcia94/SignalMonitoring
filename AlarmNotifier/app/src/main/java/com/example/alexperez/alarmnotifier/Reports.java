@@ -2,7 +2,9 @@ package com.example.alexperez.alarmnotifier;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -24,7 +26,6 @@ public class Reports extends AppCompatActivity {
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
 
-    String userProfile = "";
     Calendar calendar = Calendar.getInstance();
     int calender_year = calendar.get(Calendar.YEAR);
     //String current_year = Integer.toString(calender_year);
@@ -35,8 +36,6 @@ public class Reports extends AppCompatActivity {
         setContentView(R.layout.activity_reports);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        userProfile = getIntent().getStringExtra("profile");
 
         mDrawerList = (ListView)findViewById(R.id.navList);
 
@@ -103,28 +102,6 @@ public class Reports extends AppCompatActivity {
             }
         };
         yearArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
-        //assert yearSpinner != null; //Base Case?? Provided by Android
-        //yearSpinner.setAdapter(yearArrayAdapter);
-
-//        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                String selectedItemText = (String) parent.getItemAtPosition(position);
-//                // If user change the default selection
-//                // First item is disable and it is used for hint
-//                if (position > 0) {
-//                    // Notify the selected item text
-//                    Toast.makeText
-//                            (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
-//                            .show();
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//                //Do Nothing, as nothing should happen if nothing is selected yet
-//            }
-//        });
 
         // Initializing the Base Location Adapter
         final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item,typeList){
@@ -159,52 +136,47 @@ public class Reports extends AppCompatActivity {
         assert spinner != null; //Base Case?? Provided by Android
         spinner.setAdapter(spinnerArrayAdapter);
 
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                String selectedItemText = (String) parent.getItemAtPosition(position);
-//                // If user change the default selection
-//                // First item is disable and it is used for hint
-//                if (position > 0) {
-//                    // Notify the selected item text
-//                    Toast.makeText
-//                            (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
-//                            .show();
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-
     }
 
     private void addDrawerItems() {
-        String[] array = { "Home","Reports","Logout" };
+        final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons_reports);
+        String[] array = { "          Home","          Comparison","          Subscription", "          Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
+        mDrawerList.setAdapter(new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_activated_1,
+                android.R.id.text1,
+                array
+        ) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                int resourceId = typedArray.getResourceId(position, 0);
+                Drawable drawable = getResources().getDrawable(resourceId);
+                ((TextView) v).setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
+                return v;
+            }
+        });
+
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mAdapter.getItem(position).equals("Home")) {
+                if (mAdapter.getItem(position).equals("          Home")) {
                     Intent i = new Intent(getApplicationContext(), Anomaly.class);
-                    userProfile = getIntent().getStringExtra("profile");
-                    i.putExtra("profile", userProfile);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
-                } else if (mAdapter.getItem(position).equals("Reports")) {
-                    Intent i = new Intent(getApplicationContext(), Reports.class);
-                    userProfile = getIntent().getStringExtra("profile");
-                    i.putExtra("profile", userProfile);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                } else if (mAdapter.getItem(position).equals("          Comparison")) {
+                    Intent i = new Intent(getApplicationContext(), ComparisonsReports.class);
                     startActivity(i);
-                } else if (mAdapter.getItem(position).equals("Logout")) {
+                } else if (mAdapter.getItem(position).equals("          Logout")) {
                     Toast.makeText(Reports.this, "Logged out", Toast.LENGTH_SHORT).show();
+                    SaveSharedPreference.clearUserName(getApplicationContext());
                     Intent i = new Intent(getApplicationContext(), Login.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                } else if (mAdapter.getItem(position).equals("          Subscription")) {
+                    Intent i = new Intent(getApplicationContext(), SubscribeActivity.class);
                     startActivity(i);
                 } else {
                     Toast.makeText(Reports.this, "Error On Calling", Toast.LENGTH_SHORT).show();

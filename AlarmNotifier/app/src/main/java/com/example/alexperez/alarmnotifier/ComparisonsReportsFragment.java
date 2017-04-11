@@ -194,8 +194,8 @@ public class ComparisonsReportsFragment extends Fragment {
                 mrf2.setText("Most Recurring Fault: \n\t" + r_mrf);
                 u1.setText("Unit In Fleet: " + l_uif);
                 u2.setText("Unit In Fleet: " + r_uif);
-                rate1.setText("Anomaly Rate: " + df.format(l_rate));
-                rate2.setText("Anomaly Rate: " + df.format(r_rate));
+                rate1.setText("Anomaly Rate: " + df.format(l_rate) + "%");
+                rate2.setText("Anomaly Rate: " + df.format(r_rate) + "%");
 
             }catch(Exception e){
                 Log.d("compareOnpostEx", e.toString());

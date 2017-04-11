@@ -5,10 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -37,7 +34,7 @@ public class ComparisonsReports extends AppCompatActivity {
     }
 
     private void addDrawerItems() {
-        final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons_detail);
+        final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons_comparison);
         String[] array = { "          Home","          Reports","          Subscription", "          Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
@@ -63,15 +60,9 @@ public class ComparisonsReports extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (mAdapter.getItem(position).equals("          Home")) {
                     Intent i = new Intent(getApplicationContext(), Anomaly.class);
-                    userProfile = getIntent().getStringExtra("profile");
-                    i.putExtra("profile", userProfile);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 } else if (mAdapter.getItem(position).equals("          Reports")) {
                     Intent i = new Intent(getApplicationContext(), Reports.class);
-                    userProfile = getIntent().getStringExtra("profile");
-                    i.putExtra("profile", userProfile);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 } else if (mAdapter.getItem(position).equals("          Logout")) {
                     Toast.makeText(ComparisonsReports.this, "Logged out", Toast.LENGTH_SHORT).show();
@@ -80,7 +71,7 @@ public class ComparisonsReports extends AppCompatActivity {
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 } else if (mAdapter.getItem(position).equals("          Subscription")) {
-                    Intent i = new Intent(getApplicationContext(), Reports.class);
+                    Intent i = new Intent(getApplicationContext(), SubscribeActivity.class);
                     startActivity(i);
                 } else {
                     Toast.makeText(ComparisonsReports.this, "Error On Calling", Toast.LENGTH_SHORT).show();
