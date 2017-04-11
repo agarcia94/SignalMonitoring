@@ -172,7 +172,7 @@
         android:layout_gravity="center_horizontal|bottom"
         android:textStyle="bold"
         android:textColor="#ffffffff"
-        android:background="#3498DB"
+        android:background="@drawable/roundbutton"
         android:text="Go Back to Home Page ..."
         android:id="@+id/btn_home"
         android:layout_alignParentBottom="true"
