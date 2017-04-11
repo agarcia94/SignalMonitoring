@@ -402,9 +402,7 @@ public class DetailsFragment extends Fragment {
             }
         }
     }
-
-<<<<<<< Updated upstream
-=======
+    
     class SendLocationData extends AsyncTask<String, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -468,7 +466,6 @@ public class DetailsFragment extends Fragment {
         }
     }
 
->>>>>>> Stashed changes
     class SendACK extends AsyncTask<String, Void, Void> {
         @Override
         protected void onPreExecute() {
