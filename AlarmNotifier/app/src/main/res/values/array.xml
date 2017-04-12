@@ -13,12 +13,14 @@
         <item>@drawable/ic_search</item>
         <item>@drawable/ic_subscribe</item>
         <item>@drawable/ic_comparison</item>
+        <item>@drawable/ic_settings</item>
         <item>@drawable/ic_exit</item>
     </string-array>
 
     <string-array name="sections_icons_comparison">
         <item>@drawable/ic_home</item>
         <item>@drawable/ic_search</item>
+        <item>@drawable/ic_settings</item>
         <item>@drawable/ic_subscribe</item>
         <item>@drawable/ic_exit</item>
     </string-array>
@@ -26,6 +28,23 @@
     <string-array name="sections_icons_reports">
         <item>@drawable/ic_home</item>
         <item>@drawable/ic_subscribe</item>
+        <item>@drawable/ic_settings</item>
+        <item>@drawable/ic_comparison</item>
+        <item>@drawable/ic_exit</item>
+    </string-array>
+
+    <string-array name="sections_icons_settings">
+        <item>@drawable/ic_home</item>
+        <item>@drawable/ic_search</item>
+        <item>@drawable/ic_comparison</item>
+        <item>@drawable/ic_subscribe</item>
+        <item>@drawable/ic_exit</item>
+    </string-array>
+
+    <string-array name="sections_icons_subscription">
+        <item>@drawable/ic_home</item>
+        <item>@drawable/ic_search</item>
+        <item>@drawable/ic_settings</item>
         <item>@drawable/ic_comparison</item>
         <item>@drawable/ic_exit</item>
     </string-array>

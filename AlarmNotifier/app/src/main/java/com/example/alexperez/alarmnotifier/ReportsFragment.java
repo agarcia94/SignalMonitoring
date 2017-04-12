@@ -237,35 +237,6 @@ public class ReportsFragment extends Fragment {
             }
         });
 
-        //Spinner yearSelection = (Spinner)rootView.findViewById(R.id.year);
-        /*yearSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                search_year = parent.getItemAtPosition(position).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
-
-        //ImageButton searchButton = (ImageButton)rootView.findViewById(R.id.searchButton);
-        /*searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText typeOfProb = (EditText)rootView.findViewById(R.id.type_Of_Problem);
-                String probString = typeOfProb.getText().toString().trim();
-
-                String[] searchCriteria = new String[3];
-                searchCriteria[0] = base_location;
-                searchCriteria[1] = search_year;
-                searchCriteria[2] = probString;
-
-                FetchSurveys surveyTask = new FetchSurveys();
-                surveyTask.execute(searchCriteria);
-            }
-        });*/
 
         rb.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override

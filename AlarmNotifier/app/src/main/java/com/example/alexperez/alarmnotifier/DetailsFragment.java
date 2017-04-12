@@ -402,7 +402,7 @@ public class DetailsFragment extends Fragment {
             }
         }
     }
-    
+
     class SendLocationData extends AsyncTask<String, Void, Void> {
         @Override
         protected void onPreExecute() {

@@ -140,7 +140,8 @@ public class Reports extends AppCompatActivity {
 
     private void addDrawerItems() {
         final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons_reports);
-        String[] array = { "          Home","          Comparison","          Subscription", "          Logout" };
+        String[] array = { "          Home","          Comparison", "          Settings",
+                "          Subscription", "          Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setAdapter(new ArrayAdapter<String>(
@@ -168,6 +169,9 @@ public class Reports extends AppCompatActivity {
                     startActivity(i);
                 } else if (mAdapter.getItem(position).equals("          Comparison")) {
                     Intent i = new Intent(getApplicationContext(), ComparisonsReports.class);
+                    startActivity(i);
+                } else if (mAdapter.getItem(position).equals("          Settings")) {
+                    Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
                     startActivity(i);
                 } else if (mAdapter.getItem(position).equals("          Logout")) {
                     Toast.makeText(Reports.this, "Logged out", Toast.LENGTH_SHORT).show();

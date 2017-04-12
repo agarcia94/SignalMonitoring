@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Set;
+
 public class ComparisonsReports extends AppCompatActivity {
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
@@ -35,7 +37,8 @@ public class ComparisonsReports extends AppCompatActivity {
 
     private void addDrawerItems() {
         final TypedArray typedArray = getResources().obtainTypedArray(R.array.sections_icons_comparison);
-        String[] array = { "          Home","          Reports","          Subscription", "          Logout" };
+        String[] array = { "          Home","          Reports", "          Settings",
+                "          Subscription", "          Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setAdapter(new ArrayAdapter<String>(
@@ -63,6 +66,9 @@ public class ComparisonsReports extends AppCompatActivity {
                     startActivity(i);
                 } else if (mAdapter.getItem(position).equals("          Reports")) {
                     Intent i = new Intent(getApplicationContext(), Reports.class);
+                    startActivity(i);
+                } else if (mAdapter.getItem(position).equals("          Settings")) {
+                    Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
                     startActivity(i);
                 } else if (mAdapter.getItem(position).equals("          Logout")) {
                     Toast.makeText(ComparisonsReports.this, "Logged out", Toast.LENGTH_SHORT).show();
