@@ -22,18 +22,6 @@
             android:background="@null"
             android:src="@drawable/home" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#FF0000"
-            android:textStyle="bold"
-            android:text="Name Of Data"
-            android:id="@+id/title"
-            android:layout_above="@+id/relativeLayout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="28dp" />
-
         <ImageButton
             android:id="@+id/back"
             android:layout_width="70dp"
